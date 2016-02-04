@@ -1,3 +1,3 @@
 # SciScript-R
-R libraries for SciDrive, Jupyter Notebooks
+R libraries for SciScript, Jupyter Notebooks
  
