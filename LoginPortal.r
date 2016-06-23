@@ -20,6 +20,7 @@ getKeystoneUserWithToken<-function(token){
   })
 }
 
+# login and return token which is then also set as the Sys environment variabl "sciservertoken"
 login<-function(UserName, Password){
   loginURL = LoginPortalURL
   authJson = list(auth=list(identity=list(password=list(user=list(name=unbox(UserName),password=unbox(Password))))))
