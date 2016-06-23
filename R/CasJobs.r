@@ -120,5 +120,5 @@ uploadCVSToTable<-function(CVSdata, tableName, context="MyDB", token=NULL){
 # upload a dataframe to a table in a database
 uploadDataFrameToTable<-function(df, tableName, context="MyDB", token=NULL){
   csv=capture.output(write.csv(t,row.names=FALSE,quote=FALSE))
-  return (uploadCVSToTable(csv,tableName,context,token)
+  return (uploadCVSToTable(csv,tableName,context,token))
 }
