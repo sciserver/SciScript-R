@@ -7,3 +7,4 @@ Author: Manuchehr Taghizadeh-Popp, Gerard Lemson
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
+Imports:httr, jsonlite, utils

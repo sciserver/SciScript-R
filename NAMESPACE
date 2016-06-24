@@ -1,1 +1,4 @@
 export(runSqlSearch)
+export(getSchemaName,getTables,executeQuery,submitJob,getJobStatus,uploadCVSToTable,uploadDataFrameToTable,waitForJob)
+export(getKeystoneUserWithToken,login, getToken, setToken)
+import(httr,jsonlite,utils)
