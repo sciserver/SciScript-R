@@ -1,7 +1,7 @@
 require(httr)
 require(jsonlite)
 
-#source('Config.r')
+source('Config.r')
 
 # returns a dictionary with name/id for the user corresponding to the specified token
 getKeystoneUserWithToken<-function(token){
