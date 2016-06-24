@@ -33,5 +33,5 @@ publicUrl<-function(path, token=NULL){
       res = GET(url ,add_headers('X-Auth-Token'=token))
       if(res$status_code == 200) return(content(res)$url)
       else return
-    },
+    },error=function(e){})
 }
