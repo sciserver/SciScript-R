@@ -1,7 +1,7 @@
 require( jsonlite)
 require(httr)
 
-source('LoginPortal.r')
+#source('LoginPortal.r')
 
 createContainer<-function(path, token=NULL){
   if (is.null(token))

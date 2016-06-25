@@ -1,7 +1,7 @@
 #require(httr)
 #require(jsonlite)
 
-source('LoginPortal.r')
+#source('LoginPortal.r')
 
 #--------------------------------------------------------
 getSchemaName<-function(token=NULL){
