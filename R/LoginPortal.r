@@ -4,8 +4,8 @@ require(jsonlite)
 #source('Config.r')
 
 # returns a dictionary with name/id for the user corresponding to the specified token
-getKeystoneUserWithToken<-function(token){
-  loginURL = addSlash(LoginPortalURL)
+LoginPortal.getKeystoneUserWithToken<-function(token){
+  loginURL = Config.addSlash(Config.LoginPortalURL)
   loginURL = paste(loginURL,token,sep='')
   tryCatch({
     r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
@@ -21,8 +21,8 @@ getKeystoneUserWithToken<-function(token){
 }
 
 # login and return token which is then also set as the Sys environment variabl "sciservertoken"
-login<-function(UserName, Password){
-  loginURL = LoginPortalURL
+LoginPortal.login<-function(UserName, Password){
+  loginURL = Config.LoginPortalURL
   authJson = list(auth=list(identity=list(password=list(user=list(name=unbox(UserName),password=unbox(Password))))))
   r=POST(loginURL ,encode="json",body=authJson,accept("text/plain"),content_type_json())
   if(r$status_code != 200) {
@@ -31,12 +31,12 @@ login<-function(UserName, Password){
     return (NULL)
   } else {
     token=headers(r)$`x-subject-token`
-    setToken(token)
+    LoginPortal.setToken(token)
     return(token)
   }
 }
 
-getToken<-function(){
+LoginPortal.getToken<-function(){
   token = Sys.getenv("sciservertoken")
   if (is.null(token) || token == "") {
     token=NULL
@@ -44,13 +44,13 @@ getToken<-function(){
     f = '/home/idies/keystone.token'
     if(file.exists(f)){
       token = readLines(f)
-      setToken(token)
+      LoginPortal.setToken(token)
     }
   }
   token
 }
 
-setToken<-function(token){
+LoginPortal.setToken<-function(token){
   Sys.unsetenv("sciservertoken")
   Sys.setenv(sciservertoken=token)
 }
