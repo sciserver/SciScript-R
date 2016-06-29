@@ -28,7 +28,7 @@ SciDrive.upload<-function(path, data, token=NULL){
 #    retrieve public URL for file identified by path
 SciDrive.publicUrl<-function(path, token=NULL){
     if (is.null(token)) token=getToken()
-    url = paste(Config.addSlash(Config.SciDriveHost),"vospace-2.0/1/media/sandbox/", path,sep="")
+    url = paste(Config.SciDriveHost,"/vospace-2.0/1/media/sandbox/", path,sep="")
     tryCatch({
       res = GET(url ,add_headers('X-Auth-Token'=token))
       if(res$status_code == 200) return(content(res)$url)

@@ -5,8 +5,7 @@ require(jsonlite)
 
 # returns a dictionary with name/id for the user corresponding to the specified token
 LoginPortal.getKeystoneUserWithToken<-function(token){
-  loginURL = Config.addSlash(Config.LoginPortalURL)
-  loginURL = paste(loginURL,token,sep='')
+  loginURL = paste(Config.LoginPortalURL,"/",token,sep='')
   tryCatch({
     r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     r= content(r)

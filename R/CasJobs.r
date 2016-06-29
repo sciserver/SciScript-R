@@ -9,7 +9,7 @@ CasJobs.getSchemaName<-function(token=NULL){
         token = getToken()
     }
     keystoneUserId = LoginPortal.getKeystoneUserWithToken(token)$id
-    usersUrl = paste(Config.addSlash(Config.CasJobsRESTUri),"users/", keystoneUserId,sep="")
+    usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
     r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
     r= content(r)
     return (paste("wsid_",r$WebServicesId,sep=""))
@@ -19,7 +19,7 @@ CasJobs.getSchemaName<-function(token=NULL){
 #--------------------------------------------------------
 # return tables in specified contxt, accessible to user
 CasJobs.getTables<-function(context="MyDB"){
-    TablesUrl = paste(Config.addSlash(Config.CasJobsRESTUri),"contexts/", context, "/Tables",sep="")
+    TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
     r = GET(TablesUrl,add_headers('X-Auth-Token'=getToken()),content_type_json())
     return (content(r))
 }
@@ -27,7 +27,7 @@ CasJobs.getTables<-function(context="MyDB"){
 #--------------------------------------------------------
 # synchronous query
 CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
-  url=paste(Config.addSlash(Config.CasJobsRESTUri),'contexts/',context,'/query',sep='')
+  url=paste(Config.CasJobsRESTUri,'/contexts/',context,'/query',sep='')
 
   if(is.null(token)) {
     r=POST(url,encode="json",body=list(Query=unbox(sql))
@@ -53,7 +53,7 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
 #    Returns the casjobs jobID (int).
 CasJobs.submitJob<-function(queryString, context="MyDB", acceptHeader="text/plain", token=NULL){
 
-    QueryUrl = paste(Config.addSlash(Config.CasJobsRESTUri),"contexts/",context,"/jobs",sep="")
+    QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
     body = list(Query=unbox(queryString))
     if (is.null(token))
 	token=getToken()
@@ -69,7 +69,7 @@ CasJobs.submitJob<-function(queryString, context="MyDB", acceptHeader="text/plai
 #    Gets a casjobs job status.
 #    Returns the dict object (https://docs.python.org/3.4/library/stdtypes.html#dict) coresponding to the json received from casjobs.
 CasJobs.getJobStatus<-function(jobid){
-    QueryUrl = paste(Config.addSlash(Config.CasJobsRESTUri),"jobs/", jobid,sep="")
+    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobid,sep="")
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=LoginPortal.getToken()))
     return(content(r))
@@ -107,7 +107,7 @@ CasJobs.waitForJob<-function(jobid){
 #  Uploads  cvs data into casjobs. 
 # return response object with attributes such as status_code,headers,url
 CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB", token=NULL){
-    tablesUrl = paste(Config.addSlash(Config.CasJobsRESTUri),"contexts/",context,"/Tables/",tableName,sep="")
+    tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
 
     if (is.null(token))
 	token=getToken()
