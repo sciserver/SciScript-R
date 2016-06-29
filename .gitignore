@@ -1,2 +1,6 @@
 .project
 .Rproj.user
+.directory
+.Rbuildignore
+.Rhistory
+SciScript-R.Rproj

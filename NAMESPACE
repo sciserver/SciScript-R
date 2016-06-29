@@ -1,4 +1,5 @@
-export(runSqlSearch)
-export(getSchemaName,getTables,executeQuery,submitJob,getJobStatus,uploadCVSToTable,uploadDataFrameToTable,waitForJob)
-export(getKeystoneUserWithToken,login, getToken, setToken)
+export(SkyServer.sqlSearch,SkyServer.getJpegImgCutout)
+export(CasJobs.getSchemaName,CasJobs.getTables,CasJobs.executeQuery,CasJobs.submitJob,CasJobs.getJobStatus,CasJobs.uploadCSVToTable,CasJobs.uploadDataFrameToTable,CasJobs.waitForJob)
+export(LoginPortal.getKeystoneUserWithToken, LoginPortal.login, LoginPortal.getToken, LoginPortal.setToken)
+export(SciDrive.createContainer,SciDrive.upload,SciDrive.publicUrl)
 import(httr,jsonlite,utils)

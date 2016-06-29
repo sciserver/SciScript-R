@@ -1,10 +1,15 @@
-Package: SciScript
+Package: SciServer
 Type: Package
-Title: Tools for accessing Sciserver applications.
+Title: Tools for accessing SciServer applications.
 Version: 1.0
 Date: 2016-06-22
 Author: Manuchehr Taghizadeh-Popp, Gerard Lemson
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
-Imports:httr, jsonlite, utils
+Description: Provides access to CasJobs, SciDrive, LoginPortal, and SkyServer
+    tool.
+License: TBD
+Imports:
+    httr,
+    jsonlite,
+    utils
+RoxygenNote: 5.0.1

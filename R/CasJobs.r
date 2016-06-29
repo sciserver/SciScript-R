@@ -6,12 +6,12 @@
 #--------------------------------------------------------
 CasJobs.getSchemaName<-function(token=NULL){
     if (is.null(token) ){
-        token = getToken()
+        token = LoginPortal.getToken()
     }
     keystoneUserId = LoginPortal.getKeystoneUserWithToken(token)$id
     usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
     r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
-    r= content(r)
+    r= content(r, encoding="UTF-8")
     return (paste("wsid_",r$WebServicesId,sep=""))
 }
 
@@ -20,8 +20,8 @@ CasJobs.getSchemaName<-function(token=NULL){
 # return tables in specified contxt, accessible to user
 CasJobs.getTables<-function(context="MyDB"){
     TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
-    r = GET(TablesUrl,add_headers('X-Auth-Token'=getToken()),content_type_json())
-    return (content(r))
+    r = GET(TablesUrl,add_headers('X-Auth-Token'=LoginPortal.getToken()),content_type_json())
+    return (content(r, encoding="UTF-8"))
 }
 
 #--------------------------------------------------------
@@ -38,11 +38,11 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
   }
   if(r$status_code != 200) {
     print("Error")
-    r=content(r)
+    r=content(r, encoding="UTF-8")
     print(r$`Error Message`)
     return (NULL)
   } else {
-    t=read.csv(textConnection(content(r)))
+    t=read.csv(textConnection(content(r, encoding="UTF-8")))
     return(t)
   }
 }
@@ -56,11 +56,11 @@ CasJobs.submitJob<-function(queryString, context="MyDB", acceptHeader="text/plai
     QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
     body = list(Query=unbox(queryString))
     if (is.null(token))
-	token=getToken()
+	token=LoginPortal.getToken()
 
     putResponse = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),
 	add_headers('X-Auth-Token'=token))
-    return (content(putResponse))
+    return (content(putResponse, encoding="UTF-8"))
 }
 
 
@@ -72,7 +72,7 @@ CasJobs.getJobStatus<-function(jobid){
     QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobid,sep="")
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=LoginPortal.getToken()))
-    return(content(r))
+    return(content(r, encoding="UTF-8"))
 }
 
 
@@ -110,15 +110,15 @@ CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB", token=NULL){
     tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
 
     if (is.null(token))
-	token=getToken()
+	token=LoginPortal.getToken()
     
-    r = POST(tablesUrl,encode="multipart",body=csv,add_headers('X-Auth-Token'=token))
+    r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))
     return (r)
 }
 
 #-------------------------------------
 # upload a dataframe to a table in a database
 CasJobs.uploadDataFrameToTable<-function(df, tableName, context="MyDB", token=NULL){
-  csv=capture.output(write.csv(t,row.names=FALSE,quote=FALSE))
+  csv=capture.output(write.csv(df,row.names=FALSE,quote=FALSE))
   return (CasJobs.uploadCSVToTable(csv,tableName,context,token))
 }
