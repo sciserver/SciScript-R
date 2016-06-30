@@ -1,5 +1,5 @@
-require( jsonlite)
-require(httr)
+#require( jsonlite)
+#require(httr)
 
 # assumes Config is loaded
 

@@ -1,5 +1,5 @@
-require(httr)
-require(jsonlite)
+#require(httr)
+#require(jsonlite)
 
 #source('Config.r')
 

@@ -20,6 +20,7 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
+\href{http://skyserver.sdss.org/casjobs}{http://skyserver.sdss.org/casjobs}\cr
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
