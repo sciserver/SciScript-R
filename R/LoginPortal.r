@@ -9,11 +9,18 @@ loginURL = paste(Config.LoginPortalURL,"/",token,sep='')
   
   tryCatch({
     r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
-    r= content(r)
-    user={}
-    user$name=r$token$user$name
-    user$id=r$token$user$id
-    return(user)
+    if(r$status_code != 200) {
+      print("Error")
+      r=content(r, encoding="UTF-8")
+      print(r$error$message)
+      return (NULL)
+    } else {
+      r= content(r)
+      user={}
+      user$name=r$token$user$name
+      user$id=r$token$user$id
+      return(user)
+    }
   }, error = function(e) {
     print(e)
     return (NULL)
@@ -27,7 +34,8 @@ LoginPortal.login<-function(UserName, Password){
   r=POST(loginURL ,encode="json",body=authJson,accept("text/plain"),content_type_json())
   if(r$status_code != 200) {
     print("Error")
-    print(content(r))
+    r=content(r, encoding="UTF-8")
+    print(r$error$message)
     return (NULL)
   } else {
     token=headers(r)$`x-subject-token`

@@ -6,11 +6,10 @@ Submit asynchronous SQL query.
 \description{
 Submits an asynchronous SQL query to the CasJobs queue. If a token is supplied then it will execute on behalf of the token's user.
 }
-\usage{CasJobs.submitJob(queryString,context,acceptHeader,token)}
+\usage{CasJobs.submitJob(queryString, context="MyDB", token=NULL)}
 \arguments{
   \item{queryString}{sql query}
   \item{context}{database context}
-  \item{acceptHeader}{Header-specified content type for the request to CasJobs API.}
   \item{token}{Sciserver's authentication token for the user}
 }
 \value{ Returns the CasJobs jobID (integer).}

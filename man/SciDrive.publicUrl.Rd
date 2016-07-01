@@ -1,12 +1,12 @@
-\name{SciDrive.publicURL}
-\alias{SciDrive.publicURL}
+\name{SciDrive.publicUrl}
+\alias{SciDrive.publicUrl}
 \title{
 Get public URL of file.
 }
 \description{
 Gets the public URL of a file or directory in SciDrive.
 }
-\usage{SciDrive.publicURL(path, token=NULL)}
+\usage{SciDrive.publicUrl(path, token=NULL)}
 \arguments{
   \item{path}{path of the file in SciDrive.}
   \item{token}{Sciserver's authentication token for the user}
@@ -29,7 +29,7 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \examples{
 \donttest{
 \dontrun{
-url = SciDrive.publicURL("path/to/SciDrive/file.csv")
+url = SciDrive.publicUrl("path/to/SciDrive/file.csv")
 }}
 }
 \keyword{SciServer}

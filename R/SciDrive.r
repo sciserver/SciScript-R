@@ -14,7 +14,13 @@ SciDrive.createContainer<-function(path, token=NULL){
                      '</vos:node>',sep="")
     url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,sep="")
     res = PUT(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
-    return(res)
+    if(res$status_code != 200) {
+      print("Error")
+      print(content(res,encoding="UTF-8"))
+      return (NULL)
+    } else {
+      return(res)
+    }
 }
 
 
@@ -22,7 +28,13 @@ SciDrive.upload<-function(path, data, token=NULL){
     if(is.null(token)) token = LoginPortal.getToken()
     url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',path,sep='')
     res = PUT(url, body=upload_file(data), add_headers('X-Auth-Token'=token))
-    return (res)
+    if(res$status_code != 200) {
+      print("Error")
+      print(content(res,encoding="UTF-8"))
+      return (NULL)
+    } else {
+      return (res)
+    }
 }
 
 #------------------------------------
@@ -32,7 +44,12 @@ SciDrive.publicUrl<-function(path, token=NULL){
     url = paste(Config.SciDriveHost,"/vospace-2.0/1/media/sandbox/", path,sep="")
     tryCatch({
       res = GET(url ,add_headers('X-Auth-Token'=token))
-      if(res$status_code == 200) return(content(res)$url)
-      else return
-    },error=function(e){})
+      if(res$status_code == 200){
+        return(content(res)$url)
+      }else{
+        print("Error")
+        print(content(res,encoding="UTF-8")$error)
+        return (NULL)
+      }
+    },error=function(e){return (NULL)})
 }

@@ -8,11 +8,24 @@ CasJobs.getSchemaName<-function(token=NULL){
     if (is.null(token) ){
         token = LoginPortal.getToken()
     }
-    keystoneUserId = LoginPortal.getKeystoneUserWithToken(token)$id
-    usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
-    r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
-    r= content(r, encoding="UTF-8")
-    return (paste("wsid_",r$WebServicesId,sep=""))
+    if(!is.null(token))
+    {
+      keystoneUserId = LoginPortal.getKeystoneUserWithToken(token)$id
+      usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
+      r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
+      if(r$status_code != 200) {
+        r= content(r, encoding="UTF-8")
+        print("Error")
+        r=content(r, encoding="UTF-8")
+        print(r$`Error Message`)
+        return (NULL)
+      } else {
+        r= content(r, encoding="UTF-8")
+        return (paste("wsid_",r$WebServicesId,sep=""))
+      }
+    }else{
+      return (NULL)
+    }
 }
 
 
@@ -21,7 +34,15 @@ CasJobs.getSchemaName<-function(token=NULL){
 CasJobs.getTables<-function(context="MyDB"){
     TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
     r = GET(TablesUrl,add_headers('X-Auth-Token'=LoginPortal.getToken()),content_type_json())
-    return (content(r, encoding="UTF-8"))
+    if(r$status_code != 200) {
+      print("Error")
+      r=content(r, encoding="UTF-8")
+      print(r$`Error Message`)
+      return (NULL)
+    } else {
+      return (content(r, encoding="UTF-8"))
+    }
+    
 }
 
 #--------------------------------------------------------
@@ -51,7 +72,7 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
 # asynch query
 #    Submits a query to the casjobs queue.  If a token is supplied then it will execute on behalf of the token's user.
 #    Returns the casjobs jobID (int).
-CasJobs.submitJob<-function(queryString, context="MyDB", acceptHeader="text/plain", token=NULL){
+CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
 
     QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
     body = list(Query=unbox(queryString))
@@ -60,7 +81,14 @@ CasJobs.submitJob<-function(queryString, context="MyDB", acceptHeader="text/plai
 
     putResponse = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),
 	add_headers('X-Auth-Token'=token))
-    return (content(putResponse, encoding="UTF-8"))
+    if(putResponse$status_code != 200) {
+      print("Error")
+      putResponse=content(putResponse, encoding="UTF-8")
+      print(putResponse$`Error Message`)
+      return (NULL)
+    } else {
+      return (content(putResponse, encoding="UTF-8"))
+    }
 }
 
 
@@ -72,7 +100,14 @@ CasJobs.getJobStatus<-function(jobid){
     QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobid,sep="")
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=LoginPortal.getToken()))
-    return(content(r, encoding="UTF-8"))
+    if(r$status_code != 200) {
+      print("Error")
+      r=content(r, encoding="UTF-8")
+      print(r$`Error Message`)
+      return (NULL)
+    } else {
+      return(content(r, encoding="UTF-8"))
+    }
 }
 
 
@@ -111,9 +146,21 @@ CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB", token=NULL){
 
     if (is.null(token))
 	token=LoginPortal.getToken()
-    
+    tryCatch({
+      
     r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))
-    return (r)
+    if(r$status_code != 200) {
+      print("Error")
+      r=content(r, encoding="UTF-8")
+      print(r$`Error Message`)
+      return (NULL)
+    } else {
+      return (r)
+    }
+    } , error = function(e) {
+      print(e)
+      return (NULL)
+    })
 }
 
 #-------------------------------------

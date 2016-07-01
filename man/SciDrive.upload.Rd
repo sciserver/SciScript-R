@@ -28,7 +28,7 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \examples{
 \donttest{
 \dontrun{
-response = SciDrive.upload("SciDrive/path/to/file.csv", "local/path/to/file.csv"))
+response = SciDrive.upload("SciDrive/path/to/file.csv", "local/path/to/file.csv")
 }}
 }
 \keyword{SciServer}
