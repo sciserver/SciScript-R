@@ -1,4 +1,4 @@
-export(SkyServer.sqlSearch,SkyServer.getJpegImgCutout)
+export(SkyServer.sqlSearch,SkyServer.getJpegImgCutout,SkyServer.radialSearch,SkyServer.rectangularSearch)
 export(CasJobs.getSchemaName,CasJobs.getTables,CasJobs.executeQuery,CasJobs.submitJob,CasJobs.getJobStatus,CasJobs.uploadCSVToTable,CasJobs.uploadDataFrameToTable,CasJobs.waitForJob)
 export(LoginPortal.getKeystoneUserWithToken, LoginPortal.login, LoginPortal.getToken, LoginPortal.setToken)
 export(SciDrive.createContainer,SciDrive.upload,SciDrive.publicUrl)

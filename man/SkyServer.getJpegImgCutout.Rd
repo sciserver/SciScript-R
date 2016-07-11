@@ -6,7 +6,7 @@ Get a sky image cutout from SDSS.
 \description{
 Gets a rectangular image cutout from a region of the sky in SDSS, centered at (\code{ra},\code{dec}).
 }
-\usage{SkyServer.getJpegImgCutout(ra, dec, scale=0.7, width=512, height=512, token = NULL)}
+\usage{SkyServer.getJpegImgCutout(ra, dec, scale=0.7, width=512, height=512, token=NULL)}
 \arguments{
   \item{ra}{Right Ascention of the image's center.}
   \item{dec}{Declination of the image's center.}
