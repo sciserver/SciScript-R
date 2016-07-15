@@ -30,7 +30,7 @@ SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL)
 }
 
 
-SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, token = NULL)
+SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL)
 {
   
   url = paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/ImgCutout/getjpeg?", sep="")
@@ -39,6 +39,8 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
   url = paste(url,"scale=",scale,"&",sep="")
   url = paste(url,"width=",width,"&",sep="")
   url = paste(url,"height=",height,"&",sep="")
+  url = paste(url,"opt=",opt,"&",sep="")
+  url = paste(url,"query=",query,"&",sep="")
   
   url = URLencode(url)
   

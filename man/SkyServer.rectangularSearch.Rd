@@ -14,8 +14,8 @@ Runs a query in the SDSS database that searches for all objects within a certain
   \item{max_dec}{Maximum value of Declination coordinate that defines the box boundaries on the sky.}
   \item{coordType}{Type of celestial coordinate system. Can be set to "equatorial" or "galactic".}
   \item{whichPhotometry}{Type of retrieved data. Can be set to "optical" or "infrared".}
-  \item{limit}{maximum number of rows in the result table (string). If set to "0", then the function will return all rows.}
-  \item{token}{Sciserver's authentication token for the user} 
+  \item{limit}{Maximum number of rows in the result table (string). If set to "0", then the function will return all rows.}
+  \item{token}{Sciserver's authentication token for the user.} 
 }
 \value{ the returned object is of type 'dataframe'.}
 \author{
