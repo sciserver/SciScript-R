@@ -116,3 +116,35 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
     return(t)
   }
 }
+
+SkyServer.objectSearch  <- function(ra=NULL, dec=NULL, objID=NULL, specbBjID=NULL, apogeeID=NULL, name=NULL, token=NULL)
+{
+  
+  url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
+  if(!is.null(ra) &&  !is.null(dec) ){
+    url = paste(url,"&ra=",ra,"&dec=",dec,sep="")
+  }else if(!is.null(objID)){
+    url = paste(url,"&objID=",objID)
+  }
+  else{
+    writeLines("There are missing parameter required for finding the object.")
+    return(NULL)
+  }
+  url = URLencode(url)
+  
+  if(is.null(token)) {
+    r= GET(url,accept("text/plain"))
+  } else {
+    r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
+  }
+  if(r$status_code != 200) {
+    writeLines(paste("Error: ",content(r)$'ErrorMessage',"\n","LogMessageID: ", content(r)$'LogMessageID',"\n","LogTime: ",content(r)$'LogTime',sep=""))
+    return (NULL)
+  } else {
+    #t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    #return(t)
+    #return(content(r, encoding="UTF-8"))
+    return(r)
+  }
+}
+

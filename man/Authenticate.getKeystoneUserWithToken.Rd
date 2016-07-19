@@ -1,12 +1,12 @@
-\name{LoginPortal.getKeystoneUserWithToken}
-\alias{LoginPortal.getKeystoneUserWithToken}
+\name{Authenticate.getKeystoneUserWithToken}
+\alias{Authenticate.getKeystoneUserWithToken}
 \title{
 Get user info.
 }
 \description{
 Returns the name/id for the user corresponding to the specified token
 }
-\usage{LoginPortal.getKeystoneUserWithToken(token)}
+\usage{Authenticate.getKeystoneUserWithToken(token)}
 \arguments{
   \item{token}{Sciserver's authentication token for the user}
 }
@@ -16,7 +16,7 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{LoginPortal.getToken}}, \code{\link[SciServer]{LoginPortal.login}}, \code{\link[SciServer]{LoginPortal.setToken}}.
+\code{\link[SciServer]{Authenticate.getToken}}, \code{\link[SciServer]{Authenticate.login}}, \code{\link[SciServer]{Authenticate.setToken}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
@@ -24,6 +24,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-user <- LoginPortal.getKeystoneUserWithToken(LoginPortal.getToken())
+user <- Authenticate.getKeystoneUserWithToken(Authenticate.getToken())
 }
 \keyword{SciServer}

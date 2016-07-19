@@ -1,16 +1,16 @@
 #require(httr)
 #require(jsonlite)
 
-#source('LoginPortal.r')
+#source('Authenticate.r')
 
 #--------------------------------------------------------
 CasJobs.getSchemaName<-function(token=NULL){
     if (is.null(token) ){
-        token = LoginPortal.getToken()
+        token = Authenticate.getToken()
     }
     if(!is.null(token))
     {
-      keystoneUserId = LoginPortal.getKeystoneUserWithToken(token)$id
+      keystoneUserId = Authenticate.getKeystoneUserWithToken(token)$id
       usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
       r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
       if(r$status_code != 200) {
@@ -33,7 +33,7 @@ CasJobs.getSchemaName<-function(token=NULL){
 # return tables in specified contxt, accessible to user
 CasJobs.getTables<-function(context="MyDB"){
     TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
-    r = GET(TablesUrl,add_headers('X-Auth-Token'=LoginPortal.getToken()),content_type_json())
+    r = GET(TablesUrl,add_headers('X-Auth-Token'=Authenticate.getToken()),content_type_json())
     if(r$status_code != 200) {
       print("Error")
       r=content(r, encoding="UTF-8")
@@ -77,7 +77,7 @@ CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
     QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
     body = list(Query=unbox(queryString))
     if (is.null(token))
-	token=LoginPortal.getToken()
+	token=Authenticate.getToken()
 
     putResponse = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),
 	add_headers('X-Auth-Token'=token))
@@ -99,7 +99,7 @@ CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
 CasJobs.getJobStatus<-function(jobid){
     QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobid,sep="")
 
-    r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=LoginPortal.getToken()))
+    r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=Authenticate.getToken()))
     if(r$status_code != 200) {
       print("Error")
       r=content(r, encoding="UTF-8")
@@ -145,7 +145,7 @@ CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB", token=NULL){
     tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
 
     if (is.null(token))
-	token=LoginPortal.getToken()
+	token=Authenticate.getToken()
     tryCatch({
       
     r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))

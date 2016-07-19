@@ -1,12 +1,12 @@
-\name{LoginPortal.setToken}
-\alias{LoginPortal.setToken}
+\name{Authenticate.setToken}
+\alias{Authenticate.setToken}
 \title{
 Set token.
 }
 \description{
 Sets the SciServer authentication token of the user as a Sys environmental variable.
 }
-\usage{LoginPortal.setToken(token)}
+\usage{Authenticate.setToken(token)}
 \arguments{
   \item{token}{Sciserver's authentication token for the user}
 }
@@ -15,7 +15,7 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{LoginPortal.getKeystoneUserWithToken}}, \code{\link[SciServer]{LoginPortal.login}}, \code{\link[SciServer]{LoginPortal.getToken}}.
+\code{\link[SciServer]{Authenticate.getKeystoneUserWithToken}}, \code{\link[SciServer]{Authenticate.login}}, \code{\link[SciServer]{Authenticate.getToken}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
@@ -24,6 +24,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \examples{
 \dontrun{
-LoginPortal.setToken("MyToken")}
+Authenticate.setToken("MyToken")}
 }
 \keyword{SciServer}
