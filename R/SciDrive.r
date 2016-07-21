@@ -5,7 +5,7 @@
 
 SciDrive.createContainer<-function(path, token=NULL){
   if (is.null(token))
-    token=Authenticate.getToken()
+    token=Authentication.getToken()
 
     containerBody = paste('<vos:node xmlns:xsi="http://www.w3.org/2001/thisSchema-instance" ',
                      'xsi:type="vos:ContainerNode" xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.0" ',
@@ -25,7 +25,7 @@ SciDrive.createContainer<-function(path, token=NULL){
 
 
 SciDrive.upload<-function(path, data, token=NULL){
-    if(is.null(token)) token = Authenticate.getToken()
+    if(is.null(token)) token = Authentication.getToken()
     url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',path,sep='')
     res = PUT(url, body=upload_file(data), add_headers('X-Auth-Token'=token))
     if(res$status_code != 200) {
@@ -40,7 +40,7 @@ SciDrive.upload<-function(path, data, token=NULL){
 #------------------------------------
 #    retrieve public URL for file identified by path
 SciDrive.publicUrl<-function(path, token=NULL){
-    if (is.null(token)) token=Authenticate.getToken()
+    if (is.null(token)) token=Authentication.getToken()
     url = paste(Config.SciDriveHost,"/vospace-2.0/1/media/sandbox/", path,sep="")
     tryCatch({
       res = GET(url ,add_headers('X-Auth-Token'=token))

@@ -4,8 +4,8 @@
 #source('Config.r')
 
 # returns a dictionary with name/id for the user corresponding to the specified token
-Authenticate.getKeystoneUserWithToken<-function(token){
-loginURL = paste(Config.AuthenticateURL,"/",token,sep='')
+Authentication.getKeystoneUserWithToken<-function(token){
+loginURL = paste(Config.AuthenticationURL,"/",token,sep='')
   
   tryCatch({
     r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
@@ -28,8 +28,8 @@ loginURL = paste(Config.AuthenticateURL,"/",token,sep='')
 }
 
 # login and return token which is then also set as the Sys environment variabl "sciservertoken"
-Authenticate.login<-function(UserName, Password){
-  loginURL = Config.AuthenticateURL
+Authentication.login<-function(UserName, Password){
+  loginURL = Config.AuthenticationURL
   authJson = list(auth=list(identity=list(password=list(user=list(name=unbox(UserName),password=unbox(Password))))))
   r=POST(loginURL ,encode="json",body=authJson,accept("text/plain"),content_type_json())
   if(r$status_code != 200) {
@@ -39,12 +39,12 @@ Authenticate.login<-function(UserName, Password){
     return (NULL)
   } else {
     token=headers(r)$`x-subject-token`
-    Authenticate.setToken(token)
+    Authentication.setToken(token)
     return(token)
   }
 }
 
-Authenticate.getToken<-function(){
+Authentication.getToken<-function(){
   token = Sys.getenv("sciservertoken")
   if (is.null(token) || token == "") {
     token=NULL
@@ -52,13 +52,13 @@ Authenticate.getToken<-function(){
     f = '/home/idies/keystone.token'
     if(file.exists(f)){
       token = readLines(f)
-      Authenticate.setToken(token)
+      Authentication.setToken(token)
     }
   }
   token
 }
 
-Authenticate.setToken<-function(token){
+Authentication.setToken<-function(token){
   Sys.unsetenv("sciservertoken")
   Sys.setenv(sciservertoken=token)
 }

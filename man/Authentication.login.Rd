@@ -1,12 +1,12 @@
-\name{Authenticate.login}
-\alias{Authenticate.login}
+\name{Authentication.login}
+\alias{Authentication.login}
 \title{
 User login.
 }
 \description{
 Logs the user into SciServer and returns the authentication token, which is then also set as the Sys environment variable "sciservertoken".
 }
-\usage{Authenticate.login(UserName, Password)}
+\usage{Authentication.login(UserName, Password)}
 \arguments{
   \item{UserName}{name of the user.}
   \item{Password}{password of the user.}
@@ -16,7 +16,7 @@ Logs the user into SciServer and returns the authentication token, which is then
 Gerard Lemson, Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{Authenticate.getKeystoneUserWithToken}}, \code{\link[SciServer]{Authenticate.getToken}}, \code{\link[SciServer]{Authenticate.setToken}}.
+\code{\link[SciServer]{Authentication.getKeystoneUserWithToken}}, \code{\link[SciServer]{Authentication.getToken}}, \code{\link[SciServer]{Authentication.setToken}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
@@ -24,6 +24,6 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-\dontrun{Authenticate.login("MyName","MyPassword") }
+\dontrun{Authentication.login("MyName","MyPassword") }
 }
 \keyword{SciServer}
