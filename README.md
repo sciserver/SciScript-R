@@ -11,7 +11,7 @@ R libraries for SciScript, Jupyter Notebooks
       R CMD INSTALL SciScript_1.0.tar.gz
 
 
-To create HTML documentation, just run 'CreateHtmlDocs("SciServer")' within python, where the function 'CreateHtmlDocs'  is defined by 
+To create HTML documentation, just run 'CreateHtmlDocs("SciServer")' within R, where the function 'CreateHtmlDocs'  is defined by 
 
 CreateHtmlDocs  = function(packageName) {
     workingDirectory = getwd()
