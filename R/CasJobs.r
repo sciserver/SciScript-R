@@ -51,7 +51,7 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
   url=paste(Config.CasJobsRESTUri,'/contexts/',context,'/query',sep='')
 
   if(is.null(token)) {
-    r=POST(url,encode="json",body=list(Query=unbox(sql))
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName="SciServer-R.SciServer.CasJobs.executeQuery")
     ,accept("text/plain"),content_type_json())
   } else {
     r=POST(url,encode="json",body=list(Query=unbox(sql))
@@ -75,7 +75,7 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
 CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
 
     QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
-    body = list(Query=unbox(queryString))
+    body = list(Query=unbox(queryString), TaskName="SciServer-R.SciServer.CasJobs.submitJob")
     if (is.null(token))
 	token=Authentication.getToken()
 
