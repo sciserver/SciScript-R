@@ -1,7 +1,7 @@
 Package: SciServer
 Type: Package
 Title: Tools for accessing SciServer applications.
-Version: 1.0
+Version: 1.9.2
 Date: 2016-06-22
 Author: Manuchehr Taghizadeh-Popp, Gerard Lemson
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
