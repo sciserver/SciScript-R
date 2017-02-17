@@ -3,16 +3,20 @@
 #require(utils)
 
 
-SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL)
+SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL, dataRelease=NULL)
 {
 
-  url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SearchTools/SqlSearch?", sep="")
+  if(is.null(dataRelease)){
+    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
+  }else{
+    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
+  }
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"cmd=",sql,"&",sep="")
   if(!is.null(limit)) {
     url = paste(url,"limit=",limit,"&",sep="")
   }
-  url = URLencode(url)
+  #url = URLencode(url)
   
   if(is.null(token)) {
     r= GET(url,accept("text/plain"))
@@ -30,10 +34,14 @@ SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL)
 }
 
 
-SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL)
+SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL, dataRelease=NULL)
 {
   
-  url = paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/ImgCutout/getjpeg?", sep="")
+  if(is.null(dataRelease)){
+    url = paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+  }else{
+    url = paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+  }
   url = paste(url,"ra=",ra,"&",sep="")
   url = paste(url,"dec=",dec,"&",sep="")
   url = paste(url,"scale=",scale,"&",sep="")
@@ -58,10 +66,14 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
   }
 }
 
-SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL)
+SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL, dataRelease=NULL)
 {
   
-  url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SearchTools/RadialSearch?", sep="")
+  if(is.null(dataRelease)){
+    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
+  }else{
+    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
+  }
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"ra=",ra,"&",sep="")
   url = paste(url,"dec=",dec,"&",sep="")
@@ -87,10 +99,14 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
   }
 }
 
-SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL)
+SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL, dataRelease=NULL)
 {
   
-  url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SearchTools/RectangularSearch?", sep="")
+  if(is.null(dataRelease)){
+    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
+  }else{
+    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
+  }
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"min_ra=",min_ra,"&",sep="")
   url = paste(url,"max_ra=",max_ra,"&",sep="")
@@ -117,19 +133,58 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
   }
 }
 
-SkyServer.objectSearch  <- function(ra=NULL, dec=NULL, objID=NULL, specbBjID=NULL, apogeeID=NULL, name=NULL, token=NULL)
+SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, apstar_id=NULL, ra=NULL, dec=NULL, plate=NULL, mjd=NULL, fiber=NULL, run=NULL, rerun=NULL, camcol=NULL, field=NULL, obj=NULL, token=NULL, dataRelease=NULL)
 {
   
-  url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
-  if(!is.null(ra) &&  !is.null(dec) ){
-    url = paste(url,"&ra=",ra,"&dec=",dec,sep="")
-  }else if(!is.null(objID)){
-    url = paste(url,"&objID=",objID)
+  if(is.null(dataRelease)){
+    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
+  }else{
+    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
   }
-  else{
-    writeLines("There are missing parameter required for finding the object.")
-    return(NULL)
+  if(!is.null(objId)){
+    url = url + 'objid=' + str(objId) + '&'
   }
+  if(!is.null(specObjId)){
+    url = url + 'specobjid=' + str(specObjId) + '&'
+  }
+  if(!is.null(apogee_id)){
+    url = url + 'apid=' + str(apogee_id) + '&'
+  }else{
+    if(!is.null(apstar_id)){
+      url = url + 'apid=' + str(apstar_id) + '&'
+    }
+  }
+  if(!is.null(ra)){
+    url = paste(url,"ra=", str(ra) , "&", sep="")
+  }
+  if(!is.null(dec)){
+    url = paste(url,"dec=" , str(dec)  , "&", sep="")
+  }
+  if(!is.null(plate)){
+    url = paste(url,"plate=" , str(plate)  , "&", sep="")
+  }
+  if(!is.null(mjd)){
+    url = paste(url,"mjd=" , str(mjd)  , "&", sep="")
+  }
+  if(!is.null(fiber)){
+    url = paste(url,"fiber=" , str(fiber)  , "&", sep="")
+  }
+  if(!is.null(run)){
+    url = paste(url,"run=" , str(run)  , "&", sep="")
+  }
+  if(!is.null(rerun)){
+    url = paste(url,"rerun=" , str(rerun)  , "&", sep="")
+  }
+  if(!is.null(camcol)){
+    url = paste(url,"camcol=" , str(camcol)  , "&", sep="")
+  }
+  if(!is.null(field)){
+    url = paste(url,"field=" , str(field)  , "&", sep="")
+  }
+  if(!is.null(obj)){
+    url = paste(url,"obj=" , str(obj)  , "&", sep="")
+  }
+
   url = URLencode(url)
   
   if(is.null(token)) {

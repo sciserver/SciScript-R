@@ -6,7 +6,7 @@ Get a sky image cutout from SDSS.
 \description{
 Gets a rectangular image cutout from a region of the sky in SDSS, centered at (\code{ra},\code{dec}).
 }
-\usage{SkyServer.getJpegImgCutout(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL)}
+\usage{SkyServer.getJpegImgCutout(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL, dataRelease=NULL)}
 \arguments{
   \item{ra}{Right Ascension of the image's center.}
   \item{dec}{Declination of the image's center.}
@@ -38,6 +38,7 @@ Gets a rectangular image cutout from a region of the sky in SDSS, centered at (\
   (see \href{http://skyserver.sdss.org/dr12/en/tools/chart/chartinfo.aspx}{http://skyserver.sdss.org/dr12/en/tools/chart/chartinfo.aspx})\cr
   }
   \item{token}{Sciserver's authentication token for the user} 
+  \item{dataRelease}{SDSS data release. E.g, 'DR13'}  
 }
 \value{ the returned object is an array of doubles, of dimensions  [1:\code{width},1:\code{height},1:3].  }
 \author{

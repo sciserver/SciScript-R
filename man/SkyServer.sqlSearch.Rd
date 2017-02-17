@@ -6,11 +6,12 @@ Execute SQL query.
 \description{
 Executes a SQL query to the SDSS database, and retrieves the result table as a dataframe.
 }
-\usage{SkyServer.sqlSearch(sql,limit="10",token=NULL)}
+\usage{SkyServer.sqlSearch(sql, limit="10", token=NULL, dataRelease=NULL)}
 \arguments{
   \item{sql}{a string containing the sql query}
   \item{limit}{maximum number of rows in the result table (string). If set to "0", then the function will return all rows.}
-  \item{token}{Sciserver's authentication token for the user} 
+  \item{token}{Sciserver's authentication token for the user}
+  \item{dataRelease}{SDSS data release. E.g, 'DR13'} 
 }
 \value{ the returned object is of type 'dataframe'.}
 \author{

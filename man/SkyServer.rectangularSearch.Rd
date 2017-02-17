@@ -6,7 +6,7 @@ Run a rectangular search on the sky.
 \description{
 Runs a query in the SDSS database that searches for all objects within a certain rectangular box defined on the the sky, and retrieves the result table as a dataframe.
 }
-\usage{SkyServer.rectangularSearch(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL)}
+\usage{SkyServer.rectangularSearch(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL, dataRelease=NULL)}
 \arguments{
   \item{min_ra}{Minimum value of Right Ascension coordinate that defines the box boundaries on the sky.}
   \item{max_ra}{Maximum value of Right Ascension coordinate that defines the box boundaries on the sky.}
@@ -16,6 +16,7 @@ Runs a query in the SDSS database that searches for all objects within a certain
   \item{whichPhotometry}{Type of retrieved data. Can be set to "optical" or "infrared".}
   \item{limit}{Maximum number of rows in the result table (string). If set to "0", then the function will return all rows.}
   \item{token}{Sciserver's authentication token for the user.} 
+  \item{dataRelease}{SDSS data release. E.g, 'DR13'}  
 }
 \value{ the returned object is of type 'dataframe'.}
 \author{
