@@ -5,15 +5,15 @@
 
 # returns a dictionary with name/id for the user corresponding to the specified token
 Authentication.getKeystoneUserWithToken<-function(token){
-loginURL = paste(Config.AuthenticationURL,"/",token,sep='')
   
+  loginURL = paste(Config.AuthenticationURL,"/",token,sep='')
   tryCatch({
     r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      print("Error")
-      r=content(r, encoding="UTF-8")
-      print(r$error$message)
-      return (NULL)
+      #print("Error")
+      #r=content(r, encoding="UTF-8")
+      #print(r$error$message)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       r= content(r)
       user={}
@@ -22,8 +22,7 @@ loginURL = paste(Config.AuthenticationURL,"/",token,sep='')
       return(user)
     }
   }, error = function(e) {
-    print(e)
-    return (NULL)
+    stop(e)
   })
 }
 
@@ -33,10 +32,10 @@ Authentication.login<-function(UserName, Password){
   authJson = list(auth=list(identity=list(password=list(user=list(name=unbox(UserName),password=unbox(Password))))))
   r=POST(loginURL ,encode="json",body=authJson,accept("text/plain"),content_type_json())
   if(r$status_code != 200) {
-    print("Error")
-    r=content(r, encoding="UTF-8")
-    print(r$error$message)
-    return (NULL)
+    #print("Error")
+    #r2=content(r, encoding="UTF-8")
+    #print(r2$error$message)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     token=headers(r)$`x-subject-token`
     Authentication.setToken(token)

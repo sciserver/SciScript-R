@@ -16,7 +16,7 @@ SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL, dataRelease=NULL)
   if(!is.null(limit)) {
     url = paste(url,"limit=",limit,"&",sep="")
   }
-  #url = URLencode(url)
+  url = URLencode(url)
   
   if(is.null(token)) {
     r= GET(url,accept("text/plain"))
@@ -24,8 +24,7 @@ SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL, dataRelease=NULL)
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
   }
   if(r$status_code != 200) {
-    writeLines(paste("Error: ",content(r)$'ErrorMessage',"\n","LogMessageID: ", content(r)$'LogMessageID',"\n","LogTime: ",content(r)$'LogTime',sep=""))
-    return (NULL)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
     return(t)
@@ -58,8 +57,7 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
   }
   if(r$status_code != 200) {
-    writeLines(paste("Error: ", content(r)$'ErrorMessage',"\n","LogMessageID: ", content(r)$'LogMessageID',"\n","LogTime: ", content(r)$'LogTime',sep=""))
-    return (NULL)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     sdssImage = content(r)
     return(sdssImage)
@@ -91,8 +89,7 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
   }
   if(r$status_code != 200) {
-    writeLines(paste("Error: ",content(r)$'ErrorMessage',"\n","LogMessageID: ", content(r)$'LogMessageID',"\n","LogTime: ",content(r)$'LogTime',sep=""))
-    return (NULL)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
     return(t)
@@ -125,8 +122,7 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
   }
   if(r$status_code != 200) {
-    writeLines(paste("Error: ",content(r)$'ErrorMessage',"\n","LogMessageID: ", content(r)$'LogMessageID',"\n","LogTime: ",content(r)$'LogTime',sep=""))
-    return (NULL)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
     return(t)
@@ -142,64 +138,58 @@ SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, 
     url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
   }
   if(!is.null(objId)){
-    url = url + 'objid=' + str(objId) + '&'
+    url = url + 'objid=' + toString(objId) + '&'
   }
   if(!is.null(specObjId)){
-    url = url + 'specobjid=' + str(specObjId) + '&'
+    url = url + 'specobjid=' + toString(specObjId) + '&'
   }
   if(!is.null(apogee_id)){
-    url = url + 'apid=' + str(apogee_id) + '&'
+    url = url + 'apid=' + toString(apogee_id) + '&'
   }else{
     if(!is.null(apstar_id)){
-      url = url + 'apid=' + str(apstar_id) + '&'
+      url = url + 'apid=' + toString(apstar_id) + '&'
     }
   }
   if(!is.null(ra)){
-    url = paste(url,"ra=", str(ra) , "&", sep="")
+    url = paste(url,"ra=", toString(ra) , "&", sep="")
   }
   if(!is.null(dec)){
-    url = paste(url,"dec=" , str(dec)  , "&", sep="")
+    url = paste(url,"dec=" , toString(dec)  , "&", sep="")
   }
   if(!is.null(plate)){
-    url = paste(url,"plate=" , str(plate)  , "&", sep="")
+    url = paste(url,"plate=" , toString(plate)  , "&", sep="")
   }
   if(!is.null(mjd)){
-    url = paste(url,"mjd=" , str(mjd)  , "&", sep="")
+    url = paste(url,"mjd=" , toString(mjd)  , "&", sep="")
   }
   if(!is.null(fiber)){
-    url = paste(url,"fiber=" , str(fiber)  , "&", sep="")
+    url = paste(url,"fiber=" , toString(fiber)  , "&", sep="")
   }
   if(!is.null(run)){
-    url = paste(url,"run=" , str(run)  , "&", sep="")
+    url = paste(url,"run=" , toString(run)  , "&", sep="")
   }
   if(!is.null(rerun)){
-    url = paste(url,"rerun=" , str(rerun)  , "&", sep="")
+    url = paste(url,"rerun=" , toString(rerun)  , "&", sep="")
   }
   if(!is.null(camcol)){
-    url = paste(url,"camcol=" , str(camcol)  , "&", sep="")
+    url = paste(url,"camcol=" , toString(camcol)  , "&", sep="")
   }
   if(!is.null(field)){
-    url = paste(url,"field=" , str(field)  , "&", sep="")
+    url = paste(url,"field=" , toString(field)  , "&", sep="")
   }
   if(!is.null(obj)){
-    url = paste(url,"obj=" , str(obj)  , "&", sep="")
+    url = paste(url,"obj=" , toString(obj)  , "&", sep="")
   }
-
   url = URLencode(url)
-  
   if(is.null(token)) {
     r= GET(url,accept("text/plain"))
   } else {
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
   }
   if(r$status_code != 200) {
-    writeLines(paste("Error: ",content(r)$'ErrorMessage',"\n","LogMessageID: ", content(r)$'LogMessageID',"\n","LogTime: ",content(r)$'LogTime',sep=""))
-    return (NULL)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
-    #t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
-    #return(t)
-    #return(content(r, encoding="UTF-8"))
-    return(r)
+    return(content(r))
   }
 }
 

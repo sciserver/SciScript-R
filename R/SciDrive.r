@@ -13,13 +13,14 @@ SciDrive.createContainer<-function(path, token=NULL){
                      '<vos:properties/><vos:accepts/><vos:provides/><vos:capabilities/>',
                      '</vos:node>',sep="")
     url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,sep="")
-    res = PUT(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
-    if(res$status_code != 200) {
-      print("Error")
-      print(content(res,encoding="UTF-8"))
-      return (NULL)
+    r = PUT(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
+    if(r$status_code != 200) {
+      #print("Error")
+      #print(content(r,encoding="UTF-8"))
+      #return (NULL)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return(res)
+      return(r)
     }
 }
 
@@ -27,13 +28,14 @@ SciDrive.createContainer<-function(path, token=NULL){
 SciDrive.upload<-function(path, data, token=NULL){
     if(is.null(token)) token = Authentication.getToken()
     url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',path,sep='')
-    res = PUT(url, body=upload_file(data), add_headers('X-Auth-Token'=token))
-    if(res$status_code != 200) {
-      print("Error")
-      print(content(res,encoding="UTF-8"))
-      return (NULL)
+    r = PUT(url, body=upload_file(data), add_headers('X-Auth-Token'=token))
+    if(r$status_code != 200) {
+      #print("Error")
+      #print(content(r,encoding="UTF-8"))
+      #return (NULL)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return (res)
+      return (r)
     }
 }
 
@@ -43,13 +45,14 @@ SciDrive.publicUrl<-function(path, token=NULL){
     if (is.null(token)) token=Authentication.getToken()
     url = paste(Config.SciDriveHost,"/vospace-2.0/1/media/sandbox/", path,sep="")
     tryCatch({
-      res = GET(url ,add_headers('X-Auth-Token'=token))
-      if(res$status_code == 200){
-        return(content(res)$url)
+      r = GET(url ,add_headers('X-Auth-Token'=token))
+      if(r$status_code == 200){
+        return(content(r)$url)
       }else{
-        print("Error")
-        print(content(res,encoding="UTF-8")$error)
-        return (NULL)
+        #print("Error")
+        #print(content(res,encoding="UTF-8")$error)
+        #return (NULL)
+        stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
       }
-    },error=function(e){return (NULL)})
+    },error=function(e){stop(e)})
 }

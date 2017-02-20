@@ -14,11 +14,12 @@ CasJobs.getSchemaName<-function(token=NULL){
       usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
       r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
       if(r$status_code != 200) {
-        r= content(r, encoding="UTF-8")
-        print("Error")
-        r=content(r, encoding="UTF-8")
-        print(r$`Error Message`)
-        return (NULL)
+        #r= content(r, encoding="UTF-8")
+        #print("Error")
+        #r=content(r, encoding="UTF-8")
+        #print(r$`Error Message`)
+        #return (NULL)
+        stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
       } else {
         r= content(r, encoding="UTF-8")
         return (paste("wsid_",r$WebServicesId,sep=""))
@@ -35,10 +36,11 @@ CasJobs.getTables<-function(context="MyDB"){
     TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
     r = GET(TablesUrl,add_headers('X-Auth-Token'=Authentication.getToken()),content_type_json())
     if(r$status_code != 200) {
-      print("Error")
-      r=content(r, encoding="UTF-8")
-      print(r$`Error Message`)
-      return (NULL)
+      #print("Error")
+      #r=content(r, encoding="UTF-8")
+      #print(r$`Error Message`)
+      #return (NULL)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (content(r, encoding="UTF-8"))
     }
@@ -58,10 +60,11 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
     ,accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
   }
   if(r$status_code != 200) {
-    print("Error")
-    r=content(r, encoding="UTF-8")
-    print(r$`Error Message`)
-    return (NULL)
+    #print("Error")
+    #r=content(r, encoding="UTF-8")
+    #print(r$`Error Message`)
+    #return (NULL)
+    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")))
     return(t)
@@ -77,17 +80,17 @@ CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
     QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
     body = list(Query=unbox(queryString), TaskName="SciServer-R.SciServer.CasJobs.submitJob")
     if (is.null(token))
-	token=Authentication.getToken()
+	    token=Authentication.getToken()
 
-    putResponse = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),
-	add_headers('X-Auth-Token'=token))
-    if(putResponse$status_code != 200) {
-      print("Error")
-      putResponse=content(putResponse, encoding="UTF-8")
-      print(putResponse$`Error Message`)
-      return (NULL)
+    r = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),add_headers('X-Auth-Token'=token))
+    if(r$status_code != 200) {
+      #print("Error")
+      #putResponse=content(putResponse, encoding="UTF-8")
+      #print(putResponse$`Error Message`)
+      #return (NULL)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return (content(putResponse, encoding="UTF-8"))
+      return (content(r, encoding="UTF-8"))
     }
 }
 
@@ -101,10 +104,11 @@ CasJobs.getJobStatus<-function(jobid){
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=Authentication.getToken()))
     if(r$status_code != 200) {
-      print("Error")
-      r=content(r, encoding="UTF-8")
-      print(r$`Error Message`)
-      return (NULL)
+      #print("Error")
+      #r=content(r, encoding="UTF-8")
+      #print(r$`Error Message`)
+      #return (NULL)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       return(content(r, encoding="UTF-8"))
     }
@@ -150,10 +154,11 @@ CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB", token=NULL){
       
     r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      print("Error")
-      r=content(r, encoding="UTF-8")
-      print(r$`Error Message`)
-      return (NULL)
+      #print("Error")
+      #r=content(r, encoding="UTF-8")
+      #print(r$`Error Message`)
+      #return (NULL)
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (r)
     }

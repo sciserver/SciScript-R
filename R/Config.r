@@ -1,4 +1,3 @@
-# make sure none of the URLs have a trailing slash
 Config.CasJobsRESTUri = "http://skyserver.sdss.org/CasJobs/RestApi"
 Config.AuthenticationURL = "http://portal.sciserver.org/login-portal/keystone/v3/tokens"
 Config.SciDriveHost = 'http://www.scidrive.org'
