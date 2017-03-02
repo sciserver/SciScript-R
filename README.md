@@ -15,9 +15,7 @@
     `R CMD build SciScript-R`
       
 3.- To install the R-package, run
-
-    `R CMD INSTALL SciServer_VERSION.tar.gz`,
-    
+    `R CMD INSTALL SciServer_VERSION.tar.gz`, 
     where `SciServer_VERSION.tar.gz` was created in step 2. The string `VERSION` is the SciServer release tag, which is written automatically in the .gz file name, and you can find it in the DESCRIPTION file.
 
 
