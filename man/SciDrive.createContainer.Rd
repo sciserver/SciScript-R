@@ -6,12 +6,11 @@ Create container.
 \description{
 Creates a container (directory) in SciDrive.
 }
-\usage{SciDrive.createContainer(path, token=NULL)}
+\usage{SciDrive.createContainer(path)}
 \arguments{
   \item{path}{path of the directory in SciDrive.}
-  \item{token}{Sciserver's authentication token for the user}
 }
-\value{Returns a response object with attributes such as status_code,headers,url.}
+\value{Returns TRUE if the container (directory) was created successfully. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the SciDrive API returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

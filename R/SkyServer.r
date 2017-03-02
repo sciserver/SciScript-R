@@ -3,7 +3,7 @@
 #require(utils)
 
 
-SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL, dataRelease=NULL)
+SkyServer.sqlSearch  <- function(sql, dataRelease=NULL)
 {
 
   if(is.null(dataRelease)){
@@ -11,17 +11,20 @@ SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL, dataRelease=NULL)
   }else{
     url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
   }
+  if(Config.isSciServerComputeEnvironment()){
+    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.sqlSearch&",sep="")
+  }else{
+    url = paste(url,"TaskName=SciScript-R.SkyServer.sqlSearch&",sep="")
+  }
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"cmd=",sql,"&",sep="")
-  if(!is.null(limit)) {
-    url = paste(url,"limit=",limit,"&",sep="")
-  }
   url = URLencode(url)
   
-  if(is.null(token)) {
-    r= GET(url,accept("text/plain"))
-  } else {
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "") {
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
+  } else {
+    r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
@@ -33,13 +36,18 @@ SkyServer.sqlSearch  <- function(sql,limit="10", token=NULL, dataRelease=NULL)
 }
 
 
-SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL, dataRelease=NULL)
+SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, opt="", query="", dataRelease=NULL)
 {
   
   if(is.null(dataRelease)){
     url = paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
   }else{
     url = paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+  }
+  if(Config.isSciServerComputeEnvironment()){
+    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.getJpegImgCutout&",sep="")
+  }else{
+    url = paste(url,"TaskName=SciScript-R.SkyServer.getJpegImgCutout&",sep="")
   }
   url = paste(url,"ra=",ra,"&",sep="")
   url = paste(url,"dec=",dec,"&",sep="")
@@ -51,10 +59,11 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
   
   url = URLencode(url)
   
-  if(is.null(token)) {
-    r= GET(url,accept("text/plain"))
-  } else {
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "") {
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
+  } else {
+    r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
@@ -64,7 +73,7 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
   }
 }
 
-SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL, dataRelease=NULL)
+SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="0", dataRelease=NULL)
 {
   
   if(is.null(dataRelease)){
@@ -72,6 +81,13 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
   }else{
     url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
   }
+  if(Config.isSciServerComputeEnvironment()){
+    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.radialSearch&",sep="")
+  }else{
+    url = paste(url,"TaskName=SciScript-R.SkyServer.radialSearch&",sep="")
+  }
+  
+  url = paste(url,"TaskName=SciScript-R.SkyServer.radialSearch&",sep="")
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"ra=",ra,"&",sep="")
   url = paste(url,"dec=",dec,"&",sep="")
@@ -83,10 +99,11 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
   }
   url = URLencode(url)
   
-  if(is.null(token)) {
-    r= GET(url,accept("text/plain"))
-  } else {
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "") {
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
+  } else {
+    r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
@@ -96,7 +113,7 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
   }
 }
 
-SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="10", token=NULL, dataRelease=NULL)
+SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="0", dataRelease=NULL)
 {
   
   if(is.null(dataRelease)){
@@ -104,6 +121,12 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
   }else{
     url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
   }
+  if(Config.isSciServerComputeEnvironment()){
+    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.rectangularSearch&",sep="")
+  }else{
+    url = paste(url,"TaskName=SciScript-R.SkyServer.rectangularSearch&",sep="")
+  }
+  
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"min_ra=",min_ra,"&",sep="")
   url = paste(url,"max_ra=",max_ra,"&",sep="")
@@ -116,10 +139,11 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
   }
   url = URLencode(url)
   
-  if(is.null(token)) {
-    r= GET(url,accept("text/plain"))
-  } else {
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "") {
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
+  } else {
+    r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
@@ -129,7 +153,7 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
   }
 }
 
-SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, apstar_id=NULL, ra=NULL, dec=NULL, plate=NULL, mjd=NULL, fiber=NULL, run=NULL, rerun=NULL, camcol=NULL, field=NULL, obj=NULL, token=NULL, dataRelease=NULL)
+SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, apstar_id=NULL, ra=NULL, dec=NULL, plate=NULL, mjd=NULL, fiber=NULL, run=NULL, rerun=NULL, camcol=NULL, field=NULL, obj=NULL, dataRelease=NULL)
 {
   
   if(is.null(dataRelease)){
@@ -137,6 +161,12 @@ SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, 
   }else{
     url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
   }
+  if(Config.isSciServerComputeEnvironment()){
+    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.SkyServer.objectSearch&",sep="")
+  }else{
+    url = paste(url,"TaskName=SciScript-R.SkyServer.SkyServer.objectSearch&",sep="")
+  }
+  
   if(!is.null(objId)){
     url = url + 'objid=' + toString(objId) + '&'
   }
@@ -180,11 +210,14 @@ SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, 
   if(!is.null(obj)){
     url = paste(url,"obj=" , toString(obj)  , "&", sep="")
   }
+
   url = URLencode(url)
-  if(is.null(token)) {
-    r= GET(url,accept("text/plain"))
-  } else {
+
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "") {
     r= GET(url,accept("text/plain"),add_headers('X-Auth-Token'=token))
+  } else {
+    r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))

@@ -1,12 +1,11 @@
 Package: SciServer
 Type: Package
-Title: Tools for accessing SciServer applications.
-Version: 1.9.2
-Date: 2016-06-22
+Title: Package for accessing SciServer tools.
+Version: 1.9.3
 Author: Manuchehr Taghizadeh-Popp, Gerard Lemson
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
-Description: Provides access to CasJobs, SciDrive, LoginPortal, and SkyServer
-    tool.
+Description: Provides access to CasJobs, SciDrive, Authentication, and SkyServer
+    tools in SciServer.
 License: TBD
 Imports:
     httr,

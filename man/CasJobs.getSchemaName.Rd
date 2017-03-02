@@ -4,14 +4,11 @@
 Get name of schema in MyScratch.
 }
 \description{
-Gets the WebServiceID that identifies the schema for a user in MyScratch database with CasJobs.
+Returns the WebServiceID that identifies the schema for a user in MyScratch database with CasJobs.
 }
-\usage{CasJobs.getSchemaName(token=NULL)}
-\arguments{
-  \item{token}{Sciserver's authentication token for the user}
-}
+\usage{CasJobs.getSchemaName()}
 
-\value{ WebServiceID of the user as a character string.}
+\value{ Returns the WebServiceID of the user as a character string. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr

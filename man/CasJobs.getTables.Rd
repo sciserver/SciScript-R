@@ -10,7 +10,7 @@ Gets the names, size and creation date of all tables in a database context that 
 \arguments{
   \item{context}{database context}
 }
-\value{ the returned object is of type 'list', and includes the names, size and creation date of all tables.}
+\value{ Returns a 'list', which includes the names, size and creation date of all tables. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

@@ -12,7 +12,7 @@ Shows the status of a job submitted to CasJobs.
 \arguments{
   \item{jobid}{id of the job}
 }
-\value{ Returns a list containing the job status and related metadata.}
+\value{ Returns a list containing the job status and related metadata. If \code{jobid} is the empty string, then returns a list with the statuses of all previous jobs. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

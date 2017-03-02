@@ -11,7 +11,7 @@ waits for the casjobs job to return a status of 3, 4, or 5.
 \arguments{
   \item{jobid}{id of job.}
 }
-\value{Returns a list containing the job status and related metadata.}
+\value{Returns a list containing the job status and related metadata. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

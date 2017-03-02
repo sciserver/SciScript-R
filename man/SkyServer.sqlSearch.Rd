@@ -4,16 +4,14 @@
 Execute SQL query.
 }
 \description{
-Executes a SQL query to the SDSS database, and retrieves the result table as a dataframe.
+Executes a SQL query to the SDSS database, and retrieves the result table as a dataframe. Maximum number of rows retrieved is set currently to 500,000.
 }
-\usage{SkyServer.sqlSearch(sql, limit="10", token=NULL, dataRelease=NULL)}
+\usage{SkyServer.sqlSearch(sql, dataRelease=NULL)}
 \arguments{
   \item{sql}{a string containing the sql query}
-  \item{limit}{maximum number of rows in the result table (string). If set to "0", then the function will return all rows.}
-  \item{token}{Sciserver's authentication token for the user}
-  \item{dataRelease}{SDSS data release. E.g, 'DR13'} 
+  \item{dataRelease}{SDSS data release. E.g, 'DR13'}
 }
-\value{ the returned object is of type 'dataframe'.}
+\value{ Returns the results table as a dataframe. Throws an exception if the HTTP request to the SkyServer API returns an error.}
 \author{
 Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
@@ -26,6 +24,6 @@ Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-table <- SkyServer.sqlSearch(sql="select 1")
+df <- SkyServer.sqlSearch(sql="select 1")
 }
 \keyword{SciServer}

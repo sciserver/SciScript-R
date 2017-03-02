@@ -6,7 +6,7 @@ Get a sky image cutout from SDSS.
 \description{
 Gets a rectangular image cutout from a region of the sky in SDSS, centered at (\code{ra},\code{dec}).
 }
-\usage{SkyServer.getJpegImgCutout(ra, dec, scale=0.7, width=512, height=512, opt="", query="", token = NULL, dataRelease=NULL)}
+\usage{SkyServer.getJpegImgCutout(ra, dec, scale=0.7, width=512, height=512, opt="", query="", dataRelease=NULL)}
 \arguments{
   \item{ra}{Right Ascension of the image's center.}
   \item{dec}{Declination of the image's center.}
@@ -24,7 +24,7 @@ Gets a rectangular image cutout from a region of the sky in SDSS, centered at (\
               "M": Masks. Draw the outline of each mask considered to be important. \cr
               "Q": Plates. Draw the outline of each plate. \cr
               "I": Invert. Invert the image (B on W). \cr
-  (see \href{http://skyserver.sdss.org/dr12/en/tools/chart/chartinfo.aspx}{http://skyserver.sdss.org/dr12/en/tools/chart/chartinfo.aspx})}
+  (see \href{http://skyserver.sdss.org/public/en/tools/chart/chartinfo.aspx}{http://skyserver.sdss.org/public/en/tools/chart/chartinfo.aspx})}
   \item{query}{Optional string. Marks with inverted triangles on the image the position of user defined objects. The (RA,Dec) coordinates of these object can be given by three means: \cr 
   1) query is a SQL command of format \code{"SELECT Id, RA, Dec, FROM Table"}.\cr
   2) query is list of objects. A header with RA and DEC columns must be included. Columns must be separated by tabs, spaces, commas or semicolons. The list may contain as many columns as wished. \cr
@@ -35,12 +35,11 @@ Gets a rectangular image cutout from a region of the sky in SDSS, centered at (\
   S \cr
 	S R (0.0, 23.5) \cr
 	G A (20, 30) \cr
-  (see \href{http://skyserver.sdss.org/dr12/en/tools/chart/chartinfo.aspx}{http://skyserver.sdss.org/dr12/en/tools/chart/chartinfo.aspx})\cr
+  (see \href{http://skyserver.sdss.org/public/en/tools/chart/chartinfo.aspx}{http://skyserver.sdss.org/public/en/tools/chart/chartinfo.aspx})\cr
   }
-  \item{token}{Sciserver's authentication token for the user} 
   \item{dataRelease}{SDSS data release. E.g, 'DR13'}  
 }
-\value{ the returned object is an array of doubles, of dimensions  [1:\code{width},1:\code{height},1:3].  }
+\value{ Returns an array of doubles, of dimensions  [1:\code{width},1:\code{height},1:3]. Throws an exception if the HTTP request to the SkyServer API returns an error.}
 \author{
 Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
@@ -52,7 +51,7 @@ Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \examples{
 \dontrun{
 img <- SkyServer.getJpegImgCutout(ra=197.614455642896, dec=18.438168853724, width=512, height=512, scale=0.4, opt="OG", query="SELECT TOP 100 p.objID, p.ra, p.dec, p.r FROM fGetObjFromRectEq(197.6,18.4,197.7,18.5) n, PhotoPrimary p WHERE n.objID=p.objID")
-plot(0:1, 0:1, type = "n")
+plot(0:1, 0:1, type = "n");
 rasterImage(img, 0, 0, 1, 1)
 }
 }

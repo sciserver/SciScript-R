@@ -4,15 +4,14 @@
 Get public URL of file.
 }
 \description{
-Gets the public URL of a file or directory in SciDrive.
+Gets the public URL of a file (or directory) in SciDrive.
 }
-\usage{SciDrive.publicUrl(path, token=NULL)}
+\usage{SciDrive.publicUrl(scidrivePath)}
 \arguments{
-  \item{path}{path of the file in SciDrive.}
-  \item{token}{Sciserver's authentication token for the user}
+  \item{scidrivePath}{path of the file (or directory) in SciDrive.}
 }
 \value{
-URL of a file in SciDrive (string).
+URL of a file in SciDrive (string). Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the SciDrive API returns an error.
 }
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr

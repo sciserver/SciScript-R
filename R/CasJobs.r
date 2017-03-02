@@ -4,66 +4,64 @@
 #source('Authentication.r')
 
 #--------------------------------------------------------
-CasJobs.getSchemaName<-function(token=NULL){
-    if (is.null(token) ){
-        token = Authentication.getToken()
-    }
-    if(!is.null(token))
+CasJobs.getSchemaName<-function(){
+    token = Authentication.getToken()
+    if(!is.null(token) && token != "")
     {
       keystoneUserId = Authentication.getKeystoneUserWithToken(token)$id
       usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
       r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
       if(r$status_code != 200) {
-        #r= content(r, encoding="UTF-8")
-        #print("Error")
-        #r=content(r, encoding="UTF-8")
-        #print(r$`Error Message`)
-        #return (NULL)
         stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
       } else {
         r= content(r, encoding="UTF-8")
         return (paste("wsid_",r$WebServicesId,sep=""))
       }
     }else{
-      return (NULL)
+       stop(paste("User token is not defined. First log into SciServer."))
     }
 }
 
 
 #--------------------------------------------------------
-# return tables in specified contxt, accessible to user
+# return tables in specified context, accessible to user
 CasJobs.getTables<-function(context="MyDB"){
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
     TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
-    r = GET(TablesUrl,add_headers('X-Auth-Token'=Authentication.getToken()),content_type_json())
+    r = GET(TablesUrl,add_headers('X-Auth-Token'=token),content_type_json())
     if(r$status_code != 200) {
-      #print("Error")
-      #r=content(r, encoding="UTF-8")
-      #print(r$`Error Message`)
-      #return (NULL)
       stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (content(r, encoding="UTF-8"))
     }
-    
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
 }
 
 #--------------------------------------------------------
 # synchronous query
-CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
+CasJobs.executeQuery <- function(sql,context="MyDB") {
+  
+  token = Authentication.getToken()
+  
   url=paste(Config.CasJobsRESTUri,'/contexts/',context,'/query',sep='')
+  
+  TaskName="";
+  if(Config.isSciServerComputeEnvironment()){
+    TaskName = "Compute.SciScript-R.CasJobs.executeQuery"
+  }else{
+    TaskName = "SciScript-R.CasJobs.executeQuery"
+  }
 
-  if(is.null(token)) {
-    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName="SciServer-R.SciServer.CasJobs.executeQuery")
-    ,accept("text/plain"),content_type_json())
+  if(!is.null(token) && token != "") {
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName),accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
   } else {
-    r=POST(url,encode="json",body=list(Query=unbox(sql))
-    ,accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName), accept("text/plain"),content_type_json())
   }
   if(r$status_code != 200) {
-    #print("Error")
-    #r=content(r, encoding="UTF-8")
-    #print(r$`Error Message`)
-    #return (NULL)
     stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")))
@@ -75,23 +73,30 @@ CasJobs.executeQuery <- function(sql,context="MyDB",token=NULL) {
 # asynch query
 #    Submits a query to the casjobs queue.  If a token is supplied then it will execute on behalf of the token's user.
 #    Returns the casjobs jobID (int).
-CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
+CasJobs.submitJob<-function(sql="", context="MyDB"){
 
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
     QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
-    body = list(Query=unbox(queryString), TaskName="SciServer-R.SciServer.CasJobs.submitJob")
-    if (is.null(token))
-	    token=Authentication.getToken()
+    
+    TaskName="";
+    if(Config.isSciServerComputeEnvironment()){
+      TaskName = "Compute.SciScript-R.CasJobs.executeQuery"
+    }else{
+      TaskName = "SciScript-R.CasJobs.executeQuery"
+    }
 
+    body = list(Query=unbox(sql), TaskName=TaskName)
     r = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      #print("Error")
-      #putResponse=content(putResponse, encoding="UTF-8")
-      #print(putResponse$`Error Message`)
-      #return (NULL)
       stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (content(r, encoding="UTF-8"))
     }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
 }
 
 
@@ -100,18 +105,21 @@ CasJobs.submitJob<-function(queryString, context="MyDB", token=NULL){
 #    Gets a casjobs job status.
 #    Returns the dict object (https://docs.python.org/3.4/library/stdtypes.html#dict) coresponding to the json received from casjobs.
 CasJobs.getJobStatus<-function(jobid){
+
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
     QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobid,sep="")
 
-    r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=Authentication.getToken()))
+    r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      #print("Error")
-      #r=content(r, encoding="UTF-8")
-      #print(r$`Error Message`)
-      #return (NULL)
       stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
     } else {
       return(content(r, encoding="UTF-8"))
     }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
 }
 
 
@@ -134,7 +142,7 @@ CasJobs.waitForJob<-function(jobid){
         jobStatus = strtoi(jobDesc$Status)
         if (jobStatus %in% ok){
             complete = TRUE
-            print("Done!")
+            print("Job Done!")
         } else{
             Sys.sleep(2)
         }
@@ -145,32 +153,43 @@ CasJobs.waitForJob<-function(jobid){
 #------------------------------------
 #  Uploads  cvs data into casjobs. 
 # return response object with attributes such as status_code,headers,url
-CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB", token=NULL){
-    tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
-
-    if (is.null(token))
-	token=Authentication.getToken()
-    tryCatch({
-      
-    r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))
-    if(r$status_code != 200) {
-      #print("Error")
-      #r=content(r, encoding="UTF-8")
-      #print(r$`Error Message`)
-      #return (NULL)
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
-    } else {
-      return (r)
+CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB"){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    if(file.exists(csv)){
+      tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
+      r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))
+      if(r$status_code == 200) {
+        return(TRUE)
+      } else {
+        stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      }
+    }else{
+      stop(paste("Unable to find CSV file: ",csv,sep=""))
     }
-    } , error = function(e) {
-      print(e)
-      return (NULL)
-    })
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }    
 }
 
 #-------------------------------------
 # upload a dataframe to a table in a database
-CasJobs.uploadDataFrameToTable<-function(df, tableName, context="MyDB", token=NULL){
-  csv=capture.output(write.csv(df,row.names=FALSE,quote=FALSE))
-  return (CasJobs.uploadCSVToTable(csv,tableName,context,token))
+CasJobs.uploadDataFrameToTable<-function(df, tableName, context="MyDB"){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
+    body=capture.output(write.csv(df,row.names=FALSE,quote=FALSE))
+    r = POST(tablesUrl,encode="multipart",body=body,add_headers('X-Auth-Token'=token))
+    if(r$status_code == 200) {
+      return(TRUE)
+    } else {
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }    
 }

@@ -4,13 +4,13 @@
 Get user info.
 }
 \description{
-Returns the name/id for the user corresponding to the specified token
+Returns the name/id for the user corresponding to the specified token. 
 }
 \usage{Authentication.getKeystoneUserWithToken(token)}
 \arguments{
   \item{token}{Sciserver's authentication token for the user}
 }
-\value{Returns a list with name/id of the user.}
+\value{Returns a list with name/id of the user. Throws an exception if the HTTP request to the Authentication URL returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

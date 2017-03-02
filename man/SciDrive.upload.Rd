@@ -6,13 +6,12 @@ Upload file.
 \description{
 Uploads a file into a directory in SciDrive.
 }
-\usage{SciDrive.upload(path, data, token=NULL)}
+\usage{SciDrive.upload(scidrivePath, localFile)}
 \arguments{
-  \item{path}{path of the directory in SciDrive.}
-  \item{data}{path to file to be uploaded.}
-  \item{token}{Sciserver's authentication token for the user}
+  \item{scidrivePath}{path of the SciDrive directory where the file is being uploaded into.}
+  \item{localFile}{local path of the file to be uploaded.}
 }
-\value{Returns a response object with attributes such as status_code,headers,url.}
+\value{Returns an object with the attributes of the uploaded file. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the SciDrive API returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
@@ -28,7 +27,7 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \examples{
 \donttest{
 \dontrun{
-response = SciDrive.upload("SciDrive/path/to/file.csv", "local/path/to/file.csv")
+response = SciDrive.upload("/SciDrive/path/to/file.csv", "/local/path/to/file.csv")
 }}
 }
 \keyword{SciServer}

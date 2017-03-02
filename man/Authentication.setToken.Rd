@@ -4,7 +4,7 @@
 Set token.
 }
 \description{
-Sets the SciServer authentication token of the user as a Sys environmental variable.
+Sets the SciServer authentication token of the user as the  Sys environmental variable, as well as in the variable \code{Authentication.token}.
 }
 \usage{Authentication.setToken(token)}
 \arguments{
@@ -15,7 +15,7 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{Authentication.getKeystoneUserWithToken}}, \code{\link[SciServer]{Authentication.login}}, \code{\link[SciServer]{Authentication.getToken}}.
+\code{\link[SciServer]{Authentication.getKeystoneUserWithToken}}, \code{\link[SciServer]{Authentication.login}}, \code{\link[SciServer]{Authentication.getToken}}, \code{\link[SciServer]{Authentication.token}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr

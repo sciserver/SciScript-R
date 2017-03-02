@@ -6,14 +6,13 @@ Synchronous SQL query.
 \description{
 Executes a synchronous SQL query in a CasJobs database context.
 }
-\usage{CasJobs.getTables(sql,context="MyDB",token=NULL)}
+\usage{CasJobs.executeQuery(sql,context="MyDB")}
 \arguments{
   \item{sql}{sql query}
   \item{context}{database context}
-  \item{token}{Sciserver's authentication token for the user}
 }
 
-\value{ The results table from the query is retuned as a dataframe.}
+\value{ Returns the results table from the query as a dataframe. Throws an exception if the HTTP request to the CasJobs API returns an error}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

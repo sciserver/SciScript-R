@@ -6,13 +6,12 @@ Submit asynchronous SQL query.
 \description{
 Submits an asynchronous SQL query to the CasJobs queue. If a token is supplied then it will execute on behalf of the token's user.
 }
-\usage{CasJobs.submitJob(queryString, context="MyDB", token=NULL)}
+\usage{CasJobs.submitJob(queryString, context="MyDB")}
 \arguments{
-  \item{queryString}{sql query}
+  \item{sql}{sql query}
   \item{context}{database context}
-  \item{token}{Sciserver's authentication token for the user}
 }
-\value{ Returns the CasJobs jobID (integer).}
+\value{ Returns the CasJobs jobID (integer). Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
