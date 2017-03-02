@@ -7,6 +7,7 @@ system("git fetch --all") #fetches all remotes into local repo, including tags.
 system("git checkout master")
 system("git reset --hard origin/master") #resets the local master branch to what was just fetched.
 system("git clean -df") #removes all untracked files
+
 if (length(commandLineArguments) == 0) {
 
   cat("\n---2) Checking out latest SciScript code from local master branch...\n\n")
