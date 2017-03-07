@@ -12,7 +12,7 @@ CasJobs.getSchemaName<-function(){
       usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
       r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
       if(r$status_code != 200) {
-        stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+        stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
       } else {
         r= content(r, encoding="UTF-8")
         return (paste("wsid_",r$WebServicesId,sep=""))
@@ -32,7 +32,7 @@ CasJobs.getTables<-function(context="MyDB"){
     TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
     r = GET(TablesUrl,add_headers('X-Auth-Token'=token),content_type_json())
     if(r$status_code != 200) {
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (content(r, encoding="UTF-8"))
     }
@@ -62,7 +62,7 @@ CasJobs.executeQuery <- function(sql,context="MyDB") {
     r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName), accept("text/plain"),content_type_json())
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")))
     return(t)
@@ -90,7 +90,7 @@ CasJobs.submitJob<-function(sql="", context="MyDB"){
     body = list(Query=unbox(sql), TaskName=TaskName)
     r = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (content(r, encoding="UTF-8"))
     }
@@ -113,7 +113,7 @@ CasJobs.getJobStatus<-function(jobid){
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
       return(content(r, encoding="UTF-8"))
     }
@@ -169,7 +169,7 @@ CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB"){
       if(r$status_code == 200) {
         return(TRUE)
       } else {
-        stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+        stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
       }
     }else{
       stop(paste("Unable to find CSV file: ",csv,sep=""))
@@ -192,7 +192,7 @@ CasJobs.uploadDataFrameToTable<-function(df, tableName, context="MyDB"){
     if(r$status_code == 200) {
       return(TRUE)
     } else {
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))

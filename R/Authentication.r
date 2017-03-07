@@ -12,7 +12,7 @@ Authentication.getKeystoneUserWithToken<-function(token){
   loginURL = paste(Config.AuthenticationURL,"/",token,sep='')
   r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     r= content(r)
     user={}
@@ -28,7 +28,7 @@ Authentication.login<-function(UserName, Password){
   authJson = list(auth=list(identity=list(password=list(user=list(name=unbox(UserName),password=unbox(Password))))))
   r=POST(loginURL ,encode="json",body=authJson,accept("text/plain"),content_type_json())
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     token=headers(r)$`x-subject-token`
     Authentication.setToken(token)

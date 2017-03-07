@@ -16,7 +16,7 @@ SciDrive.createContainer<-function(path){
     url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,sep="")
     r = PUT(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
     if(r$status_code < 200 || r$status_code >=300) {
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
       return(TRUE)
     }
@@ -33,7 +33,7 @@ SciDrive.upload<-function(scidrivePath, localFile){
     url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',scidrivePath,sep='')
     r = PUT(url, body=upload_file(localFile), add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
       return (content(r))
     }
@@ -55,7 +55,7 @@ SciDrive.publicUrl<-function(scidrivePath){
     if(r$status_code == 200){
       return(content(r)$url)
     }else{
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
@@ -74,7 +74,7 @@ SciDrive.download<-function(scidrivePath){
     if(r$status_code == 200){
       return(r)
     }else{
-      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))

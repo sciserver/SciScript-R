@@ -27,7 +27,7 @@ SkyServer.sqlSearch  <- function(sql, dataRelease=NULL)
     r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
     return(t)
@@ -66,7 +66,7 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
     r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     sdssImage = content(r)
     return(sdssImage)
@@ -105,7 +105,7 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
     r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
     return(t)
@@ -145,7 +145,7 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
     r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
     return(t)
@@ -219,7 +219,7 @@ SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, 
     r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     return(content(r))
   }
