@@ -2,6 +2,6 @@ export(SkyServer.sqlSearch,SkyServer.getJpegImgCutout,SkyServer.radialSearch,Sky
 export(CasJobs.getSchemaName,CasJobs.getTables,CasJobs.executeQuery,CasJobs.submitJob,CasJobs.getJobStatus,CasJobs.uploadCSVToTable,CasJobs.uploadDataFrameToTable,CasJobs.waitForJob)
 export(Authentication.getKeystoneUserWithToken, Authentication.login, Authentication.getToken, Authentication.setToken, Authentication.token)
 export(LoginPortal.getKeystoneUserWithToken, LoginPortal.login, LoginPortal.getToken, LoginPortal.setToken)
-export(SciDrive.createContainer,SciDrive.upload,SciDrive.publicUrl)
+export(SciDrive.createContainer,SciDrive.upload,SciDrive.publicUrl,SciDrive.download)
 export(Config.isSciServerComputeEnvironment,Config.CasJobsRESTUri,Config.AuthenticationURL,Config.SciDriveHost,Config.SkyQueryUrl,Config.DataRelease,Config.SkyServerWSurl,Config.Version,Config.KeystoneTokenPath)
 import(httr,jsonlite,utils)

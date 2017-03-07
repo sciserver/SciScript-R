@@ -61,3 +61,22 @@ SciDrive.publicUrl<-function(scidrivePath){
     stop(paste("User token is not defined. First log into SciServer."))
   }
 }
+
+SciDrive.download<-function(scidrivePath){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    
+    fileUrl = SciDrive.publicUrl(scidrivePath)
+    
+    r = GET(fileUrl)
+    if(r$status_code == 200){
+      return(r)
+    }else{
+      stop(paste("Http Response returned status code ", r$status_code, ": ",  content(r, as="text", encoding="UTF-8")))
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
+}
