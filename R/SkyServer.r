@@ -87,7 +87,6 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
     url = paste(url,"TaskName=SciScript-R.SkyServer.radialSearch&",sep="")
   }
   
-  url = paste(url,"TaskName=SciScript-R.SkyServer.radialSearch&",sep="")
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"ra=",ra,"&",sep="")
   url = paste(url,"dec=",dec,"&",sep="")

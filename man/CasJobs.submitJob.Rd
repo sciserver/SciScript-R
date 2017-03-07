@@ -4,9 +4,9 @@
 Submit asynchronous SQL query.
 }
 \description{
-Submits an asynchronous SQL query to the CasJobs queue. If a token is supplied then it will execute on behalf of the token's user.
+Submits an asynchronous SQL query to the CasJobs queue.
 }
-\usage{CasJobs.submitJob(queryString, context="MyDB")}
+\usage{CasJobs.submitJob(sql, context="MyDB")}
 \arguments{
   \item{sql}{sql query}
   \item{context}{database context}

@@ -82,9 +82,9 @@ CasJobs.submitJob<-function(sql="", context="MyDB"){
     
     TaskName="";
     if(Config.isSciServerComputeEnvironment()){
-      TaskName = "Compute.SciScript-R.CasJobs.executeQuery"
+      TaskName = "Compute.SciScript-R.CasJobs.submitJob"
     }else{
-      TaskName = "SciScript-R.CasJobs.executeQuery"
+      TaskName = "SciScript-R.CasJobs.submitJob"
     }
 
     body = list(Query=unbox(sql), TaskName=TaskName)
@@ -127,25 +127,30 @@ CasJobs.getJobStatus<-function(jobid){
 # check job status
 #    Waits for the casjobs job to return a status of 3, 4, or 5.
 #    Queries the job status from casjobs every 2 seconds.
-CasJobs.waitForJob<-function(jobid){
+CasJobs.waitForJob<-function(jobid, verbose=TRUE){
     complete = FALSE
 
-    waitingStr = "Waiting."
-    print(waitingStr)
+    if(verbose){
+      waitingStr = "Waiting."
+      print(waitingStr)
+    }
     complete=FALSE
-    jobDesc="NONE"
+    jobDesc= NULL
     ok=list(3,4,5)
     while (!complete){
+      if(verbose){
         waitingStr=paste(waitingStr,'.',sep="")
         print(waitingStr)
-        jobDesc = CasJobs.getJobStatus(jobid)
-        jobStatus = strtoi(jobDesc$Status)
-        if (jobStatus %in% ok){
-            complete = TRUE
+      }
+      jobDesc = CasJobs.getJobStatus(jobid)
+      jobStatus = strtoi(jobDesc$Status)
+      if (jobStatus %in% ok){
+          complete = TRUE
+          if(verbose)
             print("Job Done!")
-        } else{
-            Sys.sleep(2)
-        }
+      } else{
+          Sys.sleep(2)
+      }
     }
     return (jobDesc)
 }

@@ -7,9 +7,10 @@ Wait for job status.
 Queries the job status from casjobs every 2 seconds and
 waits for the casjobs job to return a status of 3, 4, or 5.
 }
-\usage{CasJobs.waitForJob(jobid)}
+\usage{CasJobs.waitForJob(jobid, verbose=TRUE)}
 \arguments{
-  \item{jobid}{id of job.}
+  \item{jobid}{id of job (integer).}
+  \item{verbose}{message printing option.} If TRUE, will print "wait" messages on the screen while the job is not done. If FALSE, will suppress printing messages on the screen.
 }
 \value{Returns a list containing the job status and related metadata. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 \author{

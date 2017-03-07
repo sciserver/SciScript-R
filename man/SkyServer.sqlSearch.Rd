@@ -9,7 +9,7 @@ Executes a SQL query to the SDSS database, and retrieves the result table as a d
 \usage{SkyServer.sqlSearch(sql, dataRelease=NULL)}
 \arguments{
   \item{sql}{a string containing the sql query}
-  \item{dataRelease}{SDSS data release. E.g, 'DR13'}
+  \item{dataRelease}{SDSS data release. E.g, 'DR13'. Default value already set in Config.DataRelease}
 }
 \value{ Returns the results table as a dataframe. Throws an exception if the HTTP request to the SkyServer API returns an error.}
 \author{
