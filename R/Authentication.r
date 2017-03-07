@@ -41,7 +41,7 @@ Authentication.getToken<-function(){
   if(exists("Authentication.token")){
     token <- Authentication.token
   }
-  if (is.null(token) || token == "") {
+  if (is.null(token)) {
     token = Sys.getenv("sciservertoken")
     if (!is.null(token) && token != ""){
       Authentication.setToken(token)
@@ -52,6 +52,8 @@ Authentication.getToken<-function(){
         token = readLines(f)
         if (!is.null(token) && token != ""){
           Authentication.setToken(token)
+        }else{
+          return(NULL)
         }
       }
     }

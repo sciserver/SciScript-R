@@ -4,7 +4,7 @@
 User login.
 }
 \description{
-Logs the user into SciServer and returns the authentication token. This function is useful when SciScript-R library methods are executed outside the SciServer-Compute environement. In this case, the session authenticatin token does not exists (and therefore can't be automatically recognized), so the user has to use \code{Authentication.login} in order to log into SciServer manually and get the authentication token. \code{Authentication.login} also sets the token value in the Sys environment variable "sciservertoken" and as the variable \code{\link[SciServer]{Authentication.token}}.
+Logs the user into SciServer and returns the authentication token. This function is useful when SciScript-R library methods are executed outside the SciServer-Compute environment. In this case, the session authentication token does not exist (and therefore can't be automatically recognized), so the user has to use \code{Authentication.login} in order to log into SciServer manually and get the authentication token. \code{Authentication.login} also sets the token value in the Sys environment variable "sciservertoken" and as the variable \code{\link[SciServer]{Authentication.token}}.
 }
 \usage{Authentication.login(UserName, Password)}
 \arguments{
