@@ -12,4 +12,4 @@ if(length(tags)==0){
 }else{
   system('git tag --list "*sciserver*"')
 }
-cat("\n*** Refer to http://www.sciserver.org/support/updates for particular release tag details.")
+cat("\n*** Refer to http://www.sciserver.org/support/updates for particular release tag details.\n\n")
