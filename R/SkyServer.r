@@ -84,7 +84,13 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
     r= GET(url,accept("text/plain"))
   }
   if(r$status_code != 200) {
-    stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+    if(r$headers$`content-type` == "image/jpeg" ){
+      if(r$status_code == 404)
+        stop(paste("Http Response returned status code ", r$status_code, ":\n", "Requested (ra, dec) is outside the survey footprint." , sep= ""))
+      else
+        stop(paste("Http Response returned status code ", r$status_code, ":\n", "Error when running the Image Cutout." , sep= ""))
+    }else
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     sdssImage = content(r)
     return(sdssImage)
