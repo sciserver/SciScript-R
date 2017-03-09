@@ -6,11 +6,20 @@
 SkyServer.sqlSearch  <- function(sql, dataRelease=NULL)
 {
 
-  if(is.null(dataRelease)){
-    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
+  if(!is.null(dataRelease)){
+    if(dataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", dataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/SqlSearch?", sep="")      
+    }
   }else{
-    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
+    if(Config.DataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", Config.DataRelease, "/SkyServerWS/SearchTools/SqlSearch?", sep="")      
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/SqlSearch?", sep="")
+    }
   }
+
   if(Config.isSciServerComputeEnvironment()){
     url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.sqlSearch&",sep="")
   }else{
@@ -39,11 +48,20 @@ SkyServer.sqlSearch  <- function(sql, dataRelease=NULL)
 SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=512, opt="", query="", dataRelease=NULL)
 {
   
-  if(is.null(dataRelease)){
-    url = paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+  if(!is.null(dataRelease)){
+    if(dataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", dataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/ImgCutout/getjpeg?", sep="")      
+    }
   }else{
-    url = paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+    if(Config.DataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", Config.DataRelease, "/SkyServerWS/ImgCutout/getjpeg?", sep="")      
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/ImgCutout/getjpeg?", sep="")
+    }  
   }
+
   if(Config.isSciServerComputeEnvironment()){
     url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.getJpegImgCutout&",sep="")
   }else{
@@ -76,17 +94,26 @@ SkyServer.getJpegImgCutout  <- function(ra, dec, scale=0.7, width=512, height=51
 SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="0", dataRelease=NULL)
 {
   
-  if(is.null(dataRelease)){
-    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
+  if(!is.null(dataRelease)){
+    if(dataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", dataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/RadialSearch?", sep="")      
+    }
   }else{
-    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
+    if(Config.DataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", Config.DataRelease, "/SkyServerWS/SearchTools/RadialSearch?", sep="")      
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/RadialSearch?", sep="")
+    }
   }
+    
   if(Config.isSciServerComputeEnvironment()){
-    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.radialSearch&",sep="")
+    url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.RadialSearch&",sep="")
   }else{
-    url = paste(url,"TaskName=SciScript-R.SkyServer.radialSearch&",sep="")
+    url = paste(url,"TaskName=SciScript-R.SkyServer.RadialSearch&",sep="")
   }
-  
+    
   url = paste(url,"format=csv&",sep="")
   url = paste(url,"ra=",ra,"&",sep="")
   url = paste(url,"dec=",dec,"&",sep="")
@@ -114,12 +141,21 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
 
 SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coordType="equatorial", whichPhotometry="optical", limit="0", dataRelease=NULL)
 {
-  
-  if(is.null(dataRelease)){
-    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
+
+  if(!is.null(dataRelease)){
+    if(dataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", dataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")      
+    }
   }else{
-    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
+    if(Config.DataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", Config.DataRelease, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")      
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/RectangularSearch?", sep="")
+    }
   }
+
   if(Config.isSciServerComputeEnvironment()){
     url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.rectangularSearch&",sep="")
   }else{
@@ -154,12 +190,21 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
 
 SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, apstar_id=NULL, ra=NULL, dec=NULL, plate=NULL, mjd=NULL, fiber=NULL, run=NULL, rerun=NULL, camcol=NULL, field=NULL, obj=NULL, dataRelease=NULL)
 {
-  
-  if(is.null(dataRelease)){
-    url=paste(Config.SkyServerWSurl, '/', Config.DataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
+
+  if(!is.null(dataRelease)){
+    if(dataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", dataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")      
+    }
   }else{
-    url=paste(Config.SkyServerWSurl, '/', dataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
+    if(Config.DataRelease != ""){
+      url=paste(Config.SkyServerWSurl, "/", Config.DataRelease, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")      
+    }else{
+      url=paste(Config.SkyServerWSurl, "/SkyServerWS/SearchTools/ObjectSearch?query=loadexplore&format=json&", sep="")
+    }
   }
+
   if(Config.isSciServerComputeEnvironment()){
     url = paste(url,"TaskName=Compute.SciScript-R.SkyServer.SkyServer.objectSearch&",sep="")
   }else{
