@@ -23,6 +23,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-wsid <- CasJobs.getSchemaName()
+\dontrun{wsid <- CasJobs.getSchemaName()}
 }
 \keyword{SciServer}

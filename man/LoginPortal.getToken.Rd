@@ -6,7 +6,7 @@ Get user token (DEPRECATED).
 \description{
 DEPRECATED. Use \code{\link[SciServer]{Authentication.getToken}} instead.
 
-Returns the SciServer LoginPortal token of the user. First, will try to return the variable \code{\link[SciServer]{LoginPortal.token}}. If it is not set, \code{LoginPortal.getToken} will try to return the "sciservertoken" environmental variable. If this variable does not exist, will try to return the token stored in Config.KeystoneTokenFilePath. Will return a NULL if all previous steps fail.
+Returns the SciServer LoginPortal token of the user. First, will try to return the variable \code{\link[SciServer]{Authentication.token}}. If it is not set, \code{LoginPortal.getToken} will try to return the "sciservertoken" environmental variable. If this variable does not exist, will try to return the token stored in Config.KeystoneTokenFilePath. Will return a NULL if all previous steps fail.
 }
 \usage{LoginPortal.getToken()}
 

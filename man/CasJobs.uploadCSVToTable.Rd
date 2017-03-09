@@ -8,7 +8,7 @@ Upload CSV file into DB table.
 Uploads a CSV file to a database table in CasJobs.
 
 }
-\usage{CasJobs.uploadCSVToTable(csv, tableName, context="MyDB", token=NULL)}
+\usage{CasJobs.uploadCSVToTable(csv, tableName, context="MyDB")}
 \arguments{
   \item{csv}{Path to CSV file}
   \item{tableName}{Name of table}

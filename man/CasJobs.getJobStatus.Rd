@@ -26,6 +26,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-status <- CasJobs.getJobStatus(CasJobs.submitJob("select 1"))
+\dontrun{status <- CasJobs.getJobStatus(CasJobs.submitJob("select 1"))}
 }
 \keyword{SciServer}

@@ -6,7 +6,10 @@ Get dataset info.
 \description{
 Gets information related to a particular dataset (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.getDatasetInfo()}
+\usage{SkyQuery.getDatasetInfo(datasetName)}
+\arguments{
+  \item{datasetName}{name of dataset (string).}
+}
 \value{ Returns a list containing the dataset information. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
 \author{
 Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

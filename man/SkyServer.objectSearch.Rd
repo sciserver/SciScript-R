@@ -14,6 +14,7 @@ Searches for an object in the SDSS catalog and gets its properties and associate
   \item{apogee_id}{ID identifying Apogee target object.}
   \item{apstar_id}{unique ID for combined apogee star spectrum.}
   \item{ra}{Right Ascension of the object.}
+  \item{dec}{Declination of the object.}
   \item{plate}{SDSS plate number.}
   \item{mjd}{Modified Julian Date of observation.}
   \item{fiber}{SDSS fiber number.}

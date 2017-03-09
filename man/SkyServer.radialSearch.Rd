@@ -6,7 +6,7 @@ Run a radial search on the sky.
 \description{
 Runs a query in the SDSS database that searches for all objects within a certain radius from a point in the sky, and retrieves the result table as a dataframe. Maximum number of rows retrieved is set currently to 500,000.
 }
-\usage{SkyServer.radialSearch(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="10", dataRelease=NULL)}
+\usage{SkyServer.radialSearch(ra, dec, radius=1, coordType="equatorial", whichPhotometry="optical", limit="0", dataRelease=NULL)}
 \arguments{
   \item{ra}{Right Ascension of the point in the sky.}
   \item{dec}{Declination of the point in the sky.}
