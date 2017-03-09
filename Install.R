@@ -25,7 +25,7 @@ if (length(commandLineArguments) == 0) {
 hasInstallFile = system('ls Install.R', intern=TRUE)
 if(length(hasInstallFile) > 0){
   os.system("rm -f ../Install_IntermediateCopy5551234.R") #removes the copy of the install file one level up
-else{
+}else{
   os.system("mv -f ../Install_IntermediateCopy5551234.R ./Install.R") #copies the install file back from one level up
 }
 
