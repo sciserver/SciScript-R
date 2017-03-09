@@ -23,7 +23,7 @@ if (length(commandLineArguments) == 0) {
 }
 
 installFile = system('ls Install.R', intern=TRUE)
-if(length(installFile) == 1 && installFile) == "Install.R"){
+if(length(installFile) == 1 && installFile == "Install.R"){
   system("rm -f ../Install_IntermediateCopy5551234.R") #removes the copy of the install file one level up
 }else{
   system("mv -f ../Install_IntermediateCopy5551234.R ./Install.R") #copies the install file back from one level up
