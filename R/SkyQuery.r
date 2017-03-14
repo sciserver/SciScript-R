@@ -208,7 +208,7 @@ SkyQuery.listTableColumns <- function(datasetName, tableName)
 ######################################################################################################################
 # Data:
 
-SkyQuery.getTable <- function(datasetName, tableName, top = NULL)
+SkyQuery.getTable <- function(tableName, datasetName="MyDB", top = NULL)
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
@@ -229,13 +229,37 @@ SkyQuery.getTable <- function(datasetName, tableName, top = NULL)
   }
 }
 
-SkyQuery.dropTable <- function(datasetName, tableName)
+SkyQuery.dropTable <- function(tableName, datasetName="MyDB")
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
     url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,sep="")
     r= DELETE(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
+    if(r$status_code != 200) {
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+    } else {
+      return(TRUE)
+    }
+  }else{ 
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
+}
+
+SkyQuery.uploadTable <- function(uploadData, tableName, datasetName="MyDB", format="csv")
+{
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,sep="")
+    ctype = ""
+    if(format == "csv"){
+      ctype = 'text/csv'
+    }else{
+      ctype = 'text/csv'
+    }
+
+    r= PUT(url, body = uploadData, accept("application/json"), content_type(ctype),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {

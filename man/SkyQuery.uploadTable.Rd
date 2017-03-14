@@ -1,17 +1,19 @@
-\name{SkyQuery.dropTable}
-\alias{SkyQuery.dropTable}
+\name{SkyQuery.uploadTable}
+\alias{SkyQuery.uploadTable}
 \title{
-Drop table
+Upload table
 }
 \description{
-Drops (deletes) a table from the user database (more info in http://www.voservices.net/skyquery).
+Uploads a data table into a database (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.dropTable(tableName, datasetName="MyDB")}
+\usage{SkyQuery.uploadTable(uploadData, tableName, datasetName="MyDB", format="csv")}
 \arguments{
+  \item{data}{data table, for now accepted in CSV string format.}
   \item{tableName}{name of table (string) within dataset.}
   \item{datasetName}{name of dataset or database context (string).}
+  \item{format}{format of the 'data' parameter. Set to 'csv' for now.}
 }
-\value{ Returns TRUE if the table was deleted successfully. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
+\value{ Returns TRUE if the table was uploaded successfully. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
 \author{
 Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
@@ -24,6 +26,6 @@ Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-result = SkyQuery.dropTable("myTable", datasetName="MyDB")
+result = SkyQuery.uploadTable("Column1,Column2\n4.5,5.5\n", tableName="myTable", datasetName="MyDB", format="csv")
 }
 \keyword{SciServer}
