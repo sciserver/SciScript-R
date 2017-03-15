@@ -2,8 +2,8 @@
 CreateHtmlDocs  = function(packageName, helpDirectory = NULL) {
     workingDirectory = getwd()
     if(is.null(helpDirectory) || helpDirectory == ""){
-      system("mkdir html")
-      helpDirectory = "./html/" #system.file('html', package = packageName)
+      system("mkdir htmlDocs")
+      helpDirectory = "./htmlDocs/" #system.file('htmlDocs', package = packageName)
     }else{
       system(paste("mkdir -p ",helpDirectory,sep=""))
     }
