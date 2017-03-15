@@ -4,5 +4,5 @@ export(Authentication.getKeystoneUserWithToken, Authentication.login, Authentica
 export(LoginPortal.getKeystoneUserWithToken, LoginPortal.login, LoginPortal.getToken, LoginPortal.setToken)
 export(SciDrive.createContainer,SciDrive.upload,SciDrive.publicUrl,SciDrive.download,SciDrive.delete)
 export(Config.isSciServerComputeEnvironment,Config.CasJobsRESTUri,Config.AuthenticationURL,Config.SciDriveHost,Config.SkyQueryUrl,Config.DataRelease,Config.SkyServerWSurl,Config.Version,Config.KeystoneTokenFilePath)
-export(SkyQuery.getJobStatus,SkyQuery.cancelJob,SkyQuery.listQueues,SkyQuery.getQueueInfo,SkyQuery.submitJob,SkyQuery.listJobs,SkyQuery.listAllDatasets,SkyQuery.getDatasetInfo,SkyQuery.listDatasetTables,SkyQuery.getTableInfo,SkyQuery.listTableColumns,SkyQuery.getTable,SkyQuery.dropTable,SkyQuery.uploadTable)
+export(SkyQuery.getJobStatus,SkyQuery.cancelJob,SkyQuery.listQueues,SkyQuery.getQueueInfo,SkyQuery.submitJob,SkyQuery.waitForJob,SkyQuery.listJobs,SkyQuery.listAllDatasets,SkyQuery.getDatasetInfo,SkyQuery.listDatasetTables,SkyQuery.getTableInfo,SkyQuery.listTableColumns,SkyQuery.getTable,SkyQuery.dropTable,SkyQuery.uploadTable)
 import(httr,jsonlite,utils)

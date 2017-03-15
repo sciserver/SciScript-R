@@ -98,6 +98,33 @@ SkyQuery.submitJob <- function(query, queue="quick")
   }
 }
 
+SkyQuery.waitForJob<-function(jobid, verbose=TRUE){
+  complete = FALSE
+  
+  waitingStr = "Waiting."
+  if(verbose){
+    print(waitingStr)
+  }
+  complete=FALSE
+  jobDesc= NULL
+  ok=list(3,4,5)
+  while (!complete){
+    if(verbose){
+      print(waitingStr)
+    }
+    jobDesc = SkyQuery.getJobStatus(jobid)
+    jobStatus = jobDesc$queryJob$status
+    if (jobStatus == "completed"){
+      complete = TRUE
+      if(verbose)
+        print("Job Done!")
+    } else{
+      Sys.sleep(2)
+    }
+  }
+  return (j$queryJob)
+}
+
 SkyQuery.listJobs <- function(queue="quick")
 {
   token = Authentication.getToken()
