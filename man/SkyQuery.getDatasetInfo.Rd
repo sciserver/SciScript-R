@@ -6,7 +6,7 @@ Get dataset info.
 \description{
 Gets information related to a particular dataset (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.getDatasetInfo(datasetName)}
+\usage{SkyQuery.getDatasetInfo(datasetName="MyDB")}
 \arguments{
   \item{datasetName}{name of dataset (string).}
 }

@@ -6,10 +6,10 @@ List table columns.
 \description{
 Returns a list of all columns in a table belonging to a particular dataset (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.listTableColumns(datasetName, tableName)}
+\usage{SkyQuery.listTableColumns(tableName, datasetName="MyDB")}
 \arguments{
-  \item{datasetName}{name of dataset (string).}
   \item{tableName}{name of table (string) within dataset.}
+  \item{datasetName}{name of dataset (string).}
 }
 \value{ Returns a list containing the columns and associated descriptions. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
 \author{
@@ -24,6 +24,6 @@ Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-info = SkyQuery.listTableColumns("MyDB", "myTable")
+info = SkyQuery.listTableColumns("myTable", datasetName="MyDB")
 }
 \keyword{SciServer}

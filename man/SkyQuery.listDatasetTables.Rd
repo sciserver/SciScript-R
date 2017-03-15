@@ -6,7 +6,7 @@ List dataset tables.
 \description{
 Returns a list of all tables within a dataset (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.listDatasetTables(datasetName)}
+\usage{SkyQuery.listDatasetTables(datasetName="MyDB")}
 \arguments{
   \item{datasetName}{name of dataset (string).}
 }

@@ -137,7 +137,7 @@ SkyQuery.listAllDatasets <- function()
   }
 }
 
-SkyQuery.getDatasetInfo <- function(datasetName)
+SkyQuery.getDatasetInfo <- function(datasetName="MyDB")
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
@@ -154,7 +154,7 @@ SkyQuery.getDatasetInfo <- function(datasetName)
   }
 }
 
-SkyQuery.listDatasetTables <- function(datasetName)
+SkyQuery.listDatasetTables <- function(datasetName="MyDB")
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
@@ -171,7 +171,7 @@ SkyQuery.listDatasetTables <- function(datasetName)
   }
 }
 
-SkyQuery.getTableInfo <- function(datasetName, tableName)
+SkyQuery.getTableInfo <- function(tableName, datasetName="MyDB")
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
@@ -188,7 +188,7 @@ SkyQuery.getTableInfo <- function(datasetName, tableName)
   }
 }
 
-SkyQuery.listTableColumns <- function(datasetName, tableName)
+SkyQuery.listTableColumns <- function(tableName, datasetName="MyDB")
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
