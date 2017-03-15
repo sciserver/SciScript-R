@@ -52,7 +52,7 @@ There are 2 possibilities: automatic or manual installation.
     `R CMD INSTALL SciServer_VERSION.tar.gz`, 
     where `SciServer_VERSION.tar.gz` was created in step 2. The string `VERSION` is the SciServer release tag, which is written automatically in the .gz file name, and you can find it in the DESCRIPTION file.
 
-### 4) Creating HTML documentation:
+## 4) Creating HTML documentation:
 
 4.1.- Run `Rscript CreateHtmlDocs.R dir`, where `dir` is the directory where the html files will be created. If `dir` is not specified, then the html files will be created in `./html/`
 
