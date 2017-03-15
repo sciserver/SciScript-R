@@ -80,3 +80,25 @@ SciDrive.download<-function(scidrivePath){
     stop(paste("User token is not defined. First log into SciServer."))
   }
 }
+
+SciDrive.delete<-function(path){
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    
+    containerBody = paste('<vos:node xmlns:xsi="http://www.w3.org/2001/thisSchema-instance" ',
+                          'xsi:type="vos:ContainerNode" xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.0" ',
+                          'uri="vos://',Config.SciDriveHost,'!vospace/',path,'">',
+                          '<vos:properties/><vos:accepts/><vos:provides/><vos:capabilities/>',
+                          '</vos:node>',sep="")
+    url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,sep="")
+    r = DELETE(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
+    if(r$status_code < 200 || r$status_code >=300) {
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+    } else {
+      return(TRUE)
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
+}
