@@ -104,12 +104,12 @@ CasJobs.submitJob<-function(sql="", context="MyDB"){
 # check job status
 #    Gets a casjobs job status.
 #    Returns the dict object (https://docs.python.org/3.4/library/stdtypes.html#dict) coresponding to the json received from casjobs.
-CasJobs.getJobStatus<-function(jobid){
+CasJobs.getJobStatus<-function(jobId){
 
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobid,sep="")
+    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobId,sep="")
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
@@ -122,12 +122,29 @@ CasJobs.getJobStatus<-function(jobid){
   }
 }
 
+CasJobs.cancelJob<-function(jobId){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobId,sep="")
+    
+    r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=token))
+    if(r$status_code != 200) {
+      stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+    } else {
+      return(content(r, encoding="UTF-8"))
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
+}
 
 #--------------------------------------------------------
 # check job status
 #    Waits for the casjobs job to return a status of 3, 4, or 5.
 #    Queries the job status from casjobs every 2 seconds.
-CasJobs.waitForJob<-function(jobid, verbose=TRUE){
+CasJobs.waitForJob<-function(jobId, verbose=TRUE){
     complete = FALSE
 
     if(verbose){
@@ -142,7 +159,7 @@ CasJobs.waitForJob<-function(jobid, verbose=TRUE){
         waitingStr=paste(waitingStr,'.',sep="")
         print(waitingStr)
       }
-      jobDesc = CasJobs.getJobStatus(jobid)
+      jobDesc = CasJobs.getJobStatus(jobId)
       jobStatus = strtoi(jobDesc$Status)
       if (jobStatus %in% ok){
           complete = TRUE

@@ -8,9 +8,9 @@ Get status of job.
 Shows the status of a job submitted to CasJobs.
 
 }
-\usage{CasJobs.getJobStatus(jobid)}
+\usage{CasJobs.getJobStatus(jobId)}
 \arguments{
-  \item{jobid}{id of the job}
+  \item{jobId}{id of the job}
 }
 \value{ Returns a list containing the job status and related metadata. If \code{jobid} is the empty string, then returns a list with the statuses of all previous jobs. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the CasJobs API returns an error.}
 \author{
@@ -18,7 +18,7 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{CasJobs.submitJob}}, \code{\link[SciServer]{CasJobs.waitForJob}}.
+\code{\link[SciServer]{CasJobs.submitJob}}, \code{\link[SciServer]{CasJobs.waitForJob}}, \code{\link[SciServer]{CasJobs.cancelJob}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr

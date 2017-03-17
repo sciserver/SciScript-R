@@ -17,7 +17,7 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{CasJobs.executeQuery}}, \code{\link[SciServer]{CasJobs.getJobStatus}}, \code{\link[SciServer]{CasJobs.waitForJob}}.
+\code{\link[SciServer]{CasJobs.executeQuery}}, \code{\link[SciServer]{CasJobs.getJobStatus}}, \code{\link[SciServer]{CasJobs.waitForJob}}, \code{\link[SciServer]{CasJobs.cancelJob}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
