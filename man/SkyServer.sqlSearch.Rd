@@ -24,6 +24,6 @@ Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-df <- SkyServer.sqlSearch(sql="select 1")
+df = SkyServer.sqlSearch(sql="select 1")
 }
 \keyword{SciServer}

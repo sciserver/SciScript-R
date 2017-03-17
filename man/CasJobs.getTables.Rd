@@ -24,6 +24,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-tables <- CasJobs.getTables(context="MyDB")
+tables = CasJobs.getTables(context="MyDB")
 }
 \keyword{SciServer}

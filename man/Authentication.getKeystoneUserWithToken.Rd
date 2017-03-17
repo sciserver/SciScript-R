@@ -24,6 +24,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-\dontrun{user <- Authentication.getKeystoneUserWithToken(Authentication.getToken())}
+\dontrun{user = Authentication.getKeystoneUserWithToken(Authentication.getToken())}
 }
 \keyword{SciServer}

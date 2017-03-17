@@ -26,6 +26,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-table <- CasJobs.executeQuery(sql="select 1 as foo, 2 as bar",context="MyDB")
+table = CasJobs.executeQuery(sql="select 1 as foo, 2 as bar",context="MyDB")
 }
 \keyword{SciServer}

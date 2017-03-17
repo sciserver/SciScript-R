@@ -26,6 +26,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-user <- LoginPortal.getKeystoneUserWithToken(LoginPortal.getToken())
+user = LoginPortal.getKeystoneUserWithToken(LoginPortal.getToken())
 }
 \keyword{SciServer}

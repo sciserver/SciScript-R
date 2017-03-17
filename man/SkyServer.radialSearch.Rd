@@ -29,6 +29,6 @@ Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-table <- SkyServer.radialSearch(ra=258.25, dec=64.05, radius=3)
+table = SkyServer.radialSearch(ra=258.25, dec=64.05, radius=3)
 }
 \keyword{SciServer}

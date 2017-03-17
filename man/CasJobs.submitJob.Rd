@@ -25,6 +25,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-\dontrun{jobid <- CasJobs.submitJob("select 1 as foo","MyDB")}
+\dontrun{jobid = CasJobs.submitJob("select 1 as foo","MyDB")}
 }
 \keyword{SciServer}
