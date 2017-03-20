@@ -1,16 +1,16 @@
-\name{SkyQuery.getJobStatus}
-\alias{SkyQuery.getJobStatus}
+\name{SkyQuery.cancelJob}
+\alias{SkyQuery.cancelJob}
 \title{
-Get Job Status
+Cancel a job
 }
 \description{
-Gets the status of a job, as well as other related metadata (more info in http://www.voservices.net/skyquery).
+Cancels a job already submitted (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.getJobStatus(jobId)}
+\usage{SkyQuery.cancelJob(jobId)}
 \arguments{
   \item{jobId}{the ID of the job (string), which is obtained at the moment of submitting the job.}
 }
-\value{ Returns the results table as a dataframe. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
+\value{ Returns TRUE if the job was canceled successfully. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
 \author{
 Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
