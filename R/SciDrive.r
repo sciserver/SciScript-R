@@ -26,12 +26,16 @@ SciDrive.createContainer<-function(path){
 }
 
 
-SciDrive.upload<-function(scidrivePath, localFile){
+SciDrive.upload<-function(path, data="", localFilePath=""){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',scidrivePath,sep='')
-    r = PUT(url, body=upload_file(localFile), add_headers('X-Auth-Token'=token))
+    url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',path,sep='')
+    if(localFilePath != ""){
+      r = PUT(url, body=upload_file(localFilePath), add_headers('X-Auth-Token'=token))
+    }else{
+      r = PUT(url, body=data, add_headers('X-Auth-Token'=token))
+    }
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {

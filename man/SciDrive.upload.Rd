@@ -1,15 +1,16 @@
 \name{SciDrive.upload}
 \alias{SciDrive.upload}
 \title{
-Upload file.
+Upload file or data.
 }
 \description{
-Uploads a file into a directory in SciDrive.
+Uploads data or a local file into a SciDrive directory.
 }
-\usage{SciDrive.upload(scidrivePath, localFile)}
+\usage{SciDrive.upload(path, data="", localFilePath="")}
 \arguments{
-  \item{scidrivePath}{path of the SciDrive directory where the file is being uploaded into.}
-  \item{localFile}{local path of the file to be uploaded.}
+  \item{path}{desired file path in SciDrive (string).}
+  \item{data}{data to be uploaded into SciDrive. If the 'localFilePath' parameter is set, then the local file will be uploaded instead.}
+  \item{localFilePath}{ path to the local file to be uploaded (string).}
 }
 \value{Returns an object with the attributes of the uploaded file. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the SciDrive API returns an error.}
 \author{
