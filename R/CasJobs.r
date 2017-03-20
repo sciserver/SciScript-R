@@ -43,7 +43,7 @@ CasJobs.getTables<-function(context="MyDB"){
 
 #--------------------------------------------------------
 # synchronous query
-CasJobs.executeQuery <- function(sql,context="MyDB") {
+CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
   
   token = Authentication.getToken()
   
@@ -56,16 +56,43 @@ CasJobs.executeQuery <- function(sql,context="MyDB") {
     TaskName = "SciScript-R.CasJobs.executeQuery"
   }
 
+  atype = NULL
+  if( format == "list" || format =="json" || format == "dataframe"){
+    atype="application/json"
+  }else if (format == "csv"){
+    atype = "text/plain"
+  }else if(format == "fits"){
+    atype = "application/fits"
+  }else if(format == "raw"){
+    atype = "application/fits" # to be implemented later
+  }else {
+    stop(paste("Illegal format parameter specification: ", format))
+  }
+
   if(!is.null(token) && token != "") {
-    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName),accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName),accept(atype),content_type_json(),add_headers('X-Auth-Token'=token))
   } else {
-    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName), accept("text/plain"),content_type_json())
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName), accept(atype),content_type_json())
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
-    t=read.csv(textConnection(content(r, encoding="UTF-8")))
-    return(t)
+    if(format == "list"){
+      return(content(r)) #read.csv(textConnection(content(r, encoding="UTF-8")))
+    }else if(format == "dataframe"){
+        list = content(r);
+        return(data.frame(list[[1]]$Rows))
+    }else if(format == "json"){
+      return(content(r, "text", encoding="UTF-8"))
+    }else if(format == "csv"){
+      return(content(r, encoding="UTF-8"))
+    }else if(format == "fits"){
+      return(content(r, "raw"))
+    }else if(format == "raw"){
+      return(content(r, "raw"))
+    }else{
+      stop(paste("Illegal format parameter specification: ", format))
+    }
   }
 }
 
@@ -133,7 +160,7 @@ CasJobs.cancelJob<-function(jobId){
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return(content(r, encoding="UTF-8"))
+      return(TRUE)
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
@@ -172,6 +199,39 @@ CasJobs.waitForJob<-function(jobId, verbose=TRUE){
     return (jobDesc)
 }
 
+
+CasJobs.writeFitsFileFromQuery <- function(fileName, queryString, context="MyDB"){
+
+  bytes = CasJobs.executeQuery(queryString, context=context, format="fits")
+  theFile = file(fileName, "wb")
+  writeBin(bytes, theFile)
+}
+
+
+#------------------------------------
+#  Uploads  cvs data into casjobs. 
+# return response object with attributes such as status_code,headers,url
+CasJobs.uploadCSVFileToTable<-function(filePath, tableName, context="MyDB"){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    if(file.exists(filePath)){
+      tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
+      r = POST(tablesUrl,encode="multipart",body=upload_file(filePath),add_headers('X-Auth-Token'=token))
+      if(r$status_code == 200) {
+        return(TRUE)
+      } else {
+        stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+      }
+    }else{
+      stop(paste("Unable to find CSV file: ",filePath,sep=""))
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }    
+}
+
 #------------------------------------
 #  Uploads  cvs data into casjobs. 
 # return response object with attributes such as status_code,headers,url
@@ -180,17 +240,13 @@ CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB"){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    if(file.exists(csv)){
       tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
-      r = POST(tablesUrl,encode="multipart",body=upload_file(csv),add_headers('X-Auth-Token'=token))
+      r = POST(tablesUrl,content_type("text/csv"),body=csv,add_headers('X-Auth-Token'=token))
       if(r$status_code == 200) {
         return(TRUE)
       } else {
         stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
       }
-    }else{
-      stop(paste("Unable to find CSV file: ",csv,sep=""))
-    }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
   }    

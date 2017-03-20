@@ -6,13 +6,13 @@ Synchronous SQL query.
 \description{
 Executes a synchronous SQL query in a CasJobs database context.
 }
-\usage{CasJobs.executeQuery(sql,context="MyDB")}
+\usage{CasJobs.executeQuery(sql, context="MyDB", format="dataframe")}
 \arguments{
   \item{sql}{sql query}
   \item{context}{database context}
+  \item{format}{output format. Choose between "list" (list object), "dataframe" (data.frame object), "csv" (csv string), "json" (json string), "fits" (raw binary data containing a fits file) and "raw" (raw binary data containing a fits file). }
 }
-
-\value{ Returns the results table from the query as a dataframe. Throws an exception if the HTTP request to the CasJobs API returns an error}
+\value{ Returns the results table from the query in different output formats defined by the input parameter 'format'. Throws an exception if the HTTP request to the CasJobs API returns an error}
 \author{
 Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
