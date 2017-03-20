@@ -1,7 +1,8 @@
 #!/usr/bin/env Rscript
 commandLineArguments = commandArgs(trailingOnly=TRUE)
 
-cat("\n---1) Updating local Git repository...\n\n")
+cat("\n===============================================================================================================\n")
+cat("---1) Updating local Git repository...\n\n")
 system("git tag -d $(git tag)") #deletes local tags
 system("git fetch --all") #fetches all remotes into local repo, including tags.
 system("git checkout master")
@@ -12,13 +13,15 @@ system("cp -f Install.R ../Install_IntermediateCopy5551234.R") #copies the insta
 
 if (length(commandLineArguments) == 0) {
 
-  cat("\n---2) Checking out latest SciScript code from local master branch...\n\n")
+  cat("\n===============================================================================================================\n")
+  cat("---2) Checking out latest SciScript code from local master branch...\n\n")
   system("git checkout master")
 
 }else{
 
   sciserverTag = commandLineArguments[1]
-  cat(paste("\n---2) Checking out latest SciScript code tagged as \"",sciserverTag,"\"...\n\n",sep=""))
+  cat("\n===============================================================================================================\n")
+  cat(paste("---2) Checking out latest SciScript code tagged as \"",sciserverTag,"\"...\n\n",sep=""))
   system(paste("git checkout tags/",sciserverTag,sep=""))
 }
 
@@ -28,13 +31,21 @@ if(length(installFile) == 1 && installFile == "Install.R"){
 }else{
   system("mv -f ../Install_IntermediateCopy5551234.R ./Install.R") #copies the install file back from one level up
 }
+installFile = system('ls ShowSciServerTags.R', intern=TRUE)
+if(length(installFile) == 1 && installFile == "Install.R"){
+  system("rm -f ../ShowSciServerTags_IntermediateCopy5551234.R") #removes the copy of the install file one level up
+}else{
+  system("mv -f ../ShowSciServerTags_IntermediateCopy5551234.R ./ShowSciServerTags.R") #copies the install file back from one level up
+}
 
 setwd("../")
 
-cat(paste("\n---3) Building the SciServer package...\n\n"))
+cat("\n===============================================================================================================\n")
+cat(paste("---3) Building the SciServer package...\n\n"))
 system("R CMD build SciScript-R")
 
 packages = system("ls -t SciServer*.tar.gz",intern=TRUE) #this lists all packages from different versions that might have already been built.
 
-cat(paste("\n---4) Installing the SciServer package from ",packages[1],"...\n\n",sep=""))
+cat("\n===============================================================================================================\n")
+cat(paste("---4) Installing the SciServer package from ",packages[1],"...\n\n",sep=""))
 system(paste("R CMD INSTALL ",packages[1],sep=""))
