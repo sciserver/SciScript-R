@@ -15,7 +15,7 @@ Some SciServer tools you can access with this package:
 
 \href{http://skyserver.sdss.org/casjobs/}{CasJobs}: Database storage and querying. \cr
      You can have access big databases, as well as save your data tables in your own database called 'MyDB'. 
-     The user can run synchronous or asynchronous SQL queries and get the result back as an R data-frame (using \code{\link[SciServer]{CasJobs.executeQuery}} or \code{\link[SciServer]{CasJobs.submitJob}}, respectively). Uploading of CSV files or R data-frames into a database table can be done using \code{\link[SciServer]{CasJobs.uploadCSVToTable}} and \code{\link[SciServer]{CasJobs.uploadDataFrameToTable}}, respectively.\cr
+     The user can run synchronous or asynchronous SQL queries and get the result back as an R data-frame (using \code{\link[SciServer]{CasJobs.executeQuery}} or \code{\link[SciServer]{CasJobs.submitJob}}, respectively). Uploading of CSV files or R data-frames into a database table can be done using \code{\link[SciServer]{CasJobs.uploadCSVDataToTable}} and \code{\link[SciServer]{CasJobs.uploadDataFrameToTable}}, respectively.\cr
 
 \href{http://portal.sciserver.org/login-portal/}{Login Portal}: Single sign-on portal to all SciServer applications. \cr
       Although some tools accept anonymous access, you can use  \code{\link[SciServer]{Authentication.login}} to login and access your own data and environment (after registering in the \href{http://portal.sciserver.org/login-portal/}{Login Portal}).    \cr
@@ -26,6 +26,8 @@ Some SciServer tools you can access with this package:
 \href{http://skyserver.sdss.org/}{SkyServer}: Access to the \href{http://www.sdss.org/}{SDSS} astronomical survey. \cr
       You can query the SDSS database using \code{\link[SciServer]{SkyServer.sqlSearch}}, get cutout images from the sky using \code{\link[SciServer]{SkyServer.getJpegImgCutout}}.  \cr
 
+\href{http://skyserver.sdss.org/}{SkyQuery}: Access to the \href{http://voservices.net/skyquery}{SkyQuery} astronomical database catalog cross-match.\cr
+      You can upload your own astronomical source catalog into your own database using \code{\link[SciServer]{SkyQuery.uploadTable}}, and cross-match it againt many other public source catalogs by running asynchronous SQL queries jobs using \code{\link[SciServer]{SkyQuery.submitJob}}.\cr
 
 
 
@@ -43,4 +45,4 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \keyword{ package }
-\seealso{ }
+

@@ -131,8 +131,7 @@ SkyQuery.listJobs <- function(queue="quick")
   if(!is.null(token) && token != "")
   {
     url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',queue,'/jobs?',sep="")
-    data = list(queryJob=list(query=unbox(query)))
-    r= GET(url,encode="json",body=data,accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
+    r= GET(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {

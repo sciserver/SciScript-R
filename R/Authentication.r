@@ -16,7 +16,7 @@ Authentication.getKeystoneUserWithToken<-function(token){
   } else {
     r= content(r)
     user={}
-    user$name=r$token$user$name
+    user$userName=r$token$user$name
     user$id=r$token$user$id
     return(user)
   }

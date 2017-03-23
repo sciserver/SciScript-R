@@ -8,7 +8,7 @@ Uploads a data table into a database (more info in http://www.voservices.net/sky
 }
 \usage{SkyQuery.uploadTable(uploadData, tableName, datasetName="MyDB", format="csv")}
 \arguments{
-  \item{data}{data table, for now accepted in CSV string format.}
+  \item{uploadData}{data table, for now accepted in CSV string format.}
   \item{tableName}{name of table (string) within dataset.}
   \item{datasetName}{name of dataset or database context (string).}
   \item{format}{format of the 'data' parameter. Set to 'csv' for now.}
