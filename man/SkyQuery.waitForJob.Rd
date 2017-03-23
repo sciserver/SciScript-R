@@ -6,9 +6,9 @@ Wait for finished job.
 \description{
 Queries the job status from SkyQuery every 2 seconds and waits for the SkyQuery job to be completed.
 }
-\usage{SkyQuery.waitForJob(jobid, verbose=TRUE)}
+\usage{SkyQuery.waitForJob(jobId, verbose=TRUE)}
 \arguments{
-  \item{jobid}{id of job (string).}
+  \item{jobId}{id of job (string).}
   \item{verbose}{message printing option.} If TRUE, will print "wait" messages on the screen while the job is not done. If FALSE, will suppress printing messages on the screen.
 }
 \value{Returns a list containing the job status and related metadata. Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}

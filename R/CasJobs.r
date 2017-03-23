@@ -205,6 +205,8 @@ CasJobs.writeFitsFileFromQuery <- function(fileName, queryString, context="MyDB"
   bytes = CasJobs.executeQuery(queryString, context=context, format="fits")
   theFile = file(fileName, "wb")
   writeBin(bytes, theFile)
+  close(theFile)
+  return(TRUE)
 }
 
 
@@ -235,7 +237,7 @@ CasJobs.uploadCSVFileToTable<-function(filePath, tableName, context="MyDB"){
 #------------------------------------
 #  Uploads  cvs data into casjobs. 
 # return response object with attributes such as status_code,headers,url
-CasJobs.uploadCSVToTable<-function(csv, tableName, context="MyDB"){
+CasJobs.uploadCSVDataToTable<-function(csv, tableName, context="MyDB"){
   
   token = Authentication.getToken()
   if(!is.null(token) && token != "")

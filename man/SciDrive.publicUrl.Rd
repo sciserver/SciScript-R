@@ -6,9 +6,9 @@ Get public URL of file.
 \description{
 Gets the public URL of a file (or directory) in SciDrive.
 }
-\usage{SciDrive.publicUrl(scidrivePath)}
+\usage{SciDrive.publicUrl(path)}
 \arguments{
-  \item{scidrivePath}{path of the file (or directory) in SciDrive.}
+  \item{path}{path of the file (or directory) in SciDrive.}
 }
 \value{
 URL of a file in SciDrive (string). Throws an exception if the user is not logged into SciServer (use \code{\link[SciServer]{Authentication.login}} for that purpose). Throws an exception if the HTTP request to the SciDrive API returns an error.

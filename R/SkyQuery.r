@@ -5,12 +5,12 @@
 ######################################################################################################################
 # Jobs:
 
-SkyQuery.getJobStatus <- function(jobID)
+SkyQuery.getJobStatus <- function(jobId)
 {
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobID),sep="")
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobId),sep="")
     
     r= GET(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     
@@ -24,13 +24,13 @@ SkyQuery.getJobStatus <- function(jobID)
   }
 }
 
-SkyQuery.cancelJob <- function(jobID)
+SkyQuery.cancelJob <- function(jobId)
 {
   
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobID),sep="")
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobId),sep="")
     r= DELETE(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     
     if(r$status_code != 200) {
@@ -98,7 +98,7 @@ SkyQuery.submitJob <- function(query, queue="quick")
   }
 }
 
-SkyQuery.waitForJob<-function(jobid, verbose=TRUE){
+SkyQuery.waitForJob<-function(jobId, verbose=TRUE){
   complete = FALSE
   
   waitingStr = "Waiting."
@@ -112,7 +112,7 @@ SkyQuery.waitForJob<-function(jobid, verbose=TRUE){
     if(verbose){
       print(waitingStr)
     }
-    jobDesc = SkyQuery.getJobStatus(jobid)
+    jobDesc = SkyQuery.getJobStatus(jobId)
     jobStatus = jobDesc$queryJob$status
     if (jobStatus == "completed"){
       complete = TRUE
@@ -122,7 +122,7 @@ SkyQuery.waitForJob<-function(jobid, verbose=TRUE){
       Sys.sleep(2)
     }
   }
-  return (j$queryJob)
+  return (jobDesc$queryJob)
 }
 
 SkyQuery.listJobs <- function(queue="quick")

@@ -21,7 +21,7 @@ Gerard Lemson, Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{CasJobs.uploadCSVToTable}}.
+\code{\link[SciServer]{CasJobs.uploadCSVDataToTable}}, \code{\link[SciServer]{CasJobs.uploadCSVFileToTable}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr

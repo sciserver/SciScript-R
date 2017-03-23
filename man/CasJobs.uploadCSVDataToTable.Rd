@@ -1,14 +1,14 @@
-\name{CasJobs.uploadCSVToTable}
-\alias{CasJobs.uploadCSVToTable}
+\name{CasJobs.uploadCSVDataToTable}
+\alias{CasJobs.uploadCSVDataToTable}
 \title{
-Upload CSV string table into a DB table..
+Upload CSV string table into a DB table.
 }
 \description{
 
 Uploads a table in CSV string format into a CasJobs database table.
 
 }
-\usage{CasJobs.uploadCSVToTable(csv, tableName, context="MyDB")}
+\usage{CasJobs.uploadCSVDataToTable(csv, tableName, context="MyDB")}
 \arguments{
   \item{csv}{CSV string representing a table (string)}
   \item{tableName}{Name of table (string)}
@@ -28,6 +28,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-response = CasJobs.uploadCSVToTable(csvString="col1,col2\n1,2", tableName="MyNewTable", context="MyDB")
+response = CasJobs.uploadCSVDataToTable(csv="col1,col2\n1,2", tableName="MyNewTable", context="MyDB")
 }
 \keyword{SciServer}

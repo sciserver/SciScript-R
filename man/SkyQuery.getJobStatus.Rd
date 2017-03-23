@@ -6,9 +6,9 @@ Get job status.
 \description{
 Gets the status of a job, as well as other related metadata (more info in http://www.voservices.net/skyquery).
 }
-\usage{SkyQuery.getJobStatus(jobID)}
+\usage{SkyQuery.getJobStatus(jobId)}
 \arguments{
-  \item{jobID}{the ID of the job (string), which is obtained at the moment of submitting the job.}
+  \item{jobId}{the ID of the job (string), which is obtained at the moment of submitting the job.}
 }
 \value{Returns a list containing the job status and other related metadata. Throws an exception if the user is not logged into SciServer (use Authentication.login for that purpose). Throws an exception if the HTTP request to the SkyQuery API returns an error.}
 \author{

@@ -24,5 +24,5 @@ LoginPortal.getToken<-function(){
 # Deprecated. Use Authentication.setToken instead. 
 LoginPortal.setToken<-function(token){
   .Deprecated("Authentication.setToken")
-  Authentication.setToken()
+  Authentication.setToken(token)
 }
