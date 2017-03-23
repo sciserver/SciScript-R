@@ -22,6 +22,7 @@ Maintainer: Manuchehr Taghizadeh-Popp.
 
 Authors: Gerard Lemson, Manuchehr Taghizadeh-Popp.
 
+
 ## 1) Cloning the code locally:
     
 1.1.- Run `git clone http://github.com/sciserver/SciScript-R.git`
@@ -56,3 +57,12 @@ There are 2 possibilities: automatic or manual installation.
 
 4.1.- Run `Rscript CreateHtmlDocs.R dir`, where `dir` is the directory where the html files will be created. If `dir` is not specified, then the html files will be created in `./html/`
 
+## 5) Unit Tests:
+
+5.1.- Open `./Tests/RunUnitTests.R` and edit the `Authentication_loginName` and `Authentication_loginPassword` parameters in order to run the Tests under the credentials of a (test) user.
+
+5.2.- Run `Rscript RunUnitTests.R` while in the `./Tests` directory in order to run the unit tests for the SciScript-R modules. Be sure all that all tests end with an `done successfully` status.
+
+## 6) Examples.
+
+6.1.- In the directory `./Examples` you can find python scripts or Jupyter notebooks that will run sample code using SciScript-R modules and methods.
