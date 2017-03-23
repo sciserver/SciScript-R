@@ -10,7 +10,7 @@ Executes a quick CasJobs query and writes the result to a local Fits file (http:
 }
 \usage{CasJobs.writeFitsFileFromQuery(fileName, queryString, context="MyDB")}
 \arguments{
-  \item{df}{path to the local Fits file to be created (string).}
+  \item{fileName}{path to the local Fits file to be created (string).}
   \item{queryString}{sql query (string)}
   \item{context}{database context (string)}
 }
@@ -21,7 +21,7 @@ Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{CasJobs.uploadCSVToTable}}.
+\code{\link[SciServer]{CasJobs.uploadCSVDataToTable}}.
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
@@ -29,6 +29,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-response = CasJobs.writeFitsFileFromQuery(fileName="MyFile.fits", queryString="select 1 as foo,2 as bar"), context="MyDB")
+response = CasJobs.writeFitsFileFromQuery(fileName="MyFile.fits", queryString="select 1 as foo,2 as bar", context="MyDB")
 }
 \keyword{SciServer}
