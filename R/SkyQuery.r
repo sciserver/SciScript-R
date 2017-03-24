@@ -101,7 +101,7 @@ SkyQuery.submitJob <- function(query, queue="quick")
 SkyQuery.waitForJob<-function(jobId, verbose=TRUE){
   complete = FALSE
   
-  waitingStr = "Waiting."
+  waitingStr = "Waiting..."
   if(verbose){
     print(waitingStr)
   }

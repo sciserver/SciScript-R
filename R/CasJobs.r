@@ -175,7 +175,7 @@ CasJobs.waitForJob<-function(jobId, verbose=TRUE){
     complete = FALSE
 
     if(verbose){
-      waitingStr = "Waiting."
+      waitingStr = "Waiting..."
       print(waitingStr)
     }
     complete=FALSE
@@ -183,7 +183,7 @@ CasJobs.waitForJob<-function(jobId, verbose=TRUE){
     ok=list(3,4,5)
     while (!complete){
       if(verbose){
-        waitingStr=paste(waitingStr,'.',sep="")
+        waitingStr=paste(waitingStr,sep="")
         print(waitingStr)
       }
       jobDesc = CasJobs.getJobStatus(jobId)

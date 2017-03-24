@@ -6,8 +6,8 @@ test.Authentication_allMethods<- function(){
 
   token1 = Authentication.login(Authentication_loginName, Authentication_loginPassword);
   token2 = Authentication.getToken()
-  token4 = Authentication.token
   checkEquals(token1, token2)
+  token4 = Authentication.token
   checkEquals(token1, token4)
 
   user = Authentication.getKeystoneUserWithToken(token1)
@@ -16,6 +16,5 @@ test.Authentication_allMethods<- function(){
   Authentication.setToken(newToken1)
   checkEquals(newToken1, Authentication.getToken())
   
+  token1 = Authentication.login(Authentication_loginName, Authentication_loginPassword);
 }
-
-

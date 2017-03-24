@@ -14,6 +14,7 @@ test.LoginPortal_allMethods<- function(){
   LoginPortal.setToken(newToken1)
   checkEquals(newToken1, LoginPortal.getToken())
   
+  token1 = LoginPortal.login(Authentication_loginName, Authentication_loginPassword);
 }
 
 
