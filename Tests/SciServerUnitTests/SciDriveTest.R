@@ -5,7 +5,7 @@ token1 = Authentication.login(Authentication_loginName, Authentication_loginPass
 
 test.SciDrive_createContainer_directoryList_delete <- function(){
 
-  res = try(SciDrive.createContainer(SciDrive_Directory), silent = TRUE)
+  res = try(SciDrive.delete(SciDrive_Directory), silent = TRUE)
   
   responseCreate = SciDrive.createContainer(SciDrive_Directory)
   checkTrue(responseCreate == TRUE)
@@ -17,7 +17,7 @@ test.SciDrive_createContainer_directoryList_delete <- function(){
 
 test_SciDrive_publicUrl <-function(){
   
-  res = try(SciDrive.createContainer(SciDrive_Directory), silent = TRUE)
+  res = try(SciDrive.delete(SciDrive_Directory), silent = TRUE)
   
   responseCreate = SciDrive.createContainer(SciDrive_Directory)
   checkTrue(responseCreate == TRUE)
@@ -29,7 +29,7 @@ test_SciDrive_publicUrl <-function(){
 
 test.SciDrive_upload_download_delete <- function(){
 
-  res = try(file.remove(SciDrive_FileName), silent = TRUE)
+  res = try(file.remove(SciDrive_FilePath), silent = TRUE)
 
   file = file(SciDrive_FileName)
   writeLines(SciDrive_FileContent, file, sep="")
@@ -41,5 +41,5 @@ test.SciDrive_upload_download_delete <- function(){
   checkTrue(fileContent == SciDrive_FileContent)
   responseDelete = SciDrive.delete(SciDrive_Directory)
   checkTrue(responseDelete == TRUE)
-  file.remove(SciDrive_FileName)
+  file.remove(SciDrive_FilePath)
 }

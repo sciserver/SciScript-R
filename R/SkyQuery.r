@@ -114,7 +114,7 @@ SkyQuery.waitForJob<-function(jobId, verbose=TRUE){
     }
     jobDesc = SkyQuery.getJobStatus(jobId)
     jobStatus = jobDesc$queryJob$status
-    if (jobStatus == "completed"){
+    if (jobStatus == "completed" || jobStatus == "failed"){
       complete = TRUE
       if(verbose)
         print("Job Done!")

@@ -1,5 +1,6 @@
 library('RUnit')
 library(SciServer)
+library(data.table)
 
 #======================================================================================================================================
 # CONFIGURATION
@@ -36,7 +37,7 @@ SciDrive_FileContent = "Column1,Column2\n4.5,5.5\n"
 
 SkyQuery_TestTableName = "TestTable_SciScript_R"
 SkyQuery_TestTableCSV = "Column1,Column2\n4.5,5.5\n"
-SkyQuery_TestTableCSVdownloaded = "X.ID,Column1,Column2\n1,4.5,5.5\n"
+SkyQuery_TestTableCSVdownloaded = "ID,Column1,Column2\n1,4.5,5.5\n"
 SkyQuery_Query = "select 4.5 as Column1, 5.5 as Column2"
 
 

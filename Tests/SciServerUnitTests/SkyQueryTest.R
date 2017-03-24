@@ -24,7 +24,7 @@ test.SkyQuery_getJobStatus <-function(){
 test.SkyQuery_waitForJob <-function(){
   jobId = SkyQuery.submitJob(query=SkyQuery_Query, queue="quick")
   jobDescription = SkyQuery.waitForJob(jobId=jobId, verbose=TRUE)
-  checkTrue(jobDescription$status == "completed")
+  checkTrue(jobDescription$status == "completed" || jobDescription$status == "failed")
 }
 
 test.SkyQuery_cancelJob <-function(){

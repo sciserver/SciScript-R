@@ -67,7 +67,7 @@ test.CasJobs_uploadDataFrameToTable_uploadCSVDataToTable<-function(){
   res = try(CasJobs.executeQuery(sql=paste("DROP TABLE ", CasJobs_TestTableName2, sep=""), context="MyDB", format="dataframe"),silent=TRUE)
     
     
-  df = read.csv(textConnection(CasJobs_TestTableCSV))
+  df = fread(CasJobs_TestTableCSV)
   
   result = CasJobs.uploadDataFrameToTable(df, tableName=CasJobs_TestTableName2, context="MyDB")
   checkTrue(result)
