@@ -247,7 +247,10 @@ SkyQuery.getTable <- function(tableName, datasetName="MyDB", top = NULL)
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
-      t=read.csv(textConnection(content(r, encoding="UTF-8")),sep="\t")
+      #t=read.csv(textConnection(content(r, encoding="UTF-8")),sep="\t")
+      table = content(r, encoding="UTF-8")
+      table = substring(table,2)
+      t = fread(table, sep="\t")
       return(t)
     }
   }else{ 

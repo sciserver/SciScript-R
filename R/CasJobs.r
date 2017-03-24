@@ -57,9 +57,9 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
   }
 
   atype = NULL
-  if( format == "list" || format =="json" || format == "dataframe"){
+  if( format == "list" || format =="json"){
     atype="application/json"
-  }else if (format == "csv"){
+  }else if (format == "csv" || format == "dataframe"){
     atype = "text/plain"
   }else if(format == "fits"){
     atype = "application/fits"
@@ -80,8 +80,15 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
     if(format == "list"){
       return(content(r)) #read.csv(textConnection(content(r, encoding="UTF-8")))
     }else if(format == "dataframe"){
-        list = content(r);
-        return(data.frame(list[[1]]$Rows))
+        #list = content(r);
+        #return(data.frame(list[[1]]$Rows))
+        table = content(r, encoding="UTF-8")
+        if(table == "\n"){
+          return(data.frame(NULL))
+        }else{
+          t = fread(table, showProgress = FALSE)  # showProgress = FALSE supresses the warning mesages
+          return(t);
+        }
     }else if(format == "json"){
       return(content(r, "text", encoding="UTF-8"))
     }else if(format == "csv"){

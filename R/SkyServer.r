@@ -38,7 +38,8 @@ SkyServer.sqlSearch  <- function(sql, dataRelease=NULL)
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
-    t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    #t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    t = fread(content(r, encoding="UTF-8") , skip=1)
     return(t)
   }
 
@@ -140,7 +141,8 @@ SkyServer.radialSearch  <- function(ra, dec, radius=1, coordType="equatorial", w
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
-    t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    #t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    t = fread(content(r, encoding="UTF-8") , skip=1)
     return(t)
   }
 }
@@ -189,7 +191,8 @@ SkyServer.rectangularSearch  <- function(min_ra, max_ra, min_dec, max_dec, coord
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
-    t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    #t=read.csv(textConnection(content(r, encoding="UTF-8")), comment.char = "#")
+    t = fread(content(r, encoding="UTF-8") , skip=1)
     return(t)
   }
 }
@@ -275,4 +278,3 @@ SkyServer.objectSearch  <- function(objId=NULL, specObjId=NULL, apogee_id=NULL, 
     return(content(r))
   }
 }
-
