@@ -249,8 +249,10 @@ SkyQuery.getTable <- function(tableName, datasetName="MyDB", top = NULL)
     } else {
       #t=read.csv(textConnection(content(r, encoding="UTF-8")),sep="\t")
       table = content(r, encoding="UTF-8")
-      table = substring(table,2)
       t = fread(table, sep="\t")
+      if(startsWith(names(t)[1],"#")){
+        names(t)[1] <- substring(names(t)[1],2)
+      }
       return(t)
     }
   }else{ 

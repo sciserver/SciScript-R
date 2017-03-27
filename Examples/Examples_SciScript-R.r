@@ -136,14 +136,14 @@ print(result)
 
 #delete local FITS file just created:
 
-system(paste("rm ", CasJobs_TestFitsFile, sep=""))
+file.remove(CasJobs_TestFitsFile)
 
-#uploads a Pandas dataframe into a Database table
+#uploads a dataframe into a Database table
 
 df = CasJobs.executeQuery(sql=CasJobs_TestQuery, context=CasJobs_TestDatabase, format="dataframe")
 response = CasJobs.uploadDataFrameToTable(df, tableName=CasJobs_TestTableName2, context="MyDB")
 table = CasJobs.executeQuery(sql=paste("select * from ", CasJobs_TestTableName2, sep=""), context="MyDB", format="dataframe")
-print(result)
+print(response)
 print(table)
 
 # drop or delete table just created:
@@ -160,7 +160,7 @@ print(df2)
 
 # drop or delete table just created:
 
-result4 = CasJobs.executeQuery(sql=paste("DROP TABLE ", CasJobs_TestTableName2, sep=""), context=CasJobs_TestDatabase, format="dataframe")
+result4 = CasJobs.executeQuery(sql=paste("DROP TABLE ", CasJobs_TestTableName2, sep=""), context="MyDB", format="dataframe")
 print(result4)
 
 # *******************************************************************************************************
@@ -215,15 +215,15 @@ SciDrive_FileName = "TestFile.csv"
 SciDrive_FilePath = "./TestFile.csv"
 SciDrive_FileContent = "Column1,Column2\n4.5,5.5\n"
 
-#list content and metadata of top level directory in SciDrive
-
-dirList = SciDrive.directoryList("")
-print(dirList)
-
 #create a folder or container in SciDrive
 
 responseCreate = SciDrive.createContainer(SciDrive_Directory)
 print(responseCreate)
+
+#list content and metadata of directory in SciDrive
+
+dirList = SciDrive.directoryList(SciDrive_Directory)
+print(dirList)
 
 #get the public url to access the directory content in SciDrive
 
@@ -264,7 +264,7 @@ print(responseDelete)
 
 #delete local file:
 
-system(paste("rm ", SciDrive_FilePath))
+file.remove(SciDrive_FilePath)
 
 # *******************************************************************************************************
 # SkyQuery section:
@@ -328,6 +328,13 @@ isCanceled = SkyQuery.cancelJob(jobId)
 print(isCanceled)
 print("job status:")
 print(SkyQuery.getJobStatus(jobId=jobId))
+
+# get list of jobs
+
+quickJobsList = SkyQuery.listJobs('quick')
+longJobsList = SkyQuery.listJobs('long')
+print(quickJobsList)
+print(longJobsList)
 
 #define csv table to be uploaded to into MyDB in SkyQuery
 
