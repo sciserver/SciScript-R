@@ -1,4 +1,5 @@
-library(SciServer) 
+library(SciServer)
+library(jpeg)
 
 token1 = Authentication.login(Authentication_loginName, Authentication_loginPassword)
 
@@ -13,8 +14,9 @@ test_SkyServer_sqlSearch <- function(){
 
 test_SkyServer_getJpegImgCutout <- function(){
   
-  img = SkyServer.getJpegImgCutout(ra=197.614455642896, dec=18.438168853724, width=50, height=50, scale=0.4, dataRelease=SkyServer_DataRelease,opt="OG",query="SELECT TOP 100 p.objID, p.ra, p.dec, p.r FROM fGetObjFromRectEq(197.6,18.4,197.7,18.5) n, PhotoPrimary p WHERE n.objID=p.objID")
-  checkTrue(dim(img)[1] == SkyServer_ImageSideLength)
+  img = SkyServer.getJpegImgCutout(ra=197.614455642896, dec=18.438168853724, width=512, height=512, scale=0.4, dataRelease=SkyServer_DataRelease,opt="OG",query="SELECT TOP 100 p.objID, p.ra, p.dec, p.r FROM fGetObjFromRectEq(197.6,18.4,197.7,18.5) n, PhotoPrimary p WHERE n.objID=p.objID")
+  im = readJPEG("TestGalaxy.jpeg")
+  checkTrue(all.equal(img,im))
 }
 
 test_SkyServer_radialSearch <- function(){
