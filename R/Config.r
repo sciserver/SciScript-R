@@ -17,6 +17,12 @@ Config.DataRelease = 'DR13' # SDSS data release. E.g., DR13
 Config.KeystoneTokenFilePath =  "/home/idies/keystone.token" #this path to the file containing the user's keystone token is hardcoded in the sciserver-compute environment
 #Config.version: defines the SciServer release tag, to which this package belongs
 Config.Version = "sciserver-v1.10.0" #sciserver release version
+#Config.JobmApiURL: defines the base URL of the Jobs API
+Config.JobmApiURL = "http://scitest12.pha.jhu.edu/racm/jobm/rest"
+#Config.ComputeJobDirectoryFile: defines the path to the file in the "Docker job container" that shows the directory path where the asynchronous compute job is being executed.
+Config.ComputeJobDirectoryFile = "/home/idies/jobs.path" 
+#Config.JobmApiURL: defines the base URL of the FileService API
+Config.FileServiceURL = 'http://scitest12.pha.jhu.edu/fileservice/api';
 
 
 # returns TRUE if the library is running inside the SciServer-Compute, and FALSE if not
