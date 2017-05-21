@@ -8,8 +8,16 @@ CasJobs.getSchemaName<-function(){
     token = Authentication.getToken()
     if(!is.null(token) && token != "")
     {
+    
+      taskName = ""
+      if(Config.isSciServerComputeEnvironment()){
+	taskName = "Compute.SciScript-R.CasJobs.getSchemaName"
+      }else{
+	taskName = "SciScript-R.CasJobs.getSchemaName"
+      }
+
       keystoneUserId = Authentication.getKeystoneUserWithToken(token)$id
-      usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,sep="")
+      usersUrl = paste(Config.CasJobsRESTUri,"/users/", keystoneUserId,"?TaskName=",taskName,sep="")
       r = GET(usersUrl,add_headers('X-Auth-Token'=token),content_type_json())
       if(r$status_code != 200) {
         stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -29,7 +37,15 @@ CasJobs.getTables<-function(context="MyDB"){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables",sep="")
+ 
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.CasJobs.getTables"
+    }else{
+      taskName = "SciScript-R.CasJobs.getTables"
+    }
+
+    TablesUrl = paste(Config.CasJobsRESTUri,"/contexts/", context, "/Tables","?TaskName=",taskName,sep="")
     r = GET(TablesUrl,add_headers('X-Auth-Token'=token),content_type_json())
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -47,13 +63,13 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
   
   token = Authentication.getToken()
   
-  url=paste(Config.CasJobsRESTUri,'/contexts/',context,'/query',sep='')
+  url=paste(Config.CasJobsRESTUri,'/contexts/',context,'/query',"?TaskName=",taskName,sep='')
   
-  TaskName="";
+  taskName="";
   if(Config.isSciServerComputeEnvironment()){
-    TaskName = "Compute.SciScript-R.CasJobs.executeQuery"
+    taskName = "Compute.SciScript-R.CasJobs.executeQuery"
   }else{
-    TaskName = "SciScript-R.CasJobs.executeQuery"
+    taskName = "SciScript-R.CasJobs.executeQuery"
   }
 
   atype = NULL
@@ -70,9 +86,9 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
   }
 
   if(!is.null(token) && token != "") {
-    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName),accept(atype),content_type_json(),add_headers('X-Auth-Token'=token))
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=taskName),accept(atype),content_type_json(),add_headers('X-Auth-Token'=token))
   } else {
-    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=TaskName), accept(atype),content_type_json())
+    r=POST(url,encode="json",body=list(Query=unbox(sql), TaskName=taskName), accept(atype),content_type_json())
   }
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -112,16 +128,17 @@ CasJobs.submitJob<-function(sql="", context="MyDB"){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs",sep="")
-    
-    TaskName="";
+  
+    taskName="";
     if(Config.isSciServerComputeEnvironment()){
-      TaskName = "Compute.SciScript-R.CasJobs.submitJob"
+      taskName = "Compute.SciScript-R.CasJobs.submitJob"
     }else{
-      TaskName = "SciScript-R.CasJobs.submitJob"
+      taskName = "SciScript-R.CasJobs.submitJob"
     }
+  
+    QueryUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/jobs","?TaskName=",taskName,sep="")
 
-    body = list(Query=unbox(sql), TaskName=TaskName)
+    body = list(Query=unbox(sql), TaskName=taskName)
     r = PUT(QueryUrl,encode="json",body=body,content_type_json(),accept("text/plain"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -143,7 +160,15 @@ CasJobs.getJobStatus<-function(jobId){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobId,sep="")
+
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.CasJobs.getJobStatus"
+    }else{
+      taskName = "SciScript-R.CasJobs.getJobStatus"
+    }
+  
+    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobId,"?TaskName=",taskName,sep="")
 
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
@@ -161,7 +186,15 @@ CasJobs.cancelJob<-function(jobId){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobId,sep="")
+
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.CasJobs.cancelJob"
+    }else{
+      taskName = "SciScript-R.CasJobs.cancelJob"
+    }
+  
+    QueryUrl = paste(Config.CasJobsRESTUri,"/jobs/", jobId,"?TaskName=",taskName,sep="")
     
     r = GET(QueryUrl,content_type_json(),accept("application/json"),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
@@ -226,7 +259,15 @@ CasJobs.uploadCSVFileToTable<-function(filePath, tableName, context="MyDB"){
   if(!is.null(token) && token != "")
   {
     if(file.exists(filePath)){
-      tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
+
+      taskName = ""
+      if(Config.isSciServerComputeEnvironment()){
+	taskName = "Compute.SciScript-R.CasJobs.cancelJob"
+      }else{
+	taskName = "SciScript-R.CasJobs.cancelJob"
+      }
+
+      tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,"?TaskName=",taskName,sep="")
       r = POST(tablesUrl,encode="multipart",body=upload_file(filePath),add_headers('X-Auth-Token'=token))
       if(r$status_code == 200) {
         return(TRUE)
@@ -249,7 +290,15 @@ CasJobs.uploadCSVDataToTable<-function(csv, tableName, context="MyDB"){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-      tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
+
+      taskName = ""
+      if(Config.isSciServerComputeEnvironment()){
+	taskName = "Compute.SciScript-R.CasJobs.cancelJob"
+      }else{
+	taskName = "SciScript-R.CasJobs.cancelJob"
+      }
+  
+      tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,"?TaskName=",taskName,sep="")
       r = POST(tablesUrl,content_type("text/csv"),body=csv,add_headers('X-Auth-Token'=token))
       if(r$status_code == 200) {
         return(TRUE)
@@ -268,7 +317,15 @@ CasJobs.uploadDataFrameToTable<-function(df, tableName, context="MyDB"){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,sep="")
+  
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.CasJobs.cancelJob"
+    }else{
+      taskName = "SciScript-R.CasJobs.cancelJob"
+    }
+  
+    tablesUrl = paste(Config.CasJobsRESTUri,"/contexts/",context,"/Tables/",tableName,"?TaskName=",taskName,sep="")
     body=capture.output(write.csv(df,row.names=FALSE,quote=FALSE))
     r = POST(tablesUrl,encode="multipart",body=body,add_headers('X-Auth-Token'=token))
     if(r$status_code == 200) {

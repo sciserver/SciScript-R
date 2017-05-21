@@ -9,7 +9,14 @@ Authentication.token = NULL
 # returns a dictionary with name/id for the user corresponding to the specified token
 Authentication.getKeystoneUserWithToken<-function(token){
   
-  loginURL = paste(Config.AuthenticationURL,"/",token,sep='')
+  taskName = ""
+  if(Config.isSciServerComputeEnvironment()){
+    taskName = "Compute.SciScript-R.Authentication.getKeystoneUserWithToken"
+  }else{
+    taskName = "SciScript-R.Authentication.getKeystoneUserWithToken"
+  }
+  
+  loginURL = paste(Config.AuthenticationURL,"/",token,"?TaskName=",taskName,sep='')
   r=GET(loginURL,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
   if(r$status_code != 200) {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -24,7 +31,15 @@ Authentication.getKeystoneUserWithToken<-function(token){
 
 # login and return token which is then also set as the Sys environment variable "sciservertoken" and the variable Authentication.token
 Authentication.login<-function(UserName, Password){
-  loginURL = Config.AuthenticationURL
+
+  taskName = ""
+  if(Config.isSciServerComputeEnvironment()){
+    taskName = "Compute.SciScript-R.Authentication.login"
+  }else{
+    taskName = "SciScript-R.Authentication.login"
+  }
+
+  loginURL = paste(Config.AuthenticationURL,"?TaskName=",taskName,sep="")
   authJson = list(auth=list(identity=list(password=list(user=list(name=unbox(UserName),password=unbox(Password))))))
   r=POST(loginURL ,encode="json",body=authJson,accept("text/plain"),content_type_json())
   if(r$status_code != 200) {
