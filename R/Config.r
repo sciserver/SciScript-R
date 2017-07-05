@@ -16,7 +16,7 @@ Config.DataRelease = 'DR13' # SDSS data release. E.g., DR13
 #Config.KeystoneTokenPath: defines the local path (string) to the file containing the user's authentication token in the SciServer-Compute environment
 Config.KeystoneTokenFilePath =  "/home/idies/keystone.token" #this path to the file containing the user's keystone token is hardcoded in the sciserver-compute environment
 #Config.version: defines the SciServer release tag, to which this package belongs
-Config.Version = "sciserver-v1.10.0" #sciserver release version
+Config.Version = "sciserver-v1.10.2" #sciserver release version
 
 
 # returns TRUE if the library is running inside the SciServer-Compute, and FALSE if not

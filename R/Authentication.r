@@ -37,35 +37,54 @@ Authentication.login<-function(UserName, Password){
 }
 
 Authentication.getToken<-function(){
-  token <- NULL
-  if(exists("Authentication.token")){
-    token <- Authentication.token
-  }
-  if (is.null(token)) {
-    token = Sys.getenv("sciservertoken")
-    if (!is.null(token) && token != ""){
-      Authentication.setToken(token)
+
+  if(Config.isSciServerComputeEnvironment() == TRUE){
+    
+    f = Config.KeystoneTokenFilePath
+    if(file.exists(f)){
+      token = readLines(f)
+      if (!is.null(token) && token != ""){
+        unlockBinding("Authentication.token", as.environment("package:SciServer"))
+        assign("Authentication.token",token,envir=as.environment("package:SciServer"))
+        Sys.unsetenv("sciservertoken")
+        Sys.setenv(sciservertoken=token)
+        return(token)
+      }else{
+        warning(paste("In Authentication.getToken: Cannot find token in system token file ",Config.KeystoneTokenFilePath, sep=""))
+        return(NULL)
+      }
     }else{
-      token=NULL
-      f = Config.KeystoneTokenFilePath
-      if(file.exists(f)){
-        token = readLines(f)
-        if (!is.null(token) && token != ""){
-          Authentication.setToken(token)
-        }else{
-          return(NULL)
-        }
+      warning(paste("In Authentication.getToken: Cannot find system token file ",Config.KeystoneTokenFilePath,sep=""))
+      return(NULL)
+    }
+    
+  }else{
+    token <- NULL
+    if(exists("Authentication.token")){
+      token <- Authentication.token
+    }
+    if (is.null(token)) {
+      token = Sys.getenv("sciservertoken")
+      if (!is.null(token) && token != ""){
+        Authentication.setToken(token)
+        return(token)
+      }else{
+        warning("In Authentication.getToken: Authentication token is not defined: the user did not log in with the Authentication.login function")
+        return(NULL)
       }
     }
   }
-  return(token)
 }
 
 Authentication.setToken<-function(token){
-
-  unlockBinding("Authentication.token", as.environment("package:SciServer"))
-  assign("Authentication.token",token,envir=as.environment("package:SciServer"))
-
-  Sys.unsetenv("sciservertoken")
-  Sys.setenv(sciservertoken=token)
+  
+  if( Config.isSciServerComputeEnvironment() == TRUE){
+    warning("Authentication token cannot be set to arbitary value when inside SciServer-Compute environment.")
+  }else{
+    unlockBinding("Authentication.token", as.environment("package:SciServer"))
+    assign("Authentication.token",token,envir=as.environment("package:SciServer"))
+  
+    Sys.unsetenv("sciservertoken")
+    Sys.setenv(sciservertoken=token)
+  }
 }
