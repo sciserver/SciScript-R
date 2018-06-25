@@ -505,7 +505,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
 }
 
 
-Jobs.submitRDBQueryJob <- function(sqlQuery, rdbComputeDomain=None, databaseContextName = NULL, resultsName='queryResults', resultsFolderPath="", jobAlias = ""){
+Jobs.submitRDBQueryJob <- function(sqlQuery, rdbComputeDomain=NULL, databaseContextName = NULL, resultsName='queryResults', resultsFolderPath="", jobAlias = ""){
   
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
