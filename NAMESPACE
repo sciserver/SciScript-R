@@ -1,5 +1,5 @@
 export(SkyServer.sqlSearch,SkyServer.getJpegImgCutout,SkyServer.radialSearch,SkyServer.rectangularSearch, SkyServer.objectSearch)
-export(CasJobs.getSchemaName,CasJobs.getTables,CasJobs.executeQuery,CasJobs.submitJob,CasJobs.getJobStatus,CasJobs.uploadCSVDataToTable,CasJobs.uploadDataFrameToTable,CasJobs.waitForJob,CasJobs.cancelJob,CasJobs.writeFitsFileFromQuery,CasJobs.uploadCSVFileToTable)
+export(CasJobs.getSchemaName,CasJobs.getTables,CasJobs.executeQuery,CasJobs.submitJob,CasJobs.getJobStatus,CasJobs.uploadCSVDataToTable,CasJobs.uploadDataFrameToTable,CasJobs.waitForJob,CasJobs.cancelJob,CasJobs.writeFitsFileFromQuery,CasJobs.uploadCSVFileToTable,CasJobs.taskName)
 export(Authentication.getKeystoneUserWithToken, Authentication.login, Authentication.getToken, Authentication.setToken, Authentication.token)
 export(LoginPortal.getKeystoneUserWithToken, LoginPortal.login, LoginPortal.getToken, LoginPortal.setToken)
 export(SciDrive.createContainer,SciDrive.upload,SciDrive.publicUrl,SciDrive.download,SciDrive.delete, SciDrive.directoryList)
