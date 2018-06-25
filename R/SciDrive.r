@@ -128,7 +128,7 @@ SciDrive.download<-function(path, format="text", localFilePath=NULL){
     
     fileUrl = SciDrive.publicUrl(path)
     
-    r = GET(paste(fileUrl,"?TaskName=",taskName,sep="")
+    r = GET(paste(fileUrl,"?TaskName=",taskName,sep=""))
     if(r$status_code == 200){
       if(!is.null(localFilePath) && localFilePath != ""){
         bytes = content(r, "raw");
