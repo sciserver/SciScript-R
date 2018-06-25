@@ -539,7 +539,7 @@ Jobs.submitRDBQueryJob <- function(sqlQuery, rdbComputeDomain=NULL, databaseCont
     
     targets = list();
     if(typeof(resultsName) == "character"){
-      targets = c(targets, list(location= resultsName, type= 'FILE_CSV', resultNumber= 1));
+      targets[[length(targets)+1]] <- list(location= resultsName, type= 'FILE_CSV', resultNumber= 1);
       
     }
     else if(typeof(resultsName) == "list"){
@@ -548,7 +548,7 @@ Jobs.submitRDBQueryJob <- function(sqlQuery, rdbComputeDomain=NULL, databaseCont
     #}
       for( i in 1:length(resultsName)){
         if(typeof(resultsName[[i]]) == "character")
-          targets = c(targets,list(location= resultsName[[i]], type= 'FILE_CSV', resultNumber= i))
+          targets[[length(targets)+1]] <- list(location= resultsName[[i]], type= 'FILE_CSV', resultNumber= i)
         else
           stop("Elements of array 'resultsName' are not strings");
       }
@@ -569,7 +569,7 @@ Jobs.submitRDBQueryJob <- function(sqlQuery, rdbComputeDomain=NULL, databaseCont
     
     
     url = paste(Config.RacmApiURL,"/jobm/rest/jobs/rdb?TaskName=",taskName,sep="")
-    r = POST(url,add_headers('X-Auth-Token'=token),data = dockerJobModel, content_type_json(), encode="json", accept("application/json"))
+    r = POST(url,add_headers('X-Auth-Token'=token),body = dockerJobModel, content_type_json(), encode="json", accept("application/json"))
     
     if(r$status_code != 200) {
       stop(paste("Error when submitting a job to the JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
