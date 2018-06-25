@@ -10,7 +10,15 @@ SkyQuery.getJobStatus <- function(jobId)
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobId),sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.getJobStatus"
+    }else{
+      taskName = "SciScript-R.SkyQuery.getJobStatus"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobId),"?TaskName=",taskName,sep="")
     
     r= GET(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     
@@ -30,7 +38,14 @@ SkyQuery.cancelJob <- function(jobId)
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobId),sep="")
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.cancelJob"
+    }else{
+      taskName = "SciScript-R.SkyQuery.cancelJob"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/jobs/',toString(jobId),"?TaskName=",taskName,sep="")
     r= DELETE(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     
     if(r$status_code != 200) {
@@ -48,7 +63,14 @@ SkyQuery.listQueues <- function()
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues',sep="")
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.listQueues"
+    }else{
+      taskName = "SciScript-R.SkyQuery.listQueues"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues',"?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -66,7 +88,15 @@ SkyQuery.getQueueInfo <- function(queue)
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',toString(queue),sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.getQueueInfo"
+    }else{
+      taskName = "SciScript-R.SkyQuery.getQueueInfo"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',toString(queue),"?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -84,7 +114,14 @@ SkyQuery.submitJob <- function(query, queue="quick")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',queue,'/jobs',sep="")
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.submitJob"
+    }else{
+      taskName = "SciScript-R.SkyQuery.submitJob"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',queue,'/jobs',"?TaskName=",taskName,sep="")
     data = list(queryJob=list(query=unbox(query)))
     r= POST(url,encode="json",body=data,accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
@@ -130,7 +167,14 @@ SkyQuery.listJobs <- function(queue="quick")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',queue,'/jobs?',sep="")
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.listJobs"
+    }else{
+      taskName = "SciScript-R.SkyQuery.listJobs"
+    }  
+    
+    url = paste(Config.SkyQueryUrl,'/Jobs.svc/queues/',queue,'/jobs',"?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("text/plain"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -151,7 +195,15 @@ SkyQuery.listAllDatasets <- function()
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets',sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.listAllDatasets"
+    }else{
+      taskName = "SciScript-R.SkyQuery.listAllDatasets"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets',"?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -168,7 +220,15 @@ SkyQuery.getDatasetInfo <- function(datasetName="MyDB")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.getDatasetInfo"
+    }else{
+      taskName = "SciScript-R.SkyQuery.getDatasetInfo"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -185,7 +245,15 @@ SkyQuery.listDatasetTables <- function(datasetName="MyDB")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"/tables",sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.listDatasetTables"
+    }else{
+      taskName = "SciScript-R.SkyQuery.listDatasetTables"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"/tables","?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -202,7 +270,15 @@ SkyQuery.getTableInfo <- function(tableName, datasetName="MyDB")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"/tables/",tableName,sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.getTableInfo"
+    }else{
+      taskName = "SciScript-R.SkyQuery.getTableInfo"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"/tables/",tableName,"?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -219,7 +295,15 @@ SkyQuery.listTableColumns <- function(tableName, datasetName="MyDB")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"/tables/",tableName,"/columns",sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.listTableColumns"
+    }else{
+      taskName = "SciScript-R.SkyQuery.listTableColumns"
+    }  
+    
+    url = paste(Config.SkyQueryUrl,'/Schema.svc/datasets/',datasetName,"/tables/",tableName,"/columns","?TaskName=",taskName,sep="")
     r= GET(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -239,10 +323,20 @@ SkyQuery.getTable <- function(tableName, datasetName="MyDB", top = NULL)
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.getTable"
+    }else{
+      taskName = "SciScript-R.SkyQuery.getTable"
+    }
+    
     url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,sep="")
     if(!is.null(top) && top != "")
-      url = paste(url,'?top=',toString(top),sep="")
-
+      url = paste(url,'?top=',toString(top),"&TaskName=",taskName,sep="")
+    else
+      url = paste(url,"?TaskName=",taskName,sep="")
+    
     r= GET(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -265,7 +359,15 @@ SkyQuery.dropTable <- function(tableName, datasetName="MyDB")
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.dropTable"
+    }else{
+      taskName = "SciScript-R.SkyQuery.dropTable"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,"?TaskName=",taskName,sep="")
     r= DELETE(url,encode="json",accept("application/json"),content_type_json(),add_headers('X-Auth-Token'=token))
     if(r$status_code != 200) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -282,7 +384,15 @@ SkyQuery.uploadTable <- function(uploadData, tableName, datasetName="MyDB", form
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
-    url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,sep="")
+    
+    taskName = ""
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.SkyQuery.uploadTable"
+    }else{
+      taskName = "SciScript-R.SkyQuery.uploadTable"
+    }
+    
+    url = paste(Config.SkyQueryUrl,'/Data.svc/',datasetName,'/',tableName,"?TaskName=",taskName,sep="")
     ctype = ""
     if(format == "csv"){
       ctype = 'text/csv'
