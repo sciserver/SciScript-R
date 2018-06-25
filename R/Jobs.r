@@ -1,5 +1,5 @@
 #require(httr)
-#require(jsonlite)
+require(jsonlite)
 
 #source('Authentication.r')
 
@@ -210,7 +210,7 @@ Jobs.getJobDescription <- function(jobId){
     }
     
     
-    url = paste(Config.RacmApiURL,"/jobm/rest/jobs", toString(jobId),"?TaskName=",taskName,sep="")
+    url = paste(Config.RacmApiURL,"/jobm/rest/jobs/", toString(jobId),"?TaskName=",taskName,sep="")
     r = GET(url,add_headers('X-Auth-Token'=token),accept("application/json"))
     
     if(r$status_code != 200) {
@@ -225,7 +225,7 @@ Jobs.getJobDescription <- function(jobId){
 
 Jobs.getJobStatus <- function(jobId){
   
-  intStatus = getJobDescription(jobId)$status
+  intStatus = Jobs.getJobDescription(jobId)$status
   
   if(intStatus == 1){
     return(list(status=intStatus, statusMeaning="PENDING", jobId=jobId))
@@ -285,9 +285,9 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
       for(i in 1:length(dockerComputeDomain$userVolumes)){
         vol = dockerComputeDomain$userVolumes[[i]]
         if("write" %in% dockerComputeDomain$userVolumes[[i]]$allowedActions){
-          uVols = c(uVols, list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=TRUE))
+          uVols[[length(uVols)+1]] <- list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=TRUE)
         }else{
-          uVols = c(uVols, list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=FALSE))
+          uVols[[length(uVols)+1]] <- list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=FALSE)
         }
       }
     }else{
@@ -303,17 +303,17 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
             if(uVol$needsWriteAccess){
 
               if(uVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= TRUE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= TRUE)
               }else{
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= FALSE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= FALSE)
               }
 
             }else{
 
               if('write' %in% vol$allowedActions ){
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= TRUE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= TRUE)
               }else{
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= FALSE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= FALSE)
               }
               
             }
@@ -330,7 +330,7 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
     if( is.null(dataVolumes)){
       for( i in 1:length(dockerComputeDomain$volumes)){
            vol = dockerComputeDomain$volumes[[i]]
-           dataVols = c(dataVols, list(name= vol$name));
+           dataVols[[length(dataVols)+1]] <-  list(name= vol$name)
       }
     }else{
       for(i in 1:length(dataVolumes)){
@@ -340,7 +340,7 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
           vol = dockerComputeDomain$volumes[[j]]
           if( vol$name == dVol$name ){
             found = TRUE;
-            dataVols = c(dataVols, list(name=vol$name))
+            dataVols[[length(dataVols)+1]] <- list(name=vol$name)
           }
         }
         
@@ -363,14 +363,14 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
         userVolumes= uVols
       )
     
-    
+    #cat(toJSON(dockerJobModel))
     url = paste(Config.RacmApiURL,"/jobm/rest/jobs/docker?TaskName=",taskName,sep="")
-    r = POST(url,add_headers('X-Auth-Token'=token),data = dockerJobModel, content_type_json(), encode="json", accept("application/json"))
+    r = POST(url,add_headers('X-Auth-Token'=token),body = dockerJobModel, content_type_json(), encode="json", accept("application/json"))
 
     if(r$status_code != 200) {
       stop(paste("Error when submitting a job to the JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return(content(r))
+      return(content(r)$id)
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
@@ -413,9 +413,9 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
       for(i in 1:length(dockerComputeDomain$userVolumes)){
         vol = dockerComputeDomain$userVolumes[[i]]
         if("write" %in% dockerComputeDomain$userVolumes[[i]]$allowedActions){
-          uVols = c(uVols, list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=TRUE))
+          uVols[[length(uVols)+1]] <- list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=TRUE)
         }else{
-          uVols = c(uVols, list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=FALSE))
+          uVols[[length(uVols)+1]] <- list(userVolumeId=dockerComputeDomain$userVolumes[[i]]$id, needsWriteAccess=FALSE)
         }
       }
     }else{
@@ -431,17 +431,17 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
             if(uVol$needsWriteAccess){
               
               if(uVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= TRUE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= TRUE)
               }else{
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= FALSE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= FALSE)
               }
               
             }else{
               
               if('write' %in% vol$allowedActions ){
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= TRUE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= TRUE)
               }else{
-                uVols = c(uVols, list(userVolumeId= vol$id, needsWriteAccess= FALSE));
+                uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= FALSE)
               }
               
             }
@@ -458,7 +458,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
     if( is.null(dataVolumes)){
       for( i in 1:length(dockerComputeDomain$volumes)){
         vol = dockerComputeDomain$volumes[[i]]
-        dataVols = c(dataVols, list(name= vol$name));
+        dataVols[[length(dataVols)+1]] <-  list(name= vol$name)
       }
     }else{
       for(i in 1:length(dataVolumes)){
@@ -468,7 +468,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
           vol = dockerComputeDomain$volumes[[j]]
           if( vol$name == dVol$name ){
             found = TRUE;
-            dataVols = c(dataVols, list(name=vol$name))
+            dataVols[[length(dataVols)+1]] <- list(name=vol$name)
           }
         }
         
@@ -497,7 +497,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
     if(r$status_code != 200) {
       stop(paste("Error when submitting a job to the JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return(content(r))
+      return(content(r)$id)
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
@@ -574,7 +574,7 @@ Jobs.submitRDBQueryJob <- function(sqlQuery, rdbComputeDomain=None, databaseCont
     if(r$status_code != 200) {
       stop(paste("Error when submitting a job to the JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return(content(r))
+      return(content(r)$id)
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
@@ -589,8 +589,14 @@ Jobs.cancelJob <- function(jobId){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
+    
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.Jobs.cancelJob"
+    }else{
+      taskName = "SciScript-R.Jobs.cancelJob"
+    }
 
-    url = paste(Config.JobmApiURL,"/jobs/",toString(jobId), sep="")
+    url = paste(Config.RacmApiURL,"/jobm/rest/jobs/",toString(jobId),"/cancel?TaskName=",taskName, sep="")
     r = POST(url,add_headers('X-Auth-Token'=token))
     
     if(r$status_code != 200) {
