@@ -34,7 +34,7 @@ Some SciServer tools you can access with this package:
 \tabular{ll}{
 Package: \tab SciServer\cr
 Type: \tab Package\cr
-Version: \tab 1.10.0\cr
+Version: \tab 2.0.0\cr
 }}
 \author{
 Manuchehr Taghizadeh-Popp, Gerard Lemson \cr
