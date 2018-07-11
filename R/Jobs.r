@@ -8,26 +8,6 @@ require(jsonlite)
 
 
 
-Jobs.getJobDirectory <- function(){
-
-  token = Authentication.getToken()
-  if(!is.null(token) && token != "")
-  {
-    computeJobDirectoryFile = Config.ComputeJobDirectoryFile
-    if(file.exists(computeJobDirectoryFile)){
-      jobDirectory = NULL;
-      jobDirectory =  readLines(f)
-      jobDirectory = qsub("\n", "", jobDirectory)
-      return(jobDirectory);
-    }else{
-      stop("Cannot find jobs directory.")
-    }
-  }else{
-    stop(paste("User token is not defined. First log into SciServer."))
-  }
-}
-
-  
 Jobs.getDockerComputeDomains <- function(){
   
   token = Authentication.getToken()
