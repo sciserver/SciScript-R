@@ -108,12 +108,21 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
     }else if(format == "dataframe"){
       #list = content(r);
       #return(data.frame(list[[1]]$Rows))
-      table = content(r, encoding="UTF-8")
-      if(table == "\n"){
+      tables = content(r, encoding="UTF-8")
+      if(tables == "\n"){
         return(data.frame(NULL))
       }else{
-        t = fread(table, showProgress = FALSE)  # showProgress = FALSE supresses the warning mesages
-        return(t);
+        
+        tables = strsplit(tables, "\n#\n")[[1]]
+        if(length(tables) == 1){
+          result = fread(tables, showProgress = FALSE)
+        }else{
+          result = list();
+          for(i in 1:length(tables)){
+            result[[length(result)+1]] <- fread(tables[i], showProgress = FALSE)
+          }
+        }
+        return(result)
       }
     }else if(format == "json"){
       return(content(r, "text", encoding="UTF-8"))
