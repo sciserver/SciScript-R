@@ -83,9 +83,11 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
   url=paste(Config.CasJobsRESTUri,'/contexts/',context,'/query',"?TaskName=",taskName,sep='')
 
   atype = NULL
-  if( format == "list" || format =="json"){
+  if( format == "list"){
     atype="application/json"
-  }else if (format == "csv" || format == "dataframe"){
+  }else if (format =="json" || format == "dataframe"){
+    atype="application/json+array"
+  }else if (format == "csv"){
     atype = "text/plain"
   }else if(format == "fits"){
     atype = "application/fits"
@@ -104,28 +106,32 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
     stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
   } else {
     if(format == "list"){
-      return(content(r)) #read.csv(textConnection(content(r, encoding="UTF-8")))
+      return(content(r))
     }else if(format == "dataframe"){
-      #list = content(r);
-      #return(data.frame(list[[1]]$Rows))
       tables = content(r, encoding="UTF-8")
       if(tables == "\n"){
         return(data.frame(NULL))
       }else{
+
+        response = content(r, "text", encoding="UTF-8")
+        response = fromJSON(response)
         
-        tables = strsplit(tables, "\n#\n")[[1]]
-        if(length(tables) == 1){
-          result = fread(tables, showProgress = FALSE)
-        }else{
-          result = list();
-          for(i in 1:length(tables)){
-            result[[length(result)+1]] <- fread(tables[i], showProgress = FALSE)
+        if(length(response$Result$Data) > 1 ){
+          result = list()
+          for( i in 1:length(response$Result$Data)){
+            df = data.frame(response$Result$Data[[i]])
+            colnames(df) <- response$Result$Columns[[i]]
+            result[[length(result)+1]] <- df
           }
+        }else{
+          result = data.frame(response$Result$Data[[1]])
+          colnames(result) <- response$Result$Columns[[1]]
         }
+
         return(result)
       }
     }else if(format == "json"){
-      return(content(r, "text", encoding="UTF-8"))
+      return((content(r, "text", encoding="UTF-8")))
     }else if(format == "csv"){
       return(content(r, encoding="UTF-8"))
     }else if(format == "fits"){
