@@ -25,7 +25,7 @@ Config.RacmApiURL = 'http://scitest12.pha.jhu.edu/racm';
 .onLoad <- function(libname, pkgname) {
 	readSciServerConfig <- function(filename) {
 		if (file.exists(filename)) {
-			config.file.data <- jsonlite::fromJSON(SCISERVER_CONFIG)
+			config.file.data <- jsonlite::fromJSON(filename)
 			Config.CasJobsRESTUri <<- if (is.null(config.file.data$CasJobsRESTUri)) SciServer:::Config.CasJobsRESTUri else config.file.data$CasJobsRESTUri
 			Config.AuthenticationURL <<- if (is.null(config.file.data$AuthenticationURL)) SciServer:::Config.AuthenticationURL else config.file.data$AuthenticationURL
 			Config.SciDriveHost <<- if (is.null(config.file.data$SciDriveHost)) SciServer:::Config.SciDriveHost else config.file.data$SciDriveHost
