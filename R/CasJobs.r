@@ -120,7 +120,9 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
           result = list()
           for( i in 1:length(response$Result$Data)){
             df = data.frame(response$Result$Data[[i]])
-            colnames(df) <- response$Result$Columns[[i]]
+            if(dim(df)[2] >0){
+              colnames(df) <- response$Result$Columns[[i]]
+            }
             result[[length(result)+1]] <- df
           }
         }else{
