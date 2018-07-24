@@ -9,7 +9,7 @@ Config.AuthenticationURL = "http://portal.sciserver.org/login-portal/keystone/v3
 Config.SciDriveHost = 'http://www.scidrive.org'
 #Config.SkyQueryUrl**: defines the base URL of the SkyQuery web service API 
 Config.SkyQueryUrl = 'http://voservices.net/skyquery/Api/V1'
-#Config.SkyServerWSurl: defines the base URL of the SkyServer web service API 
+#Config.SkyServerWSurl: defines the base URL of the SkyServer web service API
 Config.SkyServerWSurl = 'http://skyserver.sdss.org'
 #Config.DataRelease: defines the SDSS data release, to be used to build the full SkyServer API url along with Config.SkyServerWSurl
 Config.DataRelease = 'DR13' # SDSS data release. E.g., DR13
@@ -18,7 +18,7 @@ Config.KeystoneTokenFilePath =  "/home/idies/keystone.token" #this path to the f
 #Config.version: defines the SciServer release tag, to which this package belongs
 Config.Version = "sciserver-v2.0.0" #sciserver release version
 #Config.ComputeJobDirectoryFile: defines the path to the file in the "Docker job container" that shows the directory path where the asynchronous compute job is being executed.
-Config.ComputeJobDirectoryFile = "/home/idies/jobs.path" 
+Config.ComputeJobDirectoryFile = "/home/idies/jobs.path"
 #Config.RacmApiURL: defines the base URL of the multiple APIs in RACM
 Config.RacmApiURL = 'http://scitest12.pha.jhu.edu/racm';
 
@@ -34,6 +34,8 @@ Config.RacmApiURL = 'http://scitest12.pha.jhu.edu/racm';
 			Config.DataRelease <<- if (is.null(config.file.data$DataRelease)) SciServer:::Config.DataRelease else config.file.data$DataRelease
 			Config.KeystoneTokenFilePath <<- if (is.null(config.file.data$KeystoneTokenPath)) SciServer:::Config.KeystoneTokenFilePath else config.file.data$KeystoneTokenPath
 			Config.Version <<- if (is.null(config.file.data$version)) SciServer:::Config.Version else config.file.data$version
+			Config.ComputeJobDirectoryFile <<- if (is.null(config.file.data$ComputeJobDirectoryFile)) SciServer:::Config.ComputeJobDirectoryFile else config.file.data$ComputeJobDirectoryFile
+			Config.RacmApiURL <<- if (is.null(config.file.data$RacmApiURL)) SciServer:::Config.RacmApiURL else config.file.data$RacmApiURL
 		}
 	}
 
