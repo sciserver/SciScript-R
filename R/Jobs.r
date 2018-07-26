@@ -153,6 +153,7 @@ Jobs.getJobsList <- function(top=10, open=NULL, start=NULL, end=NULL, type="all"
 
     openString <- if(!is.null(open)) paste("open=",tolower(as.character(open)),"&",sep="") else ""
     
+    url = paste(Config.RacmApiURL,"/jobm/rest/jobs?",sep="")
     if(type=='rdb'){
       url = paste(Config.RacmApiURL,"/jobm/rest/rdbjobs?",sep="")
     }
