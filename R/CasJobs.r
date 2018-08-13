@@ -109,7 +109,7 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
       return(content(r))
     }else if(format == "dataframe"){
       tables = content(r, encoding="UTF-8")
-      if(tables == "\n"){
+      if((tables == "\n")[1]){
         return(data.frame(NULL))
       }else{
 
