@@ -40,6 +40,20 @@ SkyQuery_TestTableCSV = "Column1,Column2\n4.5,5.5\n"
 SkyQuery_TestTableCSVdownloaded = "ID,Column1,Column2\n1,4.5,5.5\n"
 SkyQuery_Query = "select 4.5 as Column1, 5.5 as Column2"
 
+FileService_NewDirName = "UnitTestDir"
+FileService_NewFileName = "MyNewFile.txt"
+FileService_newFileContent = "#ID,Column1,Column2\n1,4.5,5.5\n"
+FileService_RemoteFileName = "persistent/" + FileService_NewDirName + "/" + FileService_NewFileName
+FileService_RemoteDirName = "persistent/" + FileService_NewDirName
+
+ComputeJobs_NotebookName = "TestNotebook.ipynb"
+ComputeJobs_LocalNotebookPath = "./" + ComputeJobs_NotebookName
+ComputeJobs_RemoteNotebookPath = "/home/idies/workspace/persistent/" + ComputeJobs_NotebookName
+ComputeJobs_JobAlias = "MyJobAlias"
+ComputeJobs_Parameters = "param1"
+ComputeJobs_ShellCommand = "ls";
+ComputeJobs_ImageNameLike = "python"  # must be all lowercase
+
 
 #======================================================================================================================================
 # RUNNING TESTS
