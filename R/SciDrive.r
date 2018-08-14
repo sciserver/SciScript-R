@@ -9,11 +9,11 @@ SciDrive.createContainer<-function(path){
   {
     
     containerBody = paste('<vos:node xmlns:xsi="http://www.w3.org/2001/thisSchema-instance" ',
-                     'xsi:type="vos:ContainerNode" xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.0" ',
-                     'uri="vos://',Config.SciDriveHost,'!vospace/',path,'">',
-                     '<vos:properties/><vos:accepts/><vos:provides/><vos:capabilities/>',
-                     '</vos:node>',sep="")
-                     
+                          'xsi:type="vos:ContainerNode" xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.0" ',
+                          'uri="vos://',Config.SciDriveHost,'!vospace/',path,'">',
+                          '<vos:properties/><vos:accepts/><vos:provides/><vos:capabilities/>',
+                          '</vos:node>',sep="")
+    
     taskName = ""
     if(Config.isSciServerComputeEnvironment()){
       taskName = "Compute.SciScript-R.SciDrive.createContainer"
@@ -21,7 +21,7 @@ SciDrive.createContainer<-function(path){
       taskName = "SciScript-R.SciDrive.createContainer"
     }
 
-    url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,sep="")
+    url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,"?TaskName=",taskName,sep="")
     r = PUT(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
     if(r$status_code < 200 || r$status_code >=300) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
@@ -45,7 +45,7 @@ SciDrive.upload<-function(path, data="", localFilePath=""){
       taskName = "SciScript-R.SciDrive.upload"
     }
 
-    url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',path,sep='')
+    url = paste(Config.SciDriveHost,'/vospace-2.0/1/files_put/dropbox/',path,"?TaskName=",taskName,sep='')
     if(localFilePath != ""){
       r = PUT(url, body=upload_file(localFilePath), add_headers('X-Auth-Token'=token))
     }else{
@@ -76,7 +76,7 @@ SciDrive.publicUrl<-function(path){
       taskName = "SciScript-R.SciDrive.publicUrl"
     }
     
-    url = paste(Config.SciDriveHost,"/vospace-2.0/1/media/sandbox/", path,sep="")
+    url = paste(Config.SciDriveHost,"/vospace-2.0/1/media/sandbox/", path,"?TaskName=",taskName,sep="")
     r = GET(url ,add_headers('X-Auth-Token'=token))
     if(r$status_code == 200){
       return(content(r)$url)
@@ -100,8 +100,8 @@ SciDrive.directoryList<-function(path){
     }else{
       taskName = "SciScript-R.SciDrive.directoryList"
     }
-  
-    url = paste(Config.SciDriveHost,"/vospace-2.0/1/metadata/sandbox/", URLencode(path), "?list=True&path=", URLencode(path), sep="")
+
+    url = paste(Config.SciDriveHost,"/vospace-2.0/1/metadata/sandbox/", URLencode(path), "?list=True&path=", URLencode(path),"?TaskName=",taskName, sep="")
     r = GET(url ,add_headers('X-Auth-Token'=token))
     if(r$status_code == 200){
       return(content(r))
@@ -128,7 +128,7 @@ SciDrive.download<-function(path, format="text", localFilePath=NULL){
 
     fileUrl = SciDrive.publicUrl(path)
     
-    r = GET(fileUrl)
+    r = GET(paste(fileUrl,"?TaskName=",taskName,sep=""))
     if(r$status_code == 200){
       if(!is.null(localFilePath) && localFilePath != ""){
         bytes = content(r, "raw");
@@ -176,8 +176,8 @@ SciDrive.delete<-function(path){
     }else{
       taskName = "SciScript-R.SciDrive.delete"
     }
-                          
-    url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,sep="")
+
+    url = paste(Config.SciDriveHost,'/vospace-2.0/nodes/',path,"?TaskName=",taskName,sep="")
     r = DELETE(url, content_type_xml(),body=containerBody,add_headers('X-Auth-Token'=token))
     if(r$status_code < 200 || r$status_code >=300) {
       stop(paste("Http Response returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))

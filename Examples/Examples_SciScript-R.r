@@ -8,11 +8,14 @@ library(utils)
 Authentication_loginName = '***';
 Authentication_loginPassword = '***'
 
-#?Authentication.login
+Authentication_login_sharedWithName = '***'
+Authentication_login_sharedWithPassword = '***'
 
 # *******************************************************************************************************
 # Authentication section
 # *******************************************************************************************************
+
+#?Authentication.login
 
 #logging in and getting current token from different ways
 
@@ -370,3 +373,274 @@ print(columns)
 
 result = SkyQuery.dropTable(tableName=SkyQuery_TestTableName, datasetName="MyDB");
 print(result)
+
+# *******************************************************************************************************
+# Files section:
+# *******************************************************************************************************
+
+# defining the FileService name
+
+Files_FileServiceName = "FileServiceJHU"
+Files_RootVolumeName1 = "Storage"
+Files_UserVolumeName1 = "UserVolume555"
+Files_RootVolumeName2 = "Storage"
+Files_UserVolumeName2 = "UserVolume999"
+Files_NewDirectoryName1 = "myNewDirectory555"
+Files_NewDirectoryName2 = "myNewDirectory999"
+Files_LocalFileName = "MyNewFile.txt"
+Files_LocalFileContent = "#ID,Column1,Column2\n1,4.5,5.5"
+
+token = Authentication.login(Authentication_loginName, Authentication_loginPassword);
+
+# get available FileServices
+
+fileServices = Files.getFileServices();
+fileServices
+
+# get names of file services available to the user.
+
+fileServiceNames = Files.getFileServicesNames();
+fileServiceNames
+
+# get FileService from Name
+
+fileService = Files.getFileServiceFromName(Files_FileServiceName);
+fileService
+
+# get the API endpoint URL of a FileService
+
+fileServiceAPIUrl = Files.__getFileServiceAPIUrl(fileService);
+fileServiceAPIUrl
+
+# get information about root volumes 
+
+rootVolumes = Files.getRootVolumesInfo(fileService)
+rootVolumes
+
+# get information about user volumes
+
+userVolumes = Files.getUserVolumesInfo(fileService)
+userVolumes
+
+Files.createUserVolume(fileService,paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,sep="/"))
+Files.createUserVolume(fileService,paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName2,sep="/"))
+
+# create a directory in the user volumes
+
+Files.createDir(fileService,paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,sep="/"));
+Files.createDir(fileService,paste(Files_RootVolumeName2,Authentication_loginName,Files_UserVolumeName2,Files_NewDirectoryName2,sep="/"));
+
+# upload a text string into a file in the remote directory
+
+Files.upload(fileService, 
+    paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,Files_LocalFileName,sep="/"), 
+             data=Files_LocalFileContent);
+
+# List content of remote directory
+
+dirList = Files.dirList(fileService, 
+    paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,sep="/"),
+    level=4)
+dirList
+
+# download a remote text file into a local directory
+
+Files.download(fileService, 
+    paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,Files_LocalFileName,sep="/") 
+    ,localFilePath=Files_LocalFileName);
+
+# Delete remote file
+
+Files.delete(fileService, 
+paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,Files_LocalFileName,sep="/"))
+
+# upload a local file into a remote directory
+
+Files.upload(fileService, 
+paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,Files_LocalFileName,sep="/")
+, localFilePath=Files_LocalFileName, quiet=FALSE);
+
+# copy remote file into remote directory
+
+Files.move(fileService,
+paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,Files_LocalFileName,sep="/"), 
+           fileService, 
+paste(Files_RootVolumeName2,Authentication_loginName,Files_UserVolumeName2,Files_NewDirectoryName2,Files_LocalFileName,sep="/"));
+
+# sharing user volume with another user
+
+Files.shareUserVolume(fileService, 
+paste(Files_RootVolumeName2,Authentication_loginName,Files_UserVolumeName2,sep="/"), 
+    sharedWith=Authentication_login_sharedWithName, type="USER",allowedActions=list("read"))
+
+# let the other user log-in
+
+token1 = Authentication.login(Authentication_login_sharedWithName, Authentication_login_sharedWithPassword);
+
+# the other user downloads the remote text file (from the shared user volume) into a local string variable
+
+string = Files.download(fileService, 
+    paste(Files_RootVolumeName2,Authentication_loginName,Files_UserVolumeName2,Files_NewDirectoryName2,Files_LocalFileName,sep="/"), 
+    format="txt");
+print(string)
+
+# the original user logs in again
+
+token1 = Authentication.login(Authentication_loginName, Authentication_loginPassword);
+
+# delete folders
+
+Files.delete(fileService, 
+    paste(Files_RootVolumeName1,Authentication_loginName,Files_UserVolumeName1,Files_NewDirectoryName1,sep="/"))
+Files.delete(fileService, 
+    paste(Files_RootVolumeName2,Authentication_loginName,Files_UserVolumeName2,Files_NewDirectoryName2,sep="/"))
+
+# delete user volumes
+
+Files.deleteUserVolume(fileService, 
+    paste(Files_RootVolumeName1, Authentication_loginName, Files_UserVolumeName1,sep="/"))
+Files.deleteUserVolume(fileService, 
+    paste(Files_RootVolumeName1, Authentication_loginName, Files_UserVolumeName2,sep="/"))
+
+# *******************************************************************************************************
+# Jobs section:
+# *******************************************************************************************************
+
+Jobs_DockerComputeDomainName = 'Small Jobs Domain'
+
+Jobs_FileServiceName = "FileServiceJHU"
+Jobs_RootVolumeName = "Storage"
+Jobs_UserVolumeName = "JobsTestVolume"
+Jobs_DirectoryName = "JobsTestDirectory"
+Jobs_NotebookName = 'TestNotebook.ipynb'
+Jobs_ShellCommand = 'ls -laht'
+Jobs_DockerImageName = 'Python + R'
+
+Jobs_UserVolumes = list( list(name=Jobs_UserVolumeName, rootVolumeName=Jobs_RootVolumeName, owner=Authentication_loginName, needsWriteAccess=TRUE),
+                         list(name="scratch", rootVolumeName="Temporary", owner=Authentication_loginName, needsWriteAccess=TRUE) ) 
+Jobs_DataVolumes = list(list(name='SDSS DAS'))
+Jobs_Parameters =  'param1=1\nparam2=2\nparam3=3'
+Jobs_Alias = 'MyNewJob'
+
+Jobs_SqlQuery = "select 1;"
+Jobs_RBBComputeDomainName = 'Manga (long)'
+Jobs_DatabaseContextName = "manga"
+Jobs_QueryResultsFile = 'myQueryResults'
+
+# get docker compute domains
+
+dockerComputeDomains = Jobs.getDockerComputeDomains();
+print(dockerComputeDomains)
+
+# get names of docker compute domains available to the user
+
+dockerComputeDomainsNames = Jobs.getDockerComputeDomainsNames()
+print(dockerComputeDomainsNames)
+
+# get docker compute domain from name
+
+dockerComputeDomain = Jobs.getDockerComputeDomainFromName(Jobs_DockerComputeDomainName)
+print(dockerComputeDomain)
+
+# uploading Jupyter notebook to remote directory
+
+fileService = Files.getFileServiceFromName(Jobs_FileServiceName);
+Files.createUserVolume(fileService,paste(Jobs_RootVolumeName,Authentication_loginName,Jobs_UserVolumeName,sep="/"))
+Files.upload(fileService, 
+    paste(Jobs_RootVolumeName,Authentication_loginName,Jobs_UserVolumeName,Jobs_DirectoryName,Jobs_NotebookName,sep="/"), 
+             localFilePath=Jobs_NotebookName);
+
+# submit a Jupyter notebook job.
+
+jobId = Jobs.submitNotebookJob(notebookPath=paste('/home/idies/workspace',Jobs_RootVolumeName,Authentication_loginName,Jobs_UserVolumeName,Jobs_DirectoryName,Jobs_NotebookName,sep="/"),
+                             dockerComputeDomain=dockerComputeDomain,
+                             dockerImageName=Jobs_DockerImageName,
+                             userVolumes=Jobs_UserVolumes,
+                             dataVolumes=Jobs_DataVolumes,
+                             resultsFolderPath="",
+                             parameters=Jobs_Parameters,
+                    jobAlias=Jobs_Alias)
+
+print(jobId)
+
+# get job status
+
+jobStatus = Jobs.getJobStatus(jobId)
+print(jobStatus)
+
+# get job description
+
+job = Jobs.getJobDescription(jobId)
+print(job)
+
+# wait until job is finished and get job status
+
+jobId = Jobs.submitNotebookJob(notebookPath=paste('/home/idies/workspace',Jobs_RootVolumeName,Authentication_loginName,Jobs_UserVolumeName,Jobs_DirectoryName,Jobs_NotebookName,sep="/"),
+                             dockerComputeDomain=dockerComputeDomain,
+                             dockerImageName=Jobs_DockerImageName,
+                             userVolumes=Jobs_UserVolumes,
+                             dataVolumes=Jobs_DataVolumes,
+                             resultsFolderPath="",
+                             parameters=Jobs_Parameters,
+                             jobAlias=Jobs_Alias)
+
+jobStatus = Jobs.waitForJob(jobId)
+print(jobStatus)
+
+# cancel job
+
+jobId = Jobs.submitNotebookJob(notebookPath=paste('/home/idies/workspace',Jobs_RootVolumeName,Authentication_loginName,Jobs_UserVolumeName,Jobs_DirectoryName,Jobs_NotebookName,sep="/"),
+                             dockerComputeDomain=dockerComputeDomain,
+                             dockerImageName=Jobs_DockerImageName,
+                             userVolumes=Jobs_UserVolumes,
+                             dataVolumes=Jobs_DataVolumes,
+                             resultsFolderPath="",
+                             parameters=Jobs_Parameters,
+                    jobAlias=Jobs_Alias)
+
+Jobs.cancelJob(jobId)
+
+Files.deleteUserVolume(fileService, 
+                       paste(Jobs_RootVolumeName,Authentication_loginName,Jobs_UserVolumeName,sep="/"), 
+                       quiet=TRUE)
+
+# submit shell command job
+
+jobId = Jobs.submitShellCommandJob(shellCommand=Jobs_ShellCommand,
+                                   dockerComputeDomain=dockerComputeDomain,
+                                   dockerImageName=Jobs_DockerImageName,
+                                   userVolumes=Jobs_UserVolumes,
+                                   dataVolumes=Jobs_DataVolumes,
+                                   resultsFolderPath="",
+                                   jobAlias=Jobs_Alias)
+
+# get relational database (RDB) compute domains
+
+rdbComputeDomains = Jobs.getRDBComputeDomains();
+print(rdbComputeDomains)
+
+# get names of relational database (RDB) compute domains
+
+rdbComputeDomainsNames = Jobs.getRDBComputeDomainsNames()
+print(rdbComputeDomainsNames)
+
+# get relational database (RDB) compute domain from name
+
+rdbComputeDomain = Jobs.getRDBComputeDomainFromName(Jobs_RBBComputeDomainName);
+print(rdbComputeDomain)
+
+# submit RDB (relatinal database) query job
+
+jobId = Jobs.submitRDBQueryJob(sqlQuery=Jobs_SqlQuery, 
+                               rdbComputeDomain=rdbComputeDomain, 
+                               databaseContextName = Jobs_DatabaseContextName, 
+                               resultsName = Jobs_QueryResultsFile, 
+                               resultsFolderPath = "",
+                               jobAlias = Jobs_Alias)
+
+print(jobId)
+
+# get job description
+
+job = Jobs.getJobDescription(jobId)
+print(job)
