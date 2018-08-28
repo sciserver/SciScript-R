@@ -29,6 +29,17 @@ Some SciServer tools you can access with this package:
 \href{http://skyserver.sdss.org/}{SkyQuery}: Access to the \href{http://voservices.net/skyquery}{SkyQuery} astronomical database catalog cross-match.\cr
       You can upload your own astronomical source catalog into your own database using \code{\link[SciServer]{SkyQuery.uploadTable}}, and cross-match it againt many other public source catalogs by running asynchronous SQL queries jobs using \code{\link[SciServer]{SkyQuery.submitJob}}.\cr
 
+\href{http://skyserver.sdss.org/}{SkyQuery}: Access to the \href{http://voservices.net/skyquery}{SkyQuery} astronomical database catalog cross-match.\cr
+      You can upload your own astronomical source catalog into your own database using \code{\link[SciServer]{SkyQuery.uploadTable}}, and cross-match it againt many other public source catalogs by running asynchronous SQL queries jobs using \code{\link[SciServer]{SkyQuery.submitJob}}.\cr
+
+\href{http://apps.sciserver.org/compute/jobs}{Compute Jobs}: Submission of Jupyter notebooks or shell commands as jobs.\cr
+      You can execute whole Jupyter notebooks and shell commands as asynchronous batch jobs, as well as synchronous jobs, by using \code{\link[SciServer]{Jobs.submitShellCommandJob}} and \code{\link[SciServer]{Jobs.submitNotebookJob}}\cr
+
+\href{http://apps.sciserver.org/sciquery-ui}{SciQuery Jobs}: Submission of SQL queries.\cr
+      You can execute synchronous or asynchronous SQL queries against Postgres and other database backends, by using and \code{\link[SciServer]{Jobs.submitRDBQueryJob}}\cr
+
+\href{https://apps.sciserver.org/dashboard/files}{Files}: Interaction with the SciServer file system.\cr
+      You can upload and download data into your own file space in SciServer (e.g., \code{\link[SciServer]{Files.upload}}, \code{\link[SciServer]{Files.download}}), as well as share data with your collaborators, between other things.\cr
 
 
 \tabular{ll}{
