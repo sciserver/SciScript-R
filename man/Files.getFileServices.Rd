@@ -1,23 +1,22 @@
-\name{Files.getFileServicesNames}
-\alias{Files.getFileServicesNames}
+\name{Files.getFileServices}
+\alias{Files.getFileServices}
 \title{
-Get FileServices Names
+Get FileServices
 }
 \description{
-Returns the names and description of the fileServices available to the user.
+Gets the definitions of file services that a user is able to access. A FileService represents a file system that contains root volumes accessible to the user for public/private data storage. Within each rootVolume, users can create sharable userVolumes for storing files.
 }
-\usage{Jobs.getFileServicesNames(fileServices=NULL, verbose=TRUE)}
+\usage{Jobs.getFileServices(verbose=TRUE)}
 \arguments{
-  \item{fileServices}{a list of FileService objects, as returned by Files.getFileServices(). If not set, then an extra internal call to Jobs.getFileServices() is made.}
   \item{verbose}{boolean parameter defining whether warnings will be printed (set to TRUE) or not (set to FALSE).}
 }
-\value{a list of lists, each of which having the name and description of a file service available to the user.}
+\value{list that contains lists, each of which representing the description of a FileService that the user is able to access.}
 \author{
 Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 }
 \seealso{
-\code{\link[SciServer]{Files.getFileServices}}
+\code{\link[SciServer]{Files.getFileServiceFromName}}
 }
 \references{
 \href{http://www.sciserver.org}{http://www.sciserver.org}\cr
@@ -26,6 +25,6 @@ Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
 \href{http://www.github.com/sciserver/SciScript-R}{http://www.github.com/sciserver/SciScript-R}
 }
 \examples{
-fileServiceNames = Files.getFileServicesNames()
+fileServices = Files.getFileServices()
 }
 \keyword{SciServer}

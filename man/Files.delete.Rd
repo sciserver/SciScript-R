@@ -9,7 +9,7 @@ Deletes a directory or file in the File System.
 \usage{Jobs.delete(fileService, path, quiet=TRUE)}
 \arguments{
   \item{fileService}{name of fileService (string), or object (dictionary) that defines a file service. A list of these kind of objects available to the user is returned by the function Files.getFileServices().}
-  \item{path}{String defining the path (in the remote fileService) of the file or directory to be deleted, starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/fileToBeDeleted.txt.}
+  \item{path}{String defining the path (in the remote fileService) of the file or directory to be deleted, starting from the root volume level or data volume level. Examples: rootVolume/userVolumeOwner/userVolume/fileToBeDeleted.txt or dataVolume/fileToBeDeleted.txt}
   \item{quiet}{If set to FALSE, it will throw an error if the file does not exist. If set to TRUE. it will not throw an error.}
 }
 \value{void}

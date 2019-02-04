@@ -9,7 +9,7 @@ Uploads data or a local file into a path defined in the file system.
 \usage{Jobs.upload(fileService, path, data=NULL, localFilePath=NULL, quiet=TRUE)}
 \arguments{
   \item{fileService}{name of fileService (string), or object (list) that defines a file service. A list of these kind of objects available to the user is returned by the function Files.getFileServices().}
-  \item{path}{path (in the remote file service) to the destination file (string), starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/destinationFile.txt}
+  \item{path}{path (in the remote file service) to the destination file (string), starting from the root volume level or data volume level. Examples: rootVolume/userVolumeOwner/userVolume/destinationFile.txt or dataVolume/destinationFile.txt}
   \item{data}{string containing data to be uploaded, in case localFilePath is not set.}
   \item{localFilePath}{path to a local file to be uploaded (string)}
   \item{quiet}{If set to FALSE, it will throw an error if the file already exists. If set to TRUE. it will not throw an error.}

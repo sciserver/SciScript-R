@@ -4,13 +4,15 @@
 Split path into components
 }
 \description{
-Splits a path of the form rootVolume/userVolumeOwner/userVolume/relativePath/... into its 4 components: rootVolume, userVolumeOwner, userVolume, and relativePath.
+If the top volume in the 'path' is a rootVolume, then this function splits the path of the form rootVolume/userVolumeOwner/userVolume/relativePath/... and returns the vector c(rootVolume, userVolumeOwner, userVolume, relativePath, True). On the other hand,
+if the top volume in the 'path' is a dataVolume, then this function splits the path of the form dataVolume/relativePath/... and returns the vector c(dataVolume, None, None, relativePath, False).
 }
-\usage{Jobs.splitPath(path)}
+\usage{Jobs.splitPath(path, fileService)}
 \arguments{
   \item{path}{file system path (string), starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/relativePath...}
+  \item{fileService}{name of fileService (string), or object (list) that defines a file service. A list of these kind of objects available to the user is returned by the function Files.getFileServices().}  
 }
-\value{a string vector containing the four components: (rootVolume, userVolumeOwner, userVolume, relativePath)}
+\value{a string vector containing the five components: (topVolume, userVolumeOwner, userVolume, relativePath, isTopVolumeARootVolume)}
 \author{
 Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>
