@@ -12,11 +12,11 @@ Config.SkyQueryUrl = 'https://voservices.net/skyquery/Api/V1'
 #Config.SkyServerWSurl: defines the base URL of the SkyServer web service API
 Config.SkyServerWSurl = 'https://skyserver.sdss.org'
 #Config.DataRelease: defines the SDSS data release, to be used to build the full SkyServer API url along with Config.SkyServerWSurl
-Config.DataRelease = 'DR14' # SDSS data release. E.g., DR13
+Config.DataRelease = 'DR15' # SDSS data release. E.g., DR13
 #Config.KeystoneTokenPath: defines the local path (string) to the file containing the user's authentication token in the SciServer-Compute environment
 Config.KeystoneTokenFilePath =  "/home/idies/keystone.token" #this path to the file containing the user's keystone token is hardcoded in the sciserver-compute environment
 #Config.version: defines the SciServer release tag, to which this package belongs
-Config.Version = "sciserver-v2.0.0" #sciserver release version
+Config.Version = "sciserver-v2.0.13" #sciserver release version
 #Config.ComputeJobDirectoryFile: defines the path to the file in the "Docker job container" that shows the directory path where the asynchronous compute job is being executed.
 Config.ComputeJobDirectoryFile = "/home/idies/jobs.path"
 #Config.RacmApiURL: defines the base URL of the multiple APIs in RACM
