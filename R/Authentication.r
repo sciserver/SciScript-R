@@ -53,7 +53,7 @@ Authentication.login<-function(UserName, Password){
 }
 
 Authentication.getToken<-function(){
-  
+
   if(Config.isSciServerComputeEnvironment() == TRUE){
     
     f = Config.KeystoneTokenFilePath
@@ -99,7 +99,7 @@ Authentication.setToken<-function(token){
   }else{
     unlockBinding("Authentication.token", as.environment("package:SciServer"))
     assign("Authentication.token",token,envir=as.environment("package:SciServer"))
-    
+
     Sys.unsetenv("sciservertoken")
     Sys.setenv(sciservertoken=token)
   }

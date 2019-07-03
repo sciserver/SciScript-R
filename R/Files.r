@@ -121,12 +121,26 @@ Files.getRootVolumesInfo <- function(fileService, verbose=TRUE){
   
   rootVolumes = list()
   for(i in 1:length(fileService$rootVolumes)){
-    rootVolumes[[i]] = list(rootVolumeName=  fileService$rootVolumes[[i]]$name, rootVolumeDescription=fileService$rootVolumes$description)
+    rootVolumes[[i]] = list(rootVolumeName=  fileService$rootVolumes[[i]]$name, rootVolumeDescription=fileService$rootVolumes[[i]]$description)
   }
   
   return(rootVolumes)
 }
 
+
+Files.getDataVolumesInfo <- function(fileService, verbose=TRUE){
+  
+  if(typeof(fileService) == "character"){
+    fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
+  }
+  
+  dataVolumes = list()
+  for(i in 1:length(fileService$dataVolumes)){
+    dataVolumes[[i]] = list(dataVolumeName=  fileService$dataVolumes[[i]]$name, dataVolumeDescription=fileService$dataVolumes[[i]]$description)
+  }
+  
+  return(dataVolumes)
+}
 
 
 
@@ -159,25 +173,57 @@ Files.getUserVolumesInfo <- function(fileService, rootVolumeName=NULL, verbose=T
 
 
 
-Files.splitPath <- function(path){
-  
+Files.splitPath <- function(path, fileService){
+
+  if(typeof(fileService) == "character"){
+    fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
+  }
+
   if(startsWith(path,"/")){
     path = substring(path,2)
   }
   
   path = strsplit(path,"/")
-  if(length(path[[1]]) < 3){
-    stop("path variable does not conform with the format 'rootVolume/userVolumeOwner/userVolume/relativePath...'")
+  
+  topVolume = path[[1]][1]
+  isTopVolumeARootVolume = FALSE
+
+  for(i in 1:length(fileService$rootVolumes)){
+    if(fileService$rootVolumes[[i]]$name == topVolume){
+      isTopVolumeARootVolume = TRUE
+    }
   }
-  rootVolume = path[[1]][1]
-  userVolumeOwner = path[[1]][2]
-  userVolume = path[[1]][3]
-  if(length(path[[1]])==3){
-    relativePath = ""
+
+  if(isTopVolumeARootVolume){
+
+    if(length(path[[1]]) < 3){
+      stop("path variable does not conform with the format 'rootVolume/userVolumeOwner/userVolume/relativePath...'")
+    }
+    rootVolume = path[[1]][1]
+    userVolumeOwner = path[[1]][2]
+    userVolume = path[[1]][3]
+    if(length(path[[1]])==3){
+      relativePath = ""
+    }else{
+      relativePath = paste(path[[1]][4:(length(path[[1]]))] ,collapse = "/")
+    }
+    return(c(rootVolume,userVolumeOwner,userVolume,relativePath,isTopVolumeARootVolume))
+    
+    
   }else{
-    relativePath = paste(path[[1]][4:(length(path[[1]]))] ,collapse = "/")
+
+    if(length(path[[1]]) < 1){
+      stop("path variable does not conform with the format 'dataVolume/relativePath...'")
+    }
+    
+    dataVolume = path[[1]][1]
+    if(length(path[[1]])==1){
+      relativePath = ""
+    }else{
+      relativePath = paste(path[[1]][2:(length(path[[1]]))] ,collapse = "/")
+    }
+    return(c(dataVolume,"","",relativePath,isTopVolumeARootVolume))
   }
-  return(c(rootVolume,userVolumeOwner,userVolume,relativePath))
 }
 
 
@@ -199,7 +245,7 @@ Files.createUserVolume <- function(fileService, path, quiet=TRUE){
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
+    vec = Files.splitPath(path, fileService)
     rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
     
     url = paste(Files.__getFileServiceAPIUrl(fileService),"api/volume/",rootVolume,"/",userVolumeOwner,"/",userVolume,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
@@ -233,7 +279,7 @@ Files.deleteUserVolume <- function(fileService, path, quiet=TRUE){
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
+    vec = Files.splitPath(path, fileService)
     rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
     
     url = paste(Files.__getFileServiceAPIUrl(fileService),"api/volume/",rootVolume,"/",userVolumeOwner,"/",userVolume,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
@@ -268,10 +314,14 @@ Files.createDir <- function(fileService, path, quiet=TRUE){
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
 
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
 
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/folder/",rootVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    if(isTopVolumeARootVolume == TRUE){
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/folder/",topVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    }else{
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/folder/",topVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    }
 
     r = PUT(url,add_headers('X-Auth-Token'=token))
 
@@ -300,10 +350,14 @@ Files.upload <- function(fileService, path, data=NULL, localFilePath=NULL, quiet
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
     
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/file/",rootVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    if(isTopVolumeARootVolume){
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/file/",topVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    }else{
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/file/",topVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    }
 
     if( !is.null(localFilePath) && localFilePath != ""){
       r = PUT(url, body=upload_file(localFilePath), add_headers('X-Auth-Token'=token))
@@ -340,10 +394,14 @@ Files.download<-function(fileService, path, localFilePath=NULL, format="txt", qu
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
     
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/file/",rootVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    if(isTopVolumeARootVolume){
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/file/",topVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    }else{
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/file/",topVolume,"/",relativePath,"?quiet=",tolower(as.character(quiet)),"&TaskName=",taskName,sep="");
+    }
     
     r = GET(url,add_headers('X-Auth-Token'=token))
     
@@ -394,10 +452,14 @@ Files.dirList <- function(fileService, path, level=1, options=""){
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
     
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/jsontree/",rootVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?options=",options,"&level=",level,"&TaskName=",taskName,sep="");
+    if(isTopVolumeARootVolume==TRUE){
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/jsontree/",topVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?options=",options,"&level=",level,"&TaskName=",taskName,sep="");
+    }else{
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/jsontree/",topVolume,"/",relativePath,"?options=",options,"&level=",level,"&TaskName=",taskName,sep="");
+    }
 
     r = GET(url,add_headers('X-Auth-Token'=token))
     
@@ -432,11 +494,11 @@ Files.move <- function(fileService, path, destinationFileService, destinationPat
       destinationFileService = Files.getFileServiceFromName(destinationFileService, verbose=verbose);
     }
 
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
 
-    vec = Files.splitPath(destinationPath)
-    destinationRootVolume = vec[1];destinationUserVolumeOwner=vec[2];destinationUserVolume=vec[3];destinationRelativePath=vec[4]
+    vec = Files.splitPath(destinationPath, destinationFileService)
+    destinationTopVolume = vec[1];destinationUserVolumeOwner=vec[2];destinationUserVolume=vec[3];destinationRelativePath=vec[4];isDestinationTopVolumeARootVolume=vec[5]
 
     if(is.null(userVolumeOwner)){
       userVolumeOwner = Authentication.getKeystoneUserWithToken(token)$userName;
@@ -468,15 +530,25 @@ Files.move <- function(fileService, path, destinationFileService, destinationPat
       destinationFileServiceName = destinationFileService
     }
         
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/data/",rootVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?replaceExisting=",tolower(as.character(replaceExisting)),"&doCopy=",tolower(as.character(doCopy)),"&TaskName=",taskName,sep="");
+    if(isTopVolumeARootVolume){
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/data/",topVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?replaceExisting=",tolower(as.character(replaceExisting)),"&doCopy=",tolower(as.character(doCopy)),"&TaskName=",taskName,sep="");
+      data = list(
+        destinationPath = destinationRelativePath,
+        destinationRootVolume = destinationTopVolume,
+        destinationUserVolume = destinationUserVolume,
+        destinationOwnerName = destinationUserVolumeOwner,
+        destinationFileService = destinationFileServiceName
+      )
+      
+    }else{
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/data/",topVolume,"/",relativePath,"?replaceExisting=",tolower(as.character(replaceExisting)),"&doCopy=",tolower(as.character(doCopy)),"&TaskName=",taskName,sep="");
+      data = list(
+        destinationPath = destinationRelativePath,
+        destinationDataVolume = destinationTopVolume,
+        destinationFileService = destinationFileServiceName
+      )
+    }
     
-    data = list(
-      destinationPath = destinationRelativePath,
-      destinationRootVolume = destinationRootVolume,
-      destinationUserVolume = destinationUserVolume,
-      destinationOwnerName = destinationUserVolumeOwner,
-      destinationFileService = destinationFileServiceName
-    )
     
     r = PUT(url,body=data,content_type_json(), encode="json", accept("application/json"),add_headers('X-Auth-Token'=token))
     
@@ -507,10 +579,14 @@ Files.delete <- function(fileService, path, quiet=TRUE){
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
     
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/data/",rootVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",as.character(quiet),"&TaskName=",taskName,sep="");
+    if(isTopVolumeARootVolume){
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/data/",topVolume,"/",userVolumeOwner,"/",userVolume,"/",relativePath,"?quiet=",as.character(quiet),"&TaskName=",taskName,sep="");
+    }else{
+      url = paste(Files.__getFileServiceAPIUrl(fileService),"api/data/",topVolume,"/",relativePath,"?quiet=",as.character(quiet),"&TaskName=",taskName,sep="");
+    }
     
     r = DELETE(url,add_headers('X-Auth-Token'=token))
     
@@ -523,7 +599,7 @@ Files.delete <- function(fileService, path, quiet=TRUE){
 }
   
   
-Files.shareUserVolume <- function(fileService, path, sharedWith, allowedActions, type="USER"){
+Files.shareUserVolume <- function(fileService, path, sharedWith, allowedActions, sharee_type="USER"){
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
   {
@@ -537,18 +613,18 @@ Files.shareUserVolume <- function(fileService, path, sharedWith, allowedActions,
       fileService = Files.getFileServiceFromName(fileService, verbose=verbose);
     }
     
-    vec = Files.splitPath(path)
-    rootVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4]
+    vec = Files.splitPath(path, fileService)
+    topVolume = vec[1];userVolumeOwner=vec[2];userVolume=vec[3];relativePath=vec[4];isTopVolumeARootVolume=vec[5]
     
 
     data = list(list(
       name = sharedWith,
-      type = type,
+      type = sharee_type,
       allowedActions = allowedActions
     )
     )
     
-    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/share/",rootVolume,"/",userVolumeOwner,"/",userVolume,"?TaskName=",taskName,sep="");
+    url = paste(Files.__getFileServiceAPIUrl(fileService),"api/share/",topVolume,"/",userVolumeOwner,"/",userVolume,"?TaskName=",taskName,sep="");
 
     r = PATCH(url,body=data,content_type_json(), encode="json", accept("application/json"),add_headers('X-Auth-Token'=token))
     

@@ -177,6 +177,41 @@ Jobs.getJobsList <- function(top=10, open=NULL, start=NULL, end=NULL, type="all"
   }
 }
 
+Jobs.getDockerJobsListQuick <- function(top=10, open=NULL, start=NULL, end=NULL, labelReg=NULL){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.Jobs.getJobList"
+    }else{
+      taskName = "SciScript-R.Jobs.getJobList"
+    }
+    
+    topString <- if(!is.null(top)) paste("top=",top,"&",sep="") else "" 
+    startString  <- if(!is.null(start)) paste("start=",start,"&",sep="") else ""
+    endString <- if(!is.null(end)) paste("end=",end,"&",sep="") else ""
+    
+    openString <- if(!is.null(open)) paste("open=",tolower(as.character(open)),"&",sep="") else ""
+    labRegString <- if(!is.null(labelReg)) paste("labelReg=",labelReg,"&",sep="") else ""
+    
+    
+    url = paste(Config.RacmApiURL,"/jobm/rest/dockerjobs/quick?",sep="")
+    url = paste(url,topString,startString,endString,"TaskName=",taskName,sep="")
+
+    r = GET(url,add_headers('X-Auth-Token'=token),accept("application/json"))
+    
+    if(r$status_code != 200) {
+      stop(paste("Error when getting Jobs list from JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+    } else {
+      return(content(r))
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
+}
+
 
 Jobs.getJobDescription <- function(jobId){
   

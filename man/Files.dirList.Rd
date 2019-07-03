@@ -9,7 +9,7 @@ Lists the contents of a directory.
 \usage{Jobs.dirList(fileService, path, level=1, options="")}
 \arguments{
   \item{fileService}{name of fileService (string), or object (list) that defines a file service. A list of these kind of objects available to the user is returned by the function Files.getFileServices().}
-  \item{path}{String defining the path (in the remote file service) of the directory to be listed, starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/directoryToBeListed.}
+  \item{path}{String defining the path (in the remote file service) of the directory to be listed, starting from the root volume level or data volume level. Examples: rootVolume/userVolumeOwner/userVolume/directoryToBeListed or dataVolume/directoryToBeListed}
   \item{level}{amount (int) of listed directory levels that are below or at the same level to that of the relativePath.}
   \item{options}{string specifiying the file or directory patterns to match, based on the glob syntax}
 }

@@ -9,7 +9,7 @@ Downloads a file from the remote file system into the local file system, or retu
 \usage{Jobs.download(fileService, path, localFilePath=NULL, format="txt", quiet=TRUE)}
 \arguments{
   \item{fileService}{name of fileService (string), or object (list) that defines a file service. A list of these kind of objects available to the user is returned by the function Files.getFileServices().}
-  \item{path}{String defining the path (in the remote file service) of the file to be downloaded, starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/fileToBeDownloaded.txt.}
+  \item{path}{String defining the path (in the remote file service) of the file to be downloaded, starting from the root volume level or data volume level. Examples: rootVolume/userVolumeOwner/userVolume/fileToBeDownloaded.txt or dataVolume/fileToBeDownloaded.txt}
   \item{localFilePath}{local destination path of the file to be downloaded. If set to NULL, then an object of format 'format' will be returned.}
   \item{format}{name (string) of the returned object's type (if localFilePath is not defined). This parameter can be "txt" , "raw" or "response". If the parameter 'localFilePath' is defined, then the 'format' parameter is not used and the file is downloaded to the local file system instead.}
   \item{quiet}{If set to FALSE, it will throw an error if the file does not exist. If set to TRUE. it will not throw an error.}

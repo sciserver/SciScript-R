@@ -108,30 +108,28 @@ CasJobs.executeQuery <- function(sql, context="MyDB", format="dataframe") {
     if(format == "list"){
       return(content(r))
     }else if(format == "dataframe"){
-      tables = content(r, encoding="UTF-8")
-      if((tables == "\n")[1]){
-        return(data.frame(NULL))
-      }else{
 
-        response = content(r, "text", encoding="UTF-8")
-        response = fromJSON(response)
-        
-        if(length(response$Result$Data) > 1 ){
-          result = list()
-          for( i in 1:length(response$Result$Data)){
-            df = data.frame(response$Result$Data[[i]])
-            if(dim(df)[2] >0){
-              colnames(df) <- response$Result$Columns[[i]]
-            }
-            result[[length(result)+1]] <- df
+      response = content(r, "text", encoding="UTF-8")
+      response = fromJSON(response)
+      
+      if(length(response$Result$Data) > 1 ){
+        result = list()
+        for( i in 1:length(response$Result$Data)){
+          df = data.frame(response$Result$Data[[i]])
+          if(dim(df)[2] >0){
+            colnames(df) <- response$Result$Columns[[i]]
           }
-        }else{
-          result = data.frame(response$Result$Data[[1]])
+          result[[length(result)+1]] <- df
+        }
+      }else{
+        result = data.frame(response$Result$Data[[1]])
+        if(dim(result)[2] >0){
           colnames(result) <- response$Result$Columns[[1]]
         }
-
-        return(result)
       }
+      
+      return(result)
+      
     }else if(format == "json"){
       return((content(r, "text", encoding="UTF-8")))
     }else if(format == "csv"){

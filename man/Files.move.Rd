@@ -9,9 +9,9 @@ Moves or copies a file or folder within remote FileService(s)
 \usage{Jobs.move(fileService, path, destinationFileService, destinationPath, replaceExisting=TRUE, doCopy=TRUE)}
 \arguments{
   \item{fileService}{name of fileService (string), or object (list) that defines a file service. A list of these kind of objects available to the user is returned by the function Files.getFileServices().}
-  \item{path}{String defining the origin path (in the remote fileService) of the file or directory to be copied/moved, starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/fileToBeMoved.txt.}
+  \item{path}{String defining the origin path (in the remote fileService) of the file or directory to be copied/moved, starting from the root volume level or data volume level. Examples: rootVolume/userVolumeOwner/userVolume/fileToBeMoved.txt or dataVolume/fileToBeMoved.txt}
   \item{destinationFileService}{name of fileService (string), or object (list) that defines a destination file service (where the file is moved/copied into). A list of these kind of objects available to the user is returned by the function Files.getFileServices().}
-  \item{destinationPath}{String defining the destination path (in the remote destinationFileService) of the file or directory to be copied/moved, starting from the root volume level. Example: rootVolume/userVolumeOwner/userVolume/recentlyMovedFile.txt.}
+  \item{destinationPath}{String defining the destination path (in the remote destinationFileService) of the file or directory to be copied/moved, starting from the root volume level or data volume level. Examples: rootVolume/userVolumeOwner/userVolume/recentlyMovedFile.txt or dataVolume/recentlyMovedFile.txt}
   \item{replaceExisting}{If set to FALSE, it will throw an error if the file already exists, If set to TRUE, it will not throw and eeror in that case.}
   \item{doCopy}{if set to TRUE, then it will copy the file or folder. If set to FALSE, then the file or folder will be moved.}
 }
