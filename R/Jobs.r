@@ -345,8 +345,12 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
     dataVols = list()
     if( is.null(dataVolumes)){
       for( i in 1:length(dockerComputeDomain$volumes)){
-           vol = dockerComputeDomain$volumes[[i]]
-           dataVols[[length(dataVols)+1]] <-  list(name= vol$name)
+        vol = dockerComputeDomain$volumes[[i]]
+        if("write" %in% vol$allowedActions){
+          dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=TRUE)
+        }else{
+          dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=FALSE)
+        }
       }
     }else{
       for(i in 1:length(dataVolumes)){
@@ -356,7 +360,24 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
           vol = dockerComputeDomain$volumes[[j]]
           if( vol$name == dVol$name ){
             found = TRUE;
-            dataVols[[length(dataVols)+1]] <- list(name=vol$name)
+            if(dVol$needsWriteAccess){
+              
+              if(dVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
+              }else{
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
+              }
+              
+            }else{
+              
+              if('write' %in% vol$allowedActions ){
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
+              }else{
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
+              }
+              
+            }
+            
           }
         }
         
@@ -474,7 +495,11 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
     if( is.null(dataVolumes)){
       for( i in 1:length(dockerComputeDomain$volumes)){
         vol = dockerComputeDomain$volumes[[i]]
-        dataVols[[length(dataVols)+1]] <-  list(name= vol$name)
+        if("write" %in% vol$allowedActions){
+          dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=TRUE)
+        }else{
+          dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=FALSE)
+        }
       }
     }else{
       for(i in 1:length(dataVolumes)){
@@ -484,7 +509,24 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
           vol = dockerComputeDomain$volumes[[j]]
           if( vol$name == dVol$name ){
             found = TRUE;
-            dataVols[[length(dataVols)+1]] <- list(name=vol$name)
+            if(dVol$needsWriteAccess){
+              
+              if(dVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
+              }else{
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
+              }
+              
+            }else{
+              
+              if('write' %in% vol$allowedActions ){
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
+              }else{
+                dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
+              }
+              
+            }
+
           }
         }
         
