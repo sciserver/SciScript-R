@@ -162,7 +162,7 @@ Jobs.getJobsList <- function(top=10, open=NULL, start=NULL, end=NULL, type="all"
       url = paste(Config.RacmApiURL,"/jobm/rest/dockerjobs?",sep="")
     }
 
-    url = paste(url,topString,startString,endString,"TaskName=",taskName,sep="")
+    url = paste(url,topString,startString,endString,openString,"TaskName=",taskName,sep="")
     
     
     r = GET(url,add_headers('X-Auth-Token'=token),accept("application/json"))
@@ -198,7 +198,7 @@ Jobs.getDockerJobsListQuick <- function(top=10, open=NULL, start=NULL, end=NULL,
     
     
     url = paste(Config.RacmApiURL,"/jobm/rest/dockerjobs/quick?",sep="")
-    url = paste(url,topString,startString,endString,"TaskName=",taskName,sep="")
+    url = paste(url,topString,startString,endString,labRegString,openString,"TaskName=",taskName,sep="")
 
     r = GET(url,add_headers('X-Auth-Token'=token),accept("application/json"))
     
@@ -212,6 +212,31 @@ Jobs.getDockerJobsListQuick <- function(top=10, open=NULL, start=NULL, end=NULL,
   }
 }
 
+Jobs.getJobQueues <- function(){
+  
+  token = Authentication.getToken()
+  if(!is.null(token) && token != "")
+  {
+    
+    if(Config.isSciServerComputeEnvironment()){
+      taskName = "Compute.SciScript-R.Jobs.getJobQueues"
+    }else{
+      taskName = "SciScript-R.Jobs.getJobQueues"
+    }
+    
+    url = paste(Config.RacmApiURL,"/jobm/rest/jobs/queues?","TaskName=",taskName,sep="")
+
+    r = GET(url,add_headers('X-Auth-Token'=token),accept("application/json"))
+    
+    if(r$status_code != 200) {
+      stop(paste("Error when getting job queues from JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
+    } else {
+      return(content(r))
+    }
+  }else{
+    stop(paste("User token is not defined. First log into SciServer."))
+  }
+}
 
 Jobs.getJobDescription <- function(jobId){
   
@@ -316,7 +341,7 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
           if(uVol$name == vol$name && uVol$rootVolumeName == vol$rootVolumeName && uVol$owner == vol$owner){
             
             found = TRUE
-            if(uVol$needsWriteAccess){
+            if(!is.null(uVol$needsWriteAccess)){
 
               if(uVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
                 uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= TRUE)
@@ -346,7 +371,7 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
     if( is.null(dataVolumes)){
       for( i in 1:length(dockerComputeDomain$volumes)){
         vol = dockerComputeDomain$volumes[[i]]
-        if("write" %in% vol$allowedActions){
+        if(vol$writable){
           dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=TRUE)
         }else{
           dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=FALSE)
@@ -360,9 +385,9 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
           vol = dockerComputeDomain$volumes[[j]]
           if( vol$name == dVol$name ){
             found = TRUE;
-            if(dVol$needsWriteAccess){
+            if(!is.null(dVol$needsWriteAccess)){
               
-              if(dVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
+              if(dVol$needsWriteAccess == TRUE) ){
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
               }else{
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
@@ -370,7 +395,7 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
               
             }else{
               
-              if('write' %in% vol$allowedActions ){
+              if(vol$writable){
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
               }else{
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
@@ -465,7 +490,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
           if(uVol$name == vol$name && uVol$rootVolumeName == vol$rootVolumeName && uVol$owner == vol$owner){
             
             found = TRUE
-            if(uVol$needsWriteAccess){
+            if(!is.null(uVol$needsWriteAccess)){
               
               if(uVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
                 uVols[[length(uVols)+1]] <- list(userVolumeId= vol$id, needsWriteAccess= TRUE)
@@ -495,7 +520,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
     if( is.null(dataVolumes)){
       for( i in 1:length(dockerComputeDomain$volumes)){
         vol = dockerComputeDomain$volumes[[i]]
-        if("write" %in% vol$allowedActions){
+        if(vol$writable){
           dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=TRUE)
         }else{
           dataVols[[length(dataVols)+1]] <- list(id=vol$id, name= vol$name, writable=FALSE)
@@ -509,24 +534,24 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
           vol = dockerComputeDomain$volumes[[j]]
           if( vol$name == dVol$name ){
             found = TRUE;
-            if(dVol$needsWriteAccess){
+            if(!is.null(dVol$needsWriteAccess)){
               
-              if(dVol$needsWriteAccess == TRUE && ('write' %in% vol$allowedActions) ){
+              if(dVol$needsWriteAccess == TRUE) ){
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
               }else{
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
               }
-              
+
             }else{
               
-              if('write' %in% vol$allowedActions ){
+              if(vol$writable){
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
               }else{
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
               }
               
             }
-
+            
           }
         }
         
