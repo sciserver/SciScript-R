@@ -8,8 +8,9 @@ Gets information about queues of jobs submitted to all compute domains, includin
 }
 \usage{Jobs.getJobQueues()}
 \arguments{
+  \item{format}{Format (string) of the returned object. If equal to "dataframe" (default setting), then the reult is a dataframe, else it is a list.}
 }
-\value{a list containing job queues information.}
+\value{a dataframe or list containing job queues information.}
 \author{
 Manuchehr Taghizadeh-Popp \cr
 Maintainer: Manuchehr Taghizadeh-Popp <mtaghiza@jhu.edu>

@@ -212,7 +212,7 @@ Jobs.getDockerJobsListQuick <- function(top=10, open=NULL, start=NULL, end=NULL,
   }
 }
 
-Jobs.getJobQueues <- function(){
+Jobs.getJobQueues <- function(format="dataframe"){
   
   token = Authentication.getToken()
   if(!is.null(token) && token != "")
@@ -231,7 +231,15 @@ Jobs.getJobQueues <- function(){
     if(r$status_code != 200) {
       stop(paste("Error when getting job queues from JOBM API.\nHttp Response from JOBM API returned status code ", r$status_code, ":\n",  content(r, as="text", encoding="UTF-8")))
     } else {
-      return(content(r))
+      
+      if(format == "dataframe"){
+        r = fromJSON(content(r, "text", encoding="UTF-8"))
+        df <- data.frame(r$rows)
+        colnames(df) <- r$columns
+        return(df)
+      }else{
+        return(content(r))  
+      }
     }
   }else{
     stop(paste("User token is not defined. First log into SciServer."))
