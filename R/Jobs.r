@@ -387,7 +387,7 @@ Jobs.submitNotebookJob <- function(notebookPath, dockerComputeDomain=NULL, docke
             found = TRUE;
             if(!is.null(dVol$needsWriteAccess)){
               
-              if(dVol$needsWriteAccess == TRUE) ){
+              if(dVol$needsWriteAccess == TRUE){
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
               }else{
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
@@ -536,7 +536,7 @@ Jobs.submitShellCommandJob <- function(shellCommand, dockerComputeDomain = NULL,
             found = TRUE;
             if(!is.null(dVol$needsWriteAccess)){
               
-              if(dVol$needsWriteAccess == TRUE) ){
+              if(dVol$needsWriteAccess == TRUE){
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= TRUE)
               }else{
                 dataVols[[length(dataVols)+1]] <- list(id= vol$id, name=vol$name, writable= FALSE)
